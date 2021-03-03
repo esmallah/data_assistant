@@ -1,0 +1,13 @@
+from .analysis import Block , cursor,DatabaseTables
+from .analysis import Unique,Select
+from .analysis import Group
+from .files import Convert
+from .files import Names
+from .files import Files_control
+from .files import Direcories
+from .files import delete_word_excel
+from .files import Edite
+#from .files import Mirge
+from .web import Mails_management
+from .web import AutomatedFilling
+from .web import Connection

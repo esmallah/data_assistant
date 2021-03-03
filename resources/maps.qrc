@@ -1,0 +1,19 @@
+<RCC>
+  <qresource prefix="photos">
+    <file>main_theme2.png</file>
+    <file>analysis1.png</file>
+    <file>analysis2.png</file>
+  </qresource>
+  <qresource prefix="Icons">
+    <file>main_theme3.png</file>
+    <file>tab_theme2.png</file>
+    <file>home_background.png</file>
+    <file>tab_theme.png</file>
+    <file>tab_theme2.png</file>
+    <file>background1.png</file>
+    <file>mab_background.png</file>
+    <file>button.png</file>
+    <file>loang_button.png</file>
+    <file>main_theme.png</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,3 @@
+AttributeError: 'MergedCell' object attribute 'value' is read-only
+
+there are meged cell in excel sheet witch right on it
