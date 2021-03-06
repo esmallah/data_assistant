@@ -5375,7 +5375,7 @@ gridline-color: rgb(255, 255, 255,0%);
    <widget class="QLabel" name="label_meanBackground">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>20</x>
       <y>-140</y>
       <width>1213</width>
       <height>771</height>
@@ -5577,7 +5577,7 @@ border-color: rgb(255, 255, 255,0%) ;
 </string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="tabsClosable">
      <bool>false</bool>
@@ -5615,6 +5615,16 @@ border-color: rgb(255, 255, 255,0%) ;
        </property>
        <row>
         <property name="text">
+         <string>0</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
          <string>2</string>
         </property>
        </row>
@@ -5625,7 +5635,17 @@ border-color: rgb(255, 255, 255,0%) ;
        </row>
        <row>
         <property name="text">
+         <string>4</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
          <string>5</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>6</string>
         </property>
        </row>
        <row>
@@ -5676,6 +5696,21 @@ border-color: rgb(255, 255, 255,0%) ;
        <row>
         <property name="text">
          <string>16</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>17</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>18</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>19</string>
         </property>
        </row>
        <column>
@@ -5845,45 +5880,167 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="10" column="0">
         <property name="text">
-         <string>LgWasherCover</string>
+         <string>LG65UP775Front
+</string>
         </property>
        </item>
        <item row="10" column="1">
         <property name="text">
-         <string>mmf</string>
+         <string>mma 
+</string>
         </property>
        </item>
        <item row="10" column="2">
         <property name="text">
-         <string>3920EZ2058A</string>
+         <string>MFZ67225101
+</string>
         </property>
        </item>
        <item row="11" column="0">
         <property name="text">
-         <string>LgWasherAngels</string>
+         <string>LG65UP77set
+</string>
         </property>
        </item>
        <item row="11" column="1">
         <property name="text">
-         <string>mmf</string>
+         <string>mma 
+</string>
         </property>
        </item>
        <item row="11" column="2">
         <property name="text">
-         <string>3920FZ3114C</string>
+         <string>MFZ67207701
+</string>
         </property>
        </item>
        <item row="12" column="0">
         <property name="text">
-         <string>LgWasherBase</string>
+         <string>65UP81
+</string>
         </property>
        </item>
        <item row="12" column="1">
         <property name="text">
-         <string>mmf</string>
+         <string>mma 
+</string>
         </property>
        </item>
        <item row="12" column="2">
+        <property name="text">
+         <string>MFZ66236601
+</string>
+        </property>
+       </item>
+       <item row="13" column="0">
+        <property name="text">
+         <string>65UP81Side
+</string>
+        </property>
+       </item>
+       <item row="13" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="13" column="2">
+        <property name="text">
+         <string>MFZ67207602
+</string>
+        </property>
+       </item>
+       <item row="14" column="0">
+        <property name="text">
+         <string>75UP77FRONT
+</string>
+        </property>
+       </item>
+       <item row="14" column="1">
+        <property name="text">
+         <string>mma 
+</string>
+        </property>
+       </item>
+       <item row="14" column="2">
+        <property name="text">
+         <string>MFZ65917901
+</string>
+        </property>
+       </item>
+       <item row="15" column="0">
+        <property name="text">
+         <string>75UP77
+</string>
+        </property>
+       </item>
+       <item row="15" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="15" column="2">
+        <property name="text">
+         <string>MFZ67207201</string>
+        </property>
+       </item>
+       <item row="16" column="0">
+        <property name="text">
+         <string>43UP81
+</string>
+        </property>
+       </item>
+       <item row="16" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="16" column="2">
+        <property name="text">
+         <string>MFZ67209701
+</string>
+        </property>
+       </item>
+       <item row="17" column="0">
+        <property name="text">
+         <string>LgWasherCover</string>
+        </property>
+       </item>
+       <item row="17" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="17" column="2">
+        <property name="text">
+         <string>3920EZ2058A</string>
+        </property>
+       </item>
+       <item row="18" column="0">
+        <property name="text">
+         <string>LgWasherAngels</string>
+        </property>
+       </item>
+       <item row="18" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="18" column="2">
+        <property name="text">
+         <string>3920FZ3114C</string>
+        </property>
+       </item>
+       <item row="19" column="0">
+        <property name="text">
+         <string>LgWasherBase</string>
+        </property>
+       </item>
+       <item row="19" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="19" column="2">
         <property name="text">
          <string>AGG76599801</string>
         </property>
@@ -5964,7 +6121,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>V1 © 2021 All right reserved - youssri Ahmed (esmallah1@gmail.com)</string>
+     <string>V1.1 © 2021 All right reserved - youssri Ahmed (esmallah1@gmail.com)</string>
     </property>
    </widget>
    <zorder>label_meanBackground</zorder>

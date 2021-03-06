@@ -132,19 +132,19 @@ class AutomatedFilling():
         LG65UP775Front_low=[154,260,34.5,96.9]
         MFZ67225101=[LG65UP775Front_high,LG65UP775Front_low]
 
-        lg_65UP7750PVB="MFZ67207701"#Lg65UP7750PVB
-        lg_65UP7750PVB_high=[1584,157,351,513,1585,157,354,508.7]
-        lg_65UP7750PVB_low=[1577,152,345,450.7,1577,152,348,446.9]
-        MFZ67207701=[LGlg_65UP7750PVB_high,LGlg_65UP7750PVB_low]
+        lg_65UP77set="MFZ67207701"#Lg65UP7750PVB
+        lg_65UP77set_high=[1584,157,351,513,1585,157,354,508.7]
+        lg_65UP77set_low=[1577,152,345,450.7,1577,152,348,446.9]
+        MFZ67207701=[LGlg_65UP77set_high,LGlg_65UP77set_low]
 
-        lg_65UP8140PVA="MFZ66236601"#lg65UP8140PVA
-        lg_65UP7750PVB_high=[791.5,192,321,975,178,281,638]
-        lg_65UP7750PVB_low=[784.5,316,857,173,276,560]
-        MFZ66236601=[LGlg_65UP7750PVB_high,LGlg_65UP7750PVB_low]
+        lg_65UP81set="MFZ66236601"#lg65UP81set
+        lg_65UP81set_high=[791.5,192,321,975,178,281,638]
+        lg_65UP81set_low=[784.5,316,857,173,276,560]
+        MFZ66236601=[lg_65UP81set_high,lg_65UP81set_low]
 
-        lg_65UP81Side="MFZ67207602"#lg65UP8140PVA
-        lg_65UP81Side_high=[]
-        lg_65UP81Side_low=[]
+        lg_65UP81Side="MFZ67207602"#lg65UP81sides
+        lg_65UP81Side_high=[251,207,133,131.9]
+        lg_65UP81Side_low=[246,202,129,115.9]
         MFZ67207602=[lg_65UP81Side_high,lg_65UP81Side_low]
 
         lg_75UP77FRONT="MFZ65917901"#lg75up77Front
@@ -156,11 +156,6 @@ class AutomatedFilling():
         lg_75UP77_high=[]
         lg_75UP77_low=[]
         MFZ67207201=[lg_75UP77_high,lg_75UP77_low]
-
-        lg_75UP77FRONT="MFZ65917901"#lg75up77Front
-        lg_75UP77FRONT_high=[]
-        lg_75UP77FRONT_low=[]
-        MFZ65917901=[lg_75UP77FRONT_high,lg_75UP77FRONT_low]
 
         lg_43UP81="MFZ67209701"#lg43UP81
         lg_43UP81_high=[1064,176,246,320.23,1064,176,181,198.14]

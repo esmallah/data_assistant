@@ -220,35 +220,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 self.tabWidget_left.setCurrentIndex(5)
                 self.tabMaps.setCurrentIndex(0)
     
-    def clickedList2(self):
-        from apps import AutomatedFilling
-        print("___________________test interface______________")
-        switcher = {
-        "LG43UJ63":0,
-        "LG49UJ63":1,
-        "LG55UK630":2,
-        "LGLG32LM55":3,
-        "LGLG43LM63":4,
-        "FRONT 43LM63":5,
-        "FRONT 43LM55":6,
-        "LG65UM73up&down":7,
-        "LG65UM73LR":8,
-        "LgWasherCover":9,
-        "LgWasherAngels":10,
-        "LgWasherBase":11
-        }
-
-        self.ButWebFilterFIllNames.clicked.disconnect(clickedList2)
-        self.listWebFilterLGItems.currentItemChanged.connect(self.clickedList)
-
-        item = self.listWebFilterLGItems.currentItem()
-        
-        x=switcher.get(item.text(), "Invalid items")
-        print("now is printing","item:",item.text(),"code:",x,"its type:",type(x))
-
-        self.ButWebFilterFIllNames.clicked.connect(lambda:AutomatedFilling.pastNames(x))
-        self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,standard_spec=False,vertically=False))
-            
+    
     def reconnect(self,signal, newhandler=None, oldhandler=None):   
         self.listWebFilterLGItems.clearSelection()
         #self.listWebFilterLGItems.currentItemChanged.disconnect()

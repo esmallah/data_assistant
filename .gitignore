@@ -16,5 +16,5 @@ python_app_sqlite/Database
 python_app_sqlite/main.py
 python_app_sqlite/image
 python_app_sqlite/README.md
-leader
+first
 apps/pyqt_sqlite/pyqt-sqlite.py

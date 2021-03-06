@@ -1,10 +1,8 @@
-First Leader 
-its dynamic pyqt as UGI creator , core  managing system
-version 1.01
 
 its like django but for disctop application
 the same django tables its will be fill and check 
 its alternative microsoft access and excel sheet ( its the same thin in one project)
+
 
 the trarget of this project is :
 - read any database and writ on it.
@@ -67,5 +65,6 @@ pyinstaller -w main.py
  00201009578537
 
 application building start in 21 may 2019
+deep learning modue applying in 3/3/2021
 
 its free and updated as we can
