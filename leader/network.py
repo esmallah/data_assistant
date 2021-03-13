@@ -1,9 +1,9 @@
-
+#referece:haracter_Level_RNN_Exercise.html
 import numpy as np
 import torch
 from torch import nn
 import torch.nn.functional as F
-#haracter_Level_RNN_Exercise.html
+
 
 class TextRnn(nn.Module):
     def __init__(self, tokens, n_hidden=256, n_layers=2,

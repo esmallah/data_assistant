@@ -48,13 +48,14 @@ source ../env/Scripts/activate
 conda activate env_leader   
 source activate env_leader
 
-#_____for backup enviroment
+#_____for backup enviroment ( or run as adminstrator)
 
 source activate leader
 source activate pyqt_ugi
 you can start app py :
 python main.py
 
+python Lib/pyqt_sqlite/pyqt_sqlite.py
 you can start alone by install
 pip install PyInstaller
 then

@@ -13,18 +13,17 @@ from torch import nn
 import torch.nn.functional as F
 #from local library
 from .network import TextRnn as Model
-from .train import TexTrainer
+
+from .train import train
 class Ai_thinking():    
-    def __init__(self,folder,readfile,readsheet,column1,column2,writefile,sheetwriter):
+    def __init__(self,folder,readfile,readsheet,column1,column2,writefile):
         #self.folder=folder
         self.folder=folder
         self.readfile=readfile
         self.readsheet=readsheet
         self.column1=column1
         self.column2=column2
-        self.writefile=writefile
-        self.sheetwriter=sheetwriter
-        
+        self.writefile=writefile        
     def show_data(self):
         os.chdir(self.folder)
         from .utiliy import get_batches
@@ -69,15 +68,15 @@ class Ai_thinking():
         
         #========================================
 
-        print("encoded_id categories",encoded_id)
+        print("encoded_id categories",encoded_id[:100])
         #data pre-process for names
         chars_names = tuple(set(reader_names))
         int2char_id = dict(enumerate(chars_id))
         char2int_id = {ch: ii for ii, ch in int2char.items()}
-        print("____________ reader_name categories",reader_names)
+        print("____________ reader_name categories",reader_names[5])
         ## encode the text
         encoded_names= np.array([char2int[ch] for ch in reader_names])
-        print("encoded_name categories",encoded_names)
+        print("encoded_name categories",encoded_names[:100])
 
         
            #second deictionaries for name
@@ -92,7 +91,7 @@ class Ai_thinking():
                 names_items.append(reader_item_filter.names)
                 names.append(names_items)
             #return names
-        print("names",names)
+        print("names",names[:5])
         writer = pd.ExcelWriter(self.writefile)
         names_df=pd.DataFrame(names)
         names_df.to_excel(writer,"data")
@@ -155,15 +154,21 @@ class Ai_thinking():
         n_layers=2
 
         #net = Model(chars_names, n_hidden, n_layers)
+        #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        #net = Model(chars_id, n_hidden, n_layers).to(device)
         net = Model(chars_id, n_hidden, n_layers)
+        #optimizer = optim.Adam(model.parameters())
+        #loss_fn = torch.nn.BCELoss()
+
         print(net)
         batch_size = 128
         seq_length = 100
         n_epochs =  20 # start small if you are just testing initial behavior
 
         # train the model
-        #TexTrainer(net, encoded_names, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
-        TexTrainer.train(net, encoded_id, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
+        
+        train(net, encoded_id, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
 
         ## change the name, for saving multiple files
 

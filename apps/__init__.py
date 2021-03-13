@@ -1,3 +1,4 @@
+#own app puilding and all andalosy  compy rights is reseved
 from .analysis import Block , cursor,DatabaseTables
 from .analysis import Unique,Select
 from .analysis import Group

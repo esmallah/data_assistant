@@ -3,10 +3,10 @@ __copyright__ = 'Copyright (c) 2021'
 __version__ = '1.0.0'
 
 import PyQt5
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtGui, QtCore
 from interface import Ui_MainWindow
-from Lib.TabBarStyle import TabBarStyle
 
 import time
 import os
@@ -14,8 +14,8 @@ from apps import Group
 from apps import Block
 from apps import Unique,Select
 from apps import Connection
-
-
+import sys
+from apps import AutomatedFilling
 class Stream(QtCore.QObject):
     '''
     to print console
@@ -25,11 +25,12 @@ class Stream(QtCore.QObject):
     def write(self, text):
         self.newText.emit(str(text))
 
-#from test_main.py import TestAnalyss
-
-class AppWindow(Ui_MainWindow,QMainWindow):
+#from test_main.py import TestAnalyss###class AppWindow(Ui_MainWindow,QMainWindow):
+#class AppWindow(QtWidgets.QMainWindow,"interface2.ui") : 
+class AppWindow(Ui_MainWindow,QMainWindow):  
     def __init__(self,parent=None):
         super(AppWindow,self).__init__(parent)
+
         #self.Ui_MainWindow = Ui_MainWindow()
         self.setupUi(self)
         self.signals_control()
@@ -88,7 +89,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     #__________________________control panel
     def restart(self):        
         if __name__ == "__main__":
-            import sys
+            
             app = QApplication(sys.argv)
             #app.setStyle(TabBarStyle())
             ex = AppWindow()
@@ -104,7 +105,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                     break
     #___________________________automated web control section_____________________________#
     def clickedList(self):
-        from apps import AutomatedFilling
+        
         print("___________________test interface______________")
         switcher = {
         "LG43UJ63":0,
@@ -140,8 +141,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             x=switcher.get(item.text(), "Invalid items")
             print("now is printing","item:",item.text(),"code:",x,"its type:",type(x))
 
-            self.ButWebFilterFIllNames.clicked.connect(lambda:AutomatedFilling.pastNames(x))
-            self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,standard_spec=False,vertically=False))
+            self.ButWebFilterFIllNames.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,insert_name=True))
+            self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,standard_spec=False,vertically=False))
             
             #print(map(x,switcher))   
             #self.close()
@@ -252,7 +253,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def deepLearning(self):
         from leader import Ai_thinking
         
-        data_path=Ai_thinking(r'E:\ProgramData\assistantApplcation','trainData.xlsx',"train","names","id_inside_cagegory","defined_names.xlsx","Sheet1")
+        data_path=Ai_thinking(r'E:\ProgramData\assistantApplcation','trainData.xlsx',"train","names","id_inside_cagegory","defined_names.xlsx")
         if self.checkBox_Leader_adjust_input_data.isChecked():
             data_path.show_data()
 
@@ -271,9 +272,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
 
     #connect to database
     def dataIntry(self):
-        from connectors import ModifyTableDialog
-        
-        
+        from Lib import ModifyTableDialog
+
     def database_management(self):
         year=str(self.analysis_DByear.currentText())
         month=str(self.analysis_DBmonth.currentText())
@@ -332,6 +332,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         year=self.analysis_year.currentText()
         month=self.analysis_month.currentText()
         day=self.analysis_day.currentText()
+        to_day=self.analysis_day_to.currentText()
         analysisInput=str(self.analsyisInputLineEdit.text())
         analysisOutput=str(self.analsyisInputLineEdit.text())
 
@@ -342,13 +343,13 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         monthlyReportName=str(year)+"-"+str(month)+"QC_molds_monthly_v2.xlsx"
 
         upload_database=Block(r"\\AHMED-RASHAD\Users\Public\database","")
-
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         #format_path2 = os.path.dirname(os.path.abspath(__file__))
         #format_path = os.path.join(format_path2, r".\apps\analysis\formats")
         format_path = os.path.normpath(r".\apps\analysis\formats")
-        print ("format path",format_path)
+        print ("format path",BASE_DIR)
         #format_path = os.path.join(format_path2, )
-
+        
         git_database=Select(format_path,"formatQC_molds_monthly_v9.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
         
                     #import data
@@ -393,8 +394,6 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                     #data basse export data
         #_______developer stage________________________________current_________====================
 
-
-        
         if self.checkBox_analysis_DB_daily.isChecked():
         
         #for daily report
@@ -411,9 +410,15 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         if self.checkBox_analysis_DB_yearlyInput.isChecked():
             git_database.export_report_daily_yearly(year)
             print("the yearly input report has downloaded for day ",day," , month:",month,"and year:",year)
-        #git_database.export_report_daily_yearly()
-        #upload_database.updateTable('yt_quality','shift1_production_cards',5,254,0)
-
+        if self.checkBox_analysis_DB_weekly.isChecked()==True:
+            if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="quweekly production" : #for chose any type of files
+                quality1.select_data(year,month,day,day=True,masterData=False)   #true for select alst day , false for select all month
+                quality1.convert_csv(quality_records=True,masterData=False)
+                print("download production report from day:",day,"to day :",to_day," month:",month," year:",year)
+            if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="weekly defect" : 
+                quality1.select_data(year,month,day,day=True,masterData=False)   #true for select alst day , false for select all month
+                quality1.convert_csv(quality_records=True,masterData=False)
+                print("download defects report from day:",day,"to day :",to_day," month:",month," year:",year)
 
         #____________________________________________________________________________________________
                             ##generate_data
@@ -489,6 +494,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         year=self.analysis_year.currentText()
         month=self.analysis_month.currentText()
         day=self.analysis_day.currentText()
+        to_day=self.analysis_day_to.currentText()
         test_scrab_input_baches=test_main.Apply_testAnalysis(int(year),int(month))
         test_scrab_input_baches.test_analysis_scrap()
     def files_control(self):
@@ -562,12 +568,11 @@ class AppWindow(Ui_MainWindow,QMainWindow):
 from PyQt5.QtCore import pyqtSignal,QThread
 
 universe_1 = [0 for i in range(512)]
-if __name__ == "__main__":
-        import sys
-        
-        app = QApplication(sys.argv)
-        
-        #app.setStyle(TabBarStyle())
-        ex = AppWindow()
-        
-        sys.exit(app.exec_())
+
+def main():
+    app = QApplication([])
+    ex = AppWindow()
+    ex.show()
+    sys.exit(app.exec_())
+if __name__ == '__main__':
+    main()

@@ -425,8 +425,8 @@ class Select():
         #f.close()
     def export_report_mothly(self,writerFile,year,month,*args,monthly=True):
         os.chdir(self.folder)
-        inputPath=self.folder+'\formats'
-        outputPath=self.folder+'\data\qc_molds'
+        inputPath=self.folder+r'\formats'
+        outputPath=self.folder+r'\data\qc_molds'
         wb = xl.load_workbook(self.readfile1)
         #year=
         
