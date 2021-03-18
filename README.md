@@ -45,6 +45,7 @@ pyrcc5 maps.qrc -o maps_rc.py
 
 for activate virusal environment
 source ../env/Scripts/activate
+source activate env_leader   
 conda activate env_leader   
 
 

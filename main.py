@@ -153,7 +153,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def conntectTabs1(self):#knowledge
         self.tabWidget_left.setCurrentIndex(1)
         self.tabMaps.setCurrentIndex(0)
-        from .apps.pyqt_sqlite import MainWindow
+        from apps.pyqt_sqlite import MainWindow
     def conntectTabs2(self):
         self.tabWidget_left.setCurrentIndex(2)
         self.tabMaps.setCurrentIndex(0)
@@ -361,8 +361,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         upload_database=Block(r"\\AHMED-RASHAD\Users\Public\database","")
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         #format_path2 = os.path.dirname(os.path.abspath(__file__))
-        #format_path = os.path.join(format_path2, r".\apps\analysis\formats")
-        format_path = os.path.normpath(r".\apps\analysis\formats")
+        format_path = os.path.join(BASE_DIR, os.path.normpath(r".\y_data_assistant\apps\analysis\formats"))
+        #format_path = os.path.normpath(r".\apps\analysis\formats")
         print ("format path",BASE_DIR)
         #format_path = os.path.join(format_path2, )
         
