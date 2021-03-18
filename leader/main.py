@@ -130,18 +130,17 @@ class Ai_thinking():
 
         print("____one_hot____",one_hot)
         
-        self.batches = get_batches(encoded_id, 8, 50)
+        #to switch between id and name
+        #encoded=encoded_id
+        encoded=encoded_names
+        
+        self.batches = get_batches(encoded, 8, 50)
+        
         self.x, self.y = next(self.batches)
         # printing out the first 10 items in a sequence
         print('x\n', self.x[:10, :10])
         print('\ny\n', self.y[:10, :10])
 
-
-        self.batches_name = get_batches(encoded_names, 8, 50)
-        self.z, self.t = next(self.batches_name)
-        # printing out the first 10 items in a sequence
-        print('z\n', self.z[:10, :10])
-        print('\ny\n', self.t[:10, :10])
         # check if GPU is available
         train_on_gpu = torch.cuda.is_available()
         if(train_on_gpu):
@@ -168,7 +167,7 @@ class Ai_thinking():
 
         # train the model
         
-        train(net, encoded_id, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
+        train(net, encoded, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
 
         ## change the name, for saving multiple files
 

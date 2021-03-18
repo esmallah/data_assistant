@@ -820,7 +820,7 @@ class Select():
             ws.title=self.writesheet
         wb.save(self.writefile)
     
-    def export_report_daily_yearly(self,year):
+    def export_report_daily_yearly(self,year,*args):
         os.chdir(self.folder)
         #new sheet
         

@@ -38,7 +38,7 @@ road map:
 - identify items name by deep learning
 - connect to cloud which control web and mobiles apps
 - clearfy and store error message
-
+- fix non variation random value in web filling every fill ( no the same)
 for convert xml to ptyhon 
 pyuic5 interface2.ui > interface2.py
 pyrcc5 maps.qrc -o maps_rc.py
@@ -46,7 +46,7 @@ pyrcc5 maps.qrc -o maps_rc.py
 for activate virusal environment
 source ../env/Scripts/activate
 conda activate env_leader   
-source activate env_leader
+
 
 #_____for backup enviroment ( or run as adminstrator)
 
@@ -55,7 +55,6 @@ source activate pyqt_ugi
 you can start app py :
 python main.py
 
-python Lib/pyqt_sqlite/pyqt_sqlite.py
 you can start alone by install
 pip install PyInstaller
 then

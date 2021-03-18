@@ -16,17 +16,6 @@ from apps import Unique,Select
 from apps import Connection
 import sys
 from apps import AutomatedFilling
-class Stream(QtCore.QObject):
-    '''
-    to print console
-    '''
-    newText = QtCore.pyqtSignal(str)
-
-    def write(self, text):
-        self.newText.emit(str(text))
-
-#from test_main.py import TestAnalyss###class AppWindow(Ui_MainWindow,QMainWindow):
-#class AppWindow(QtWidgets.QMainWindow,"interface2.ui") : 
 class AppWindow(Ui_MainWindow,QMainWindow):  
     def __init__(self,parent=None):
         super(AppWindow,self).__init__(parent)
@@ -51,9 +40,15 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         #switchers main_AI_leader tabs
         self.butSubLeader.clicked.connect(self.connSubLeader_items)
         self.butSubLeader_adjusting.clicked.connect(self.connSubLeader_adjusting)
+        
         #switchers main_properties tabs
-        self.butSubPropFilter.clicked.connect(self.connSubPropFilter)
-        self.butSubPropResults.clicked.connect(self.connSubPropResults)
+        self.butSubknowledge_tables.clicked.connect(self.connSubknowledge_tables)
+        self.butSubknowledge_query.clicked.connect(self.connSubknowledge_query)
+        self.butSubknowledge_data.clicked.connect(self.connSubknowledge_data)
+        self.butSubknowledge_dataFlow.clicked.connect(self.connSubknowledge_dataFlow)
+        self.butSubknowledge_tools.clicked.connect(self.connSubknowledge_formDesign)
+        self.butSubknowledge_dataEntry.clicked.connect(self.connSubknowledge_dataEntry)
+
         # tabs_Leaders:        
         self.pBut_tabSubLeader_adjust_thinking.clicked.connect(self.deepLearning)
         #switcher subtabs _analysis
@@ -71,8 +66,9 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         siteName=self.interTheWebSiteLineEdit.text()
         
         self.ButWebFilterOpensites.clicked.connect(lambda: Connection.site_connection(self,siteName))
-        
+
         self.listWebFilterLGItems.currentItemChanged.connect(self.clickedList)
+
         #sqlite database
         self.ButWebFilterOpensites_4.clicked.connect(self.dataIntry)
         #file controle___________________________________________
@@ -104,6 +100,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 if current_exit_code == -123456789:
                     break
     #___________________________automated web control section_____________________________#
+    @QtCore.pyqtSlot()    
     def clickedList(self):
         
         print("___________________test interface______________")
@@ -141,7 +138,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             x=switcher.get(item.text(), "Invalid items")
             print("now is printing","item:",item.text(),"code:",x,"its type:",type(x))
 
-            self.ButWebFilterFIllNames.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,insert_name=True))
+            self.ButWebFilterFIllNames.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=False,insert_name=True))
             self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,standard_spec=False,vertically=False))
             
             #print(map(x,switcher))   
@@ -153,9 +150,10 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def conntectTabs0(self):
         self.tabWidget_left.setCurrentIndex(0)
         self.tabMaps.setCurrentIndex(1)
-    def conntectTabs1(self):
+    def conntectTabs1(self):#knowledge
         self.tabWidget_left.setCurrentIndex(1)
         self.tabMaps.setCurrentIndex(0)
+        from .apps.pyqt_sqlite import MainWindow
     def conntectTabs2(self):
         self.tabWidget_left.setCurrentIndex(2)
         self.tabMaps.setCurrentIndex(0)
@@ -174,11 +172,29 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def connSubLeader_items(self):
         self.tabSubLeader.setCurrentIndex(0)
         self.tabMaps.setCurrentIndex(2)
-    def connSubPropFilter(self):
-        self.tabSubProperties.setCurrentIndex(0)
+    def connSubknowledge_tables(self):
+        self.gridTabWidget.setCurrentIndex(0)
         self.tabMaps.setCurrentIndex(1)
     def connSubPropResults(self):
-        self.tabSubProperties.setCurrentIndex(1)
+        self.gridTabWidget.setCurrentIndex(1)
+        self.tabMaps.setCurrentIndex(0)
+    def connSubknowledge_tables(self):
+        self.gridTabWidget.setCurrentIndex(0)
+        self.tabMaps.setCurrentIndex(0)
+    def connSubknowledge_query(self):
+        self.gridTabWidget.setCurrentIndex(1)
+        self.tabMaps.setCurrentIndex(0)
+    def connSubknowledge_data(self):
+        self.gridTabWidget.setCurrentIndex(2)
+        self.tabMaps.setCurrentIndex(0)
+    def connSubknowledge_dataFlow(self):
+        self.gridTabWidget.setCurrentIndex(1)
+        self.tabMaps.setCurrentIndex(0)
+    def connSubknowledge_formDesign(self):
+        self.gridTabWidget.setCurrentIndex(3)
+        self.tabMaps.setCurrentIndex(0)
+    def connSubknowledge_dataEntry(self):
+        self.gridTabWidget.setCurrentIndex(1)
         self.tabMaps.setCurrentIndex(0)
     def connSubanalysis_reports(self):
         self.tabSubAnalysis.setCurrentIndex(0)
@@ -412,12 +428,10 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             print("the yearly input report has downloaded for day ",day," , month:",month,"and year:",year)
         if self.checkBox_analysis_DB_weekly.isChecked()==True:
             if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="quweekly production" : #for chose any type of files
-                quality1.select_data(year,month,day,day=True,masterData=False)   #true for select alst day , false for select all month
-                quality1.convert_csv(quality_records=True,masterData=False)
+                git_database.export_report_daily_yearly(year,day,to_day)
                 print("download production report from day:",day,"to day :",to_day," month:",month," year:",year)
             if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="weekly defect" : 
-                quality1.select_data(year,month,day,day=True,masterData=False)   #true for select alst day , false for select all month
-                quality1.convert_csv(quality_records=True,masterData=False)
+                git_database.export_report_daily_yearly(year,day,to_day)
                 print("download defects report from day:",day,"to day :",to_day," month:",month," year:",year)
 
         #____________________________________________________________________________________________

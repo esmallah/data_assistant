@@ -99,26 +99,24 @@ class AutomatedFilling():
         lg_LG43LM63_low=[1042,136,177,174.09,1042,136,177,142.09]
         mfz66236501=[lg_LG43LM63_high,lg_LG43LM63_low]
 
-        lg_MFZ65262201="MFZ65262201"#FRONT 43LM63
+        lg_43LM63FRONT ="MFZ65262201"#FRONT 43LM63
 
         lg_MFZ65262201_high=[1027,190,18,39.78]
         lg_MFZ65262201_low=[1020,185,14,31.99]
         MFZ65262201=[lg_MFZ65262201_high,lg_MFZ65262201_low]
 
 
-        lg_MFZ66151901="MFZ66151901"#FRONT 43LM55
-
+        lg_43LM55FRONT="MFZ66151901"#FRONT 43LM5
         lg_MFZ66151901_high=[1019,211,23,49]
         lg_MFZ66151901_low=[1012,206,19,41]
         MFZ66151901=[lg_MFZ66151901_high,lg_MFZ66151901_low]
 
-        lg_MFZ66236701="MFZ66236701"#LG65UM73up&down
-
+        lg_LG65UM73up="MFZ66236701"#LG65UM73up&down
         lg_MFZ66236701_high=[791.5,175,283,628.68,792,161,283,509]
         lg_MFZ66236701_low=[784.5,170,277,552.37,785,156,277,447]
         MFZ66236701=[lg_MFZ66236701_high,lg_MFZ66236701_low]
 
-        lg_MFZ66236702="MFZ66236702"#LG65UM73LR
+        lg_LG65UM73LR="MFZ66236702"#LG65UM73LR
 
         lg_MFZ66236702_high=[421,180,169,203.49]
         lg_MFZ66236702_low=[416,175,164,178.79]
@@ -140,10 +138,15 @@ class AutomatedFilling():
         lg_65UP77set_low=[1577,152,345,450.7,1577,152,348,446.9]
         MFZ67207701=[lg_65UP77set_high,lg_65UP77set_low]
 
-        lg_65UP81set="MFZ66236601"#lg65UP81set
-        lg_65UP81set_high=[791.5,192,321,975,792,178,281,638]
-        lg_65UP81set_low=[784.5,187,316,857,785,173,276,560]
-        MFZ66236601=[lg_65UP81set_high,lg_65UP81set_low]
+        #MFZ66236601="MFZ66236601"#lg65UP81set
+        #lg_65UP81set_high=[791.5,192,321,975,792,178,281,638]
+        #lg_65UP81set_low=[784.5,187,316,857,785,173,276,560]
+        #MFZ66236601=[lg_65UP81set_high,lg_65UP81set_low]
+
+        lg_65UP81set="MFZ67207601"#lg65UP81set
+        lg_65UP81set_high=[1585,213	,351,933.912,1585,213,356,662.949]
+        lg_65UP81set_low=[1577,208,345,820.552,1577,208,350,582.479]
+        MFZ67207601=[lg_65UP81set_high,lg_65UP81set_low]
 
         lg_65UP81Side="MFZ67207602"#lg65UP81sides
         lg_65UP81Side_high=[251,207,133,131.9]
@@ -184,14 +187,15 @@ class AutomatedFilling():
         #time recorded for fill     30minint    #the time not accurecy because intenet speed defirince between time to time
         items=(MFZ65333701,MFZ65333801,MFZ65914801,MFZ66333001,mfz66236501,MFZ65262201,
                 MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
-                MFZ67207701,MFZ66236601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67209701,
+                MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67209701,
                 LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801)
         #item=items[0]
-        item=items[itemSelection]
-
+        
+        
         #s=slice(items.lengh(),int(itemSelection))
         #item=items[int(itemSelection)]#type the varibale item______________________________
         if fill_data:
+            item=items[itemSelection]
             lg_item=item
             specification_no_high=lg_item[0]
             #specification_no_high=lg_43LH51_high
@@ -232,5 +236,11 @@ class AutomatedFilling():
                 for i in range(4):
                     pyautogui.typewrite(['tab'])
         if insert_name:
+            items=[LG_43UJ63,LG_49UJ63,lg_55UK630,lg_LG32LM55,lg_LG43LM63,lg_43LM63FRONT,lg_43LM55FRONT,
+                    lg_LG65UM73up,lg_LG65UM73LR,lg_LG43UP77,LG65UP775Front,lg_65UP77set,lg_65UP81set,
+                    lg_65UP81Side,lg_75UP77FRONT,lg_75UP77,lg_43UP81,LG_cover,lG_zayaza,lg_kaeda]
+            
+            item=items[itemSelection]
+            print(item)
             pyautogui.hotkey('alt', 'tab', interval=0.1)    #for tab to website to write the window must be on website befor bress on fill
             pyautogui.typewrite(str(item))

@@ -5126,7 +5126,7 @@ gridline-color: rgb(255, 255, 255,0%);
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="resources/maps.qrc">:/photos/main_theme2.png</pixmap>
+     <pixmap>:/photos/main_theme2.png</pixmap>
     </property>
    </widget>
    <widget class="QPushButton" name="button_AI_leader">
@@ -5891,8 +5891,6 @@ p, li { white-space: pre-wrap; }
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="resources/maps.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

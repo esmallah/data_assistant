@@ -12,9 +12,8 @@ developmentPlan
 memory
 build
 dist
-python_app_sqlite/Database
-python_app_sqlite/main.py
-python_app_sqlite/image
-python_app_sqlite/README.md
 first
+apps/pyqt_sqlite/ui/mainwindow.ui
 apps/pyqt_sqlite/pyqt-sqlite.py
+interface2.
+Lib
