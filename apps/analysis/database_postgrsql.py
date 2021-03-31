@@ -1716,7 +1716,6 @@ class Block():
 	def show_monthly_report_ar(self,year,month):
 		SQL1='select * from yv_items_molds_report where year = (%s) '%year
 		
-
 		SQL2 = SQL1+' and month=(%s);'
 		
 		if type(month) == tuple:   

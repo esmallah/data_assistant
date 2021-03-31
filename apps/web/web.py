@@ -154,13 +154,13 @@ class AutomatedFilling():
         MFZ67207602=[lg_65UP81Side_high,lg_65UP81Side_low]
 
         lg_75UP77FRONT="MFZ65917901"#lg75up77Front
-        lg_75UP77FRONT_high=[]
-        lg_75UP77FRONT_low=[]
+        lg_75UP77FRONT_high=[1308,529,62.73,322.37]
+        lg_75UP77FRONT_low=[1301,524,58.73,283.24]
         MFZ65917901=[lg_75UP77FRONT_high,lg_75UP77FRONT_low]
 
         lg_75UP77="MFZ67207201"#lg65UP8140PVA
-        lg_75UP77_high=[]
-        lg_75UP77_low=[]
+        lg_75UP77_high=[902,185,281,688.6,902,171,281,666.1]
+        lg_75UP77_low=[895,180,276,605.6,895,166,276,585.3]
         MFZ67207201=[lg_75UP77_high,lg_75UP77_low]
 
         lg_43UP81="MFZ67209701"#lg43UP81

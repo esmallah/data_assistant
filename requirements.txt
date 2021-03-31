@@ -10,10 +10,7 @@ pandas==0.24.2
 pandocfilters==1.4.3
 psycopg2==2.8.4
 PyAutoGUI==0.9.48
-PyGetWindow==0.0.8
 Pygments==2.7.4
-kiwisolver==1.1.0
-pypiwin32==223
 PyQt5==5.13.0
 PyQt5-sip==12.7.0
 pyqt5-tools==5.13.0.1.5

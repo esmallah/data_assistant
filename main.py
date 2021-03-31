@@ -363,7 +363,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         #format_path2 = os.path.dirname(os.path.abspath(__file__))
         format_path = os.path.join(BASE_DIR, os.path.normpath(r".\y_data_assistant\apps\analysis\formats"))
         #format_path = os.path.normpath(r".\apps\analysis\formats")
-        print ("format path",BASE_DIR)
+        print ("format path",format_path)
         #format_path = os.path.join(format_path2, )
         
         git_database=Select(format_path,"formatQC_molds_monthly_v9.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")

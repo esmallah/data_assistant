@@ -53,7 +53,7 @@ gridline-color: rgb(255, 255, 255,0%);
 </string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="tab_AI_leader">
      <property name="accessibleName">
@@ -3789,7 +3789,7 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <property name="text">
-             <string>75UP77FRONT</string>
+             <string>LG75UP77FRONT</string>
             </property>
            </item>
            <item>
@@ -5859,7 +5859,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>V1.1 © 2021 All right reserved - youssri Ahmed (esmallah1@gmail.com)</string>
+     <string>V1.2 © 2021 All right reserved - Aeraeg (qhse-erp.com)</string>
     </property>
    </widget>
    <zorder>label_meanBackground</zorder>
@@ -5884,8 +5884,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>691</width>
-     <height>19</height>
+     <width>1226</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
