@@ -3794,7 +3794,12 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <property name="text">
-             <string>LG75UP77</string>
+             <string>LG75UP77Set</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG75UP77Side</string>
             </property>
            </item>
            <item>

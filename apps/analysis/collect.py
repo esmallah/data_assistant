@@ -844,7 +844,27 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1
+        #for week
+        ws1=wb["input-week"]
+        Block.yearly_report_molds_byWeeks(self,year)
+        get_data=cursor.fetchall()
+        #get_data.set_index("serial", inplace=True) #put index
+        
+        #get_data=pd.DataFrame(get_data["id"])
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
 
+        
         #for material
         ws1=wb["input_materials"]
         Block.materialToPorduct_daily(self,year)

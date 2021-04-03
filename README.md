@@ -23,11 +23,9 @@ source ../env/Scripts/activate
 source activate env_leader   
 conda activate env_leader   
 
+if not activate conda restart your texteditor as adminstrator
 #_____for backup enviroment ( or run as adminstrator)
 
-source activate leader
-source activate pyqt_ugi
-you can start app py :
 python main.py
 
 you can start alone by install

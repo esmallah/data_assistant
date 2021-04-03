@@ -659,6 +659,32 @@ class Block():
 			cursor.execute(create_table_material)
 			conn.commit()
 			print("complete install material records")
+	def install_record_delivery(self):
+		create_table_delivery='''
+				create table delivery_to_customers (
+							year int,
+							month int,
+							permission_number int,
+							product_code varchar(50),
+							product_name varchar(50),
+							unit varchar(50),,
+							warehouse_type varchar(50),,
+							gross_quantity int,
+							customer_code int,
+							customer_name varchar(50),,
+							sale_order int,
+							invoice_numbers int,
+							driver_name varchar(50),,
+							freighter varchar(50),,
+							deliverad_place varchar(50),,
+							planned_date date,
+							date_date date
+							date_part('week', date_date::date) AS weeksNumbers
+							)
+							
+							'''
+		cursor.execute(create_table_delivery)
+		conn.commit()
 	def install_befor_reports_molds(self):	#for prepair data to get reports as mold list
 			create_view_qulaity_inspection_as_molds_list='''/* for collect quality_inspection as yv_parts_items  */
 				create view Yv_quality_inspection_molds as (select 
@@ -773,9 +799,10 @@ class Block():
 									
 									order by q.year, q.month  ,q.date_day ,q.machine_id)
 			'''
-			cursor.execute(create_view_qulaity_inspection_as_molds_list)
+#			cursor.execute(create_view_qulaity_inspection_as_molds_list)
 			conn.commit()
 			print("complete  install view befor_reports_molds")		
+	
 	def install_befor_reports_parts(self):		
 			create_view_Yv_quality_inspection_parts='''/* for collect quality_inspection as parts  */
 				create view Yv_quality_inspection_parts as (select 
@@ -1094,7 +1121,8 @@ class Block():
 								round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
 								round((sum(q.number_scrab_by_item))*(avg(q.average_dry_weight))/1000,1) as scrap_weight_kg,
 								round((sum(q.gross_production))*(avg(q.average_dry_weight))/1000,1) as production_weight_kg,
-								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers
+								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
+								date_part('week', q.day::date) AS weeksNumbers
 								
 								
 				from Yv_quality_inspection_items q
@@ -1600,6 +1628,38 @@ class Block():
 
 		conn.commit()
 		print("import material records")
+
+	def import_delivery_records(self):
+			SQL1='''copy yt_delivery(
+					year,
+					month,
+					weeksNumbers,
+					permission_number,
+					product_code,
+					product_name,
+					unit,
+					warehouse_type,
+					gross_quantity,
+					customer_code,
+					customer_name,
+					sale_order,
+					invoice_numbers,
+					driver_name,
+					freighter,
+					deliverad_place,
+					planned_date,
+					date_date
+					)
+				'''
+			SQL2=SQL1+" FROM '%s\delivery.csv' (FORMAT csv, HEADER, DELIMITER ',');"%self.folder
+			
+			cursor.execute(SQL2)
+
+			conn.commit()
+			print("import delivery records")
+
+							
+							
 	def import_data_3tables(self):
 			import_Yt2_cycle_time='''copy yt2_cycle_time (
 				year ,
@@ -2202,9 +2262,17 @@ class Block():
 #		cursor.execute(SQL3, (args, ))
 		
 	def get_daily_dataentry_items_yearly(self,year):
-		SQL1='''with quary_molds_report as (select * from yv_molds_report_daily
+		SQL1='''with quary_items_report as (select * from yv_molds_report_daily
 									)
-							select * from quary_molds_report where year=(%s)'''%year
+							select * from quary_items_report where year=(%s)'''%year
+	
+		cursor.execute(SQL1)	
+	def yearly_report_molds_byWeeks(self,year):
+		SQL1='''with quary_items_report_by_week as (select * from yv_molds_report_daily
+									)
+							select * from quary_items_report_by_week
+							group by year,month,weeksNumbers
+							where year=(%s)'''%year
 	
 		cursor.execute(SQL1)	
 
@@ -2423,6 +2491,46 @@ class Block():
 
 				
 							from yv_material_product_daily q
+							
+							group by year, month,material,scrabe_standard,item_id,product_name,product_code,standard_dry_weight_from,standard_dry_weight_to
+							,standard_rate_hour,c_t_standard_per_second,density
+							)
+							select distinct t1.* 
+							from material_product t1
+							
+							where year = (%s)
+							order by year , month  , material,product_name'''%year
+		
+		if type(year) == tuple:   
+			cursor.execute(SQL1, year)	
+		else:
+			cursor.execute(SQL1, (year,))	
+	def deliveryToCustomers_week(self,year):#report depend of mold structure
+			#report depend of mold structure
+		SQL1='''with material_product as (select
+							
+							year,
+							month,
+							weeksNumbers,
+							permission_number,
+							product_code,
+							product_name,
+							unit,
+							warehouse_type,
+							gross_quantity,
+							customer_code,
+							customer_name,
+							sale_order,
+							invoice_numbers,
+							driver_name,
+							freighter,
+							deliverad_place,
+							planned_date,
+							date_date
+							
+
+				
+							from delivery_to_customers
 							
 							group by year, month,material,scrabe_standard,item_id,product_name,product_code,standard_dry_weight_from,standard_dry_weight_to
 							,standard_rate_hour,c_t_standard_per_second,density

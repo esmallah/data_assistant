@@ -158,10 +158,15 @@ class AutomatedFilling():
         lg_75UP77FRONT_low=[1301,524,58.73,283.24]
         MFZ65917901=[lg_75UP77FRONT_high,lg_75UP77FRONT_low]
 
-        lg_75UP77="MFZ67207201"#lg65UP8140PVA
-        lg_75UP77_high=[902,185,281,688.6,902,171,281,666.1]
-        lg_75UP77_low=[895,180,276,605.6,895,166,276,585.3]
-        MFZ67207201=[lg_75UP77_high,lg_75UP77_low]
+        lg_75UP77Set="MFZ67207201"#lg65UP8140PVA
+        lg_75UP77Set_high=[902,185,281,688.6,902,171,281,666.1]
+        lg_75UP77Set_low=[895,180,276,605.6,895,166,276,585.3]
+        MFZ67207201=[lg_75UP77Set_high,lg_75UP77Set_low]
+        
+        lg_75UP77Side="MFZ67207202"#lg65UP8140PVA
+        lg_75UP77Side_high=[536,179,187.5,147.8]
+        lg_75UP77Side_low=[530,174,183.5,129.8]
+        MFZ67207202=[lg_75UP77Side_high,lg_75UP77Side_low]
 
         lg_43UP81="MFZ67209701"#lg43UP81
         lg_43UP81_high=[1064,176,246,320.23,1064,176,181,198.14]
@@ -187,7 +192,7 @@ class AutomatedFilling():
         #time recorded for fill     30minint    #the time not accurecy because intenet speed defirince between time to time
         items=(MFZ65333701,MFZ65333801,MFZ65914801,MFZ66333001,mfz66236501,MFZ65262201,
                 MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
-                MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67209701,
+                MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67207202,MFZ67209701,
                 LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801)
         #item=items[0]
         
@@ -238,7 +243,7 @@ class AutomatedFilling():
         if insert_name:
             items=[LG_43UJ63,LG_49UJ63,lg_55UK630,lg_LG32LM55,lg_LG43LM63,lg_43LM63FRONT,lg_43LM55FRONT,
                     lg_LG65UM73up,lg_LG65UM73LR,lg_LG43UP77,LG65UP775Front,lg_65UP77set,lg_65UP81set,
-                    lg_65UP81Side,lg_75UP77FRONT,lg_75UP77,lg_43UP81,LG_cover,lG_zayaza,lg_kaeda]
+                    lg_65UP81Side,lg_75UP77FRONT,lg_75UP77Set,lg_75UP77Side,lg_43UP81,LG_cover,lG_zayaza,lg_kaeda]
             
             item=items[itemSelection]
             print(item)
