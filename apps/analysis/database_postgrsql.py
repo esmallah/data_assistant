@@ -26,7 +26,7 @@ import pandas as pd
 #try:
 pc__server="host='localhost' dbname='Block' user='postgres' password='Aa1234567#'"#connect to data base form my device
 network_server="host='AHMED-RASHAD' dbname='Block' user='youssri.ahmed' password='Aa1234567#'"
-enternet_server="host='aera-eg.com' port=5432 dbname='aeraeg_resarch_apllications_site' user='postgres' password='Aa12345#"#connect to website eraeg.com_______________
+
 conn_string = network_server
 table="yt_quality"
 
@@ -799,7 +799,7 @@ class Block():
 									
 									order by q.year, q.month  ,q.date_day ,q.machine_id)
 			'''
-#			cursor.execute(create_view_qulaity_inspection_as_molds_list)
+			cursor.execute(create_view_qulaity_inspection_as_molds_list)
 			conn.commit()
 			print("complete  install view befor_reports_molds")		
 	
@@ -2267,14 +2267,17 @@ class Block():
 							select * from quary_items_report where year=(%s)'''%year
 	
 		cursor.execute(SQL1)	
-	def yearly_report_molds_byWeeks(self,year):
+	def yearly_report_molds_byWeeks(self,year,month,day,to_day):
 		SQL1='''with quary_items_report_by_week as (select * from yv_molds_report_daily
 									)
 							select * from quary_items_report_by_week
 							group by year,month,weeksNumbers
 							where year=(%s)'''%year
+		SQL2=SQL1+'''and month %s'''%month
+		SQL3=SQL2+'''and day >= %s'''%day
+		SQL4=SQL3+'''and day < %s'''%to_day
 	
-		cursor.execute(SQL1)	
+		cursor.execute(SQL4)	
 
 	def show_machine_report_yearly(self,year,month):
 		show_machine_report_yearly='''with quary_molds_report as (select 

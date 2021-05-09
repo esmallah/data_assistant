@@ -429,7 +429,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             print("the yearly input report has downloaded for day ",day," , month:",month,"and year:",year)
         if self.checkBox_analysis_DB_weekly.isChecked()==True:
             if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="quweekly production" : #for chose any type of files
-                git_database.export_report_daily_yearly(year,day,to_day)
+                git_database.export_report_daily_yearly(self,year,month,day,to_day)
                 print("download production report from day:",day,"to day :",to_day," month:",month," year:",year)
             if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="weekly defect" : 
                 git_database.export_report_daily_yearly(year,day,to_day)

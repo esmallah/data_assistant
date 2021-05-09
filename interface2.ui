@@ -5456,6 +5456,11 @@ border-color: rgb(255, 255, 255,0%) ;
          <string>19</string>
         </property>
        </row>
+       <row>
+        <property name="text">
+         <string>20</string>
+        </property>
+       </row>
        <column>
         <property name="text">
          <string>items_name</string>
@@ -5728,8 +5733,7 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="16" column="0">
         <property name="text">
-         <string>43UP81
-</string>
+         <string>LG75UP77Side</string>
         </property>
        </item>
        <item row="16" column="1">
@@ -5739,28 +5743,28 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="16" column="2">
         <property name="text">
-         <string>MFZ67209701
-</string>
+         <string>MFZ67207202</string>
         </property>
        </item>
        <item row="17" column="0">
         <property name="text">
-         <string>LgWasherCover</string>
+         <string>43UP81
+</string>
         </property>
        </item>
        <item row="17" column="1">
         <property name="text">
-         <string>mmf</string>
+         <string>mma </string>
         </property>
        </item>
        <item row="17" column="2">
         <property name="text">
-         <string>3920EZ2058A</string>
+         <string>MFZ67209701</string>
         </property>
        </item>
        <item row="18" column="0">
         <property name="text">
-         <string>LgWasherAngels</string>
+         <string>LgWasherCover</string>
         </property>
        </item>
        <item row="18" column="1">
@@ -5770,12 +5774,12 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="18" column="2">
         <property name="text">
-         <string>3920FZ3114C</string>
+         <string>3920EZ2058A</string>
         </property>
        </item>
        <item row="19" column="0">
         <property name="text">
-         <string>LgWasherBase</string>
+         <string>LgWasherAngels</string>
         </property>
        </item>
        <item row="19" column="1">
@@ -5784,6 +5788,21 @@ border-color: rgb(255, 255, 255,0%) ;
         </property>
        </item>
        <item row="19" column="2">
+        <property name="text">
+         <string>3920FZ3114C</string>
+        </property>
+       </item>
+       <item row="20" column="0">
+        <property name="text">
+         <string>LgWasherBase</string>
+        </property>
+       </item>
+       <item row="20" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="20" column="2">
         <property name="text">
          <string>AGG76599801</string>
         </property>
@@ -5858,13 +5877,13 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>180</x>
-      <y>540</y>
+      <y>530</y>
       <width>361</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>V1.2 © 2021 All right reserved - Aeraeg (qhse-erp.com)</string>
+     <string>V1.3 © 2021 All right reserved - Aeraeg (qhse-erp.com)</string>
     </property>
    </widget>
    <zorder>label_meanBackground</zorder>

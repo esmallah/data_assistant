@@ -14,7 +14,6 @@ import torch.nn.functional as F
 #from local library
 from .network import TextRnn as Model
 
-from .train import train
 class Ai_thinking():    
     def __init__(self,folder,readfile,readsheet,column1,column2,writefile):
         #self.folder=folder
@@ -65,7 +64,6 @@ class Ai_thinking():
         ## encode the text
         encoded_id = np.array([char2int[ch] for ch in reader_id])
         
-        
         #========================================
 
         print("encoded_id categories",encoded_id[:100])
@@ -77,8 +75,6 @@ class Ai_thinking():
         ## encode the text
         encoded_names= np.array([char2int[ch] for ch in reader_names])
         print("encoded_name categories",encoded_names[:100])
-
-        
            #second deictionaries for name
         #filter names by id
         #list_id=list(reader_item["id_inside_cagegory"])
@@ -151,7 +147,7 @@ class Ai_thinking():
         # define and print the net
         n_hidden=512
         n_layers=2
-
+    
         #net = Model(chars_names, n_hidden, n_layers)
         #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -166,7 +162,101 @@ class Ai_thinking():
         n_epochs =  20 # start small if you are just testing initial behavior
 
         # train the model
-        
+##_________________________________________
+        def train(net, data, epochs, batch_size, seq_length, lr=0.001, clip=5, val_frac=0.1, print_every=10):
+            ''' Training a network 
+            
+                Arguments
+                ---------
+                
+                net: CharRNN network
+                data: text data to train the network
+                epochs: Number of epochs to train
+                batch_size: Number of mini-sequences per mini-batch, aka batch size
+                seq_length: Number of character steps per mini-batch
+                lr: learning rate
+                clip: gradient clipping
+                val_frac: Fraction of data to hold out for validation
+                print_every: Number of steps for printing training and validation loss            
+            '''
+            net.train()
+            
+            opt = torch.optim.Adam(net.parameters(), lr=lr)
+            criterion = nn.CrossEntropyLoss()
+            
+            # create training and validation data
+            val_idx = int(len(data)*(1-val_frac))
+            data, val_data = data[:val_idx], data[val_idx:]
+            train_on_gpu = torch.cuda.is_available()
+            if(train_on_gpu):
+                net.cuda()
+            
+            counter = 0
+            n_chars = len(net.chars)
+            print("get_batches",get_batches(data, batch_size, seq_length))
+            for e in range(epochs):
+                # initialize hidden state
+                h = net.init_hidden(batch_size)
+                for x, y in get_batches(data, batch_size, seq_length):
+                    counter += 1
+                    print("i am on train")
+
+                    # One-hot encode our data and make them Torch tensors
+                    x = one_hot_encode(self,x, n_chars)
+                    inputs, targets = torch.from_numpy(x), torch.from_numpy(y)
+                    if(train_on_gpu):
+                        inputs, targets = inputs.cuda(), targets.cuda()
+
+                    # Creating new variables for the hidden state, otherwise
+                    # we'd backprop through the entire training history
+                    h = tuple([each.data for each in h])
+                    
+
+                    # zero accumulated gradients
+                    net.zero_grad()
+                    # get the output from the model
+                    output, h = net(inputs, h)
+                    
+
+                    # calculate the loss and perform backprop
+                    loss = criterion(output, targets.view(batch_size*seq_length))
+                    loss.backward()
+                    # `clip_grad_norm` helps prevent the exploding gradient problem in RNNs / LSTMs.
+                    nn.utils.clip_grad_norm_(net.parameters(), clip)
+                    opt.step()
+                    
+                    
+
+                    # loss stats
+                    if counter % print_every == 0:
+                        # Get validation loss
+                        val_h = net.init_hidden(batch_size)
+                        val_losses = []
+                        net.eval()
+                        for x, y in get_batches(val_data, batch_size, seq_length):
+                            # One-hot encode our data and make them Torch tensors
+                            x = one_hot_encode(x, n_chars)
+                            x, y = torch.from_numpy(x), torch.from_numpy(y)
+                            
+                            # Creating new variables for the hidden state, otherwise
+                            # we'd backprop through the entire training history
+                            val_h = tuple([each.data for each in val_h])
+                            
+                            inputs, targets = x, y
+                            if(train_on_gpu):
+                                inputs, targets = inputs.cuda(), targets.cuda()
+
+                            output, val_h = net(inputs, val_h)
+                            val_loss = criterion(output, targets.view(batch_size*seq_length))
+                        
+                            val_losses.append(val_loss.item())
+                        
+                        net.train() # reset to train mode after iterationg through validation data
+                        print("Epoch: {}/{}...".format(e+1, epochs),
+                            "Step: {}...".format(counter),
+                            "Loss: {:.4f}...".format(loss.item()),
+                            "Val Loss: {:.4f}".format(np.mean(val_losses)))
+#_________________________________________
         train(net, encoded, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
 
         ## change the name, for saving multiple files

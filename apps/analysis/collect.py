@@ -297,7 +297,7 @@ class Select():
         daily_data_bool2=daily_data3["year"]==last_year
         daily_data2=daily_data3[daily_data_bool2]
         last_month=daily_data2["month"].max()
-        daily_data_bool=daily_data2["month"]==last_month
+        daily_data_bool=daily_data2["month"]==int(monthDb)
         daily_data1=daily_data2[daily_data_bool]
         last_day=daily_data1["day"].max()
         
@@ -820,14 +820,14 @@ class Select():
             ws.title=self.writesheet
         wb.save(self.writefile)
     
-    def export_report_daily_yearly(self,year,*args):
+    def export_report_daily_yearly(self,year,month,day,to_day,*args):
         os.chdir(self.folder)
         #new sheet
         
         wb = xl.load_workbook(self.readfile1)
         #daily input
         ws1=wb["input"]
-        Block.get_daily_dataentry_items_yearly(self,year)
+        Block.get_daily_dataentry_items_yearly(self,year,month,day,to_day)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
         
@@ -846,7 +846,7 @@ class Select():
             r += 1
         #for week
         ws1=wb["input-week"]
-        Block.yearly_report_molds_byWeeks(self,year)
+        Block.yearly_report_molds_byWeeks(self,year,month,day,to_day)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
         
