@@ -10,12 +10,11 @@ from interface import Ui_MainWindow
 
 import time
 import os
-from apps import Group
-from apps import Block
-from apps import Unique,Select
-from apps import Connection
+
+
+
 import sys
-from apps import AutomatedFilling
+
 class AppWindow(Ui_MainWindow,QMainWindow):  
     def __init__(self,parent=None):
         super(AppWindow,self).__init__(parent)
@@ -26,8 +25,9 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.show()
         #self.listWebFilterLGItems.clearSelection()
         self.deepLearning()
-        
+        self.clickedList()
     def signals_control(self):        
+        from apps import Connection
         #switchers tabs
         self.button_AI_leader.clicked.connect(self.conntectTabs0)
         self.buttonKnowledge.clicked.connect(self.conntectTabs1)
@@ -102,7 +102,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     #___________________________automated web control section_____________________________#
     @QtCore.pyqtSlot()    
     def clickedList(self):
-        
+        from apps import AutomatedFilling
         print("___________________test interface______________")
         switcher = {
         "LG43UJ63":0,
@@ -125,7 +125,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         "LG43UP81":17,
         "LgWasherCover":18,
         "LgWasherAngels":19,
-        "LgWasherBase":20
+        "LgWasherBase":20,
+        "LgWasherBase_VIVACHE":21
         }
         #self.ButWebFilterFIllNames.clicked.disconnect()
         
@@ -154,7 +155,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def conntectTabs1(self):#knowledge
         self.tabWidget_left.setCurrentIndex(1)
         self.tabMaps.setCurrentIndex(0)
-        from apps.pyqt_sqlite import MainWindow
+        #from apps.pyqt_sqlite import MainWindow
     def conntectTabs2(self):
         self.tabWidget_left.setCurrentIndex(2)
         self.tabMaps.setCurrentIndex(0)
@@ -292,6 +293,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         from Lib import ModifyTableDialog
 
     def database_management(self):
+        from apps import Block
         year=str(self.analysis_DByear.currentText())
         month=str(self.analysis_DBmonth.currentText())
         day=str(self.analysis_DBday.currentText())
@@ -345,6 +347,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             Block.install_reports("")
     
     def connect_shareDb(self):
+        from apps import Unique,Select,Group,Block
+        
         #connect to database
         year=self.analysis_year.currentText()
         month=self.analysis_month.currentText()

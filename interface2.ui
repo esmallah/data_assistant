@@ -53,7 +53,7 @@ gridline-color: rgb(255, 255, 255,0%);
 </string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_AI_leader">
      <property name="accessibleName">
@@ -3822,6 +3822,11 @@ color: rgb(255, 255, 255);</string>
              <string>LgWasherBase</string>
             </property>
            </item>
+           <item>
+            <property name="text">
+             <string>LgWasherBase_VIVACHE</string>
+            </property>
+           </item>
           </widget>
          </item>
          <item row="8" column="1">
@@ -5461,6 +5466,11 @@ border-color: rgb(255, 255, 255,0%) ;
          <string>20</string>
         </property>
        </row>
+       <row>
+        <property name="text">
+         <string>21</string>
+        </property>
+       </row>
        <column>
         <property name="text">
          <string>items_name</string>
@@ -5805,6 +5815,21 @@ border-color: rgb(255, 255, 255,0%) ;
        <item row="20" column="2">
         <property name="text">
          <string>AGG76599801</string>
+        </property>
+       </item>
+       <item row="21" column="0">
+        <property name="text">
+         <string>LgWasherBase_VIVACHE</string>
+        </property>
+       </item>
+       <item row="21" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="21" column="2">
+        <property name="text">
+         <string>AGG76599802</string>
         </property>
        </item>
       </widget>

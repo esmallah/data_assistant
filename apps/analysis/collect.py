@@ -7,8 +7,10 @@ from openpyxl import load_workbook
 import os
 import numpy as np
 import glob
+
+
 #import database_postgrsql as database
-from .database_postgrsql import Block,cursor
+
 
 from random import randint,seed
 
@@ -253,6 +255,7 @@ class Unique():
         writer.save()
 
 class Select():
+    from .database_postgrsql import Block,cursor
     """this class provide  work books and sheet names as input """
     def __init__(self,folder,readfile1,sheet1,year,month,writefile,writesheet):
         self.folder=folder
@@ -424,6 +427,8 @@ class Select():
         #cur.copy_from(f, temp_unicommerce_status, sep=',')
         #f.close()
     def export_report_mothly(self,writerFile,year,month,*args,monthly=True):
+        from .database_postgrsql import Block,cursor
+
         os.chdir(self.folder)
         inputPath=self.folder+r'\formats'
         outputPath=self.folder+r'\data\qc_molds'

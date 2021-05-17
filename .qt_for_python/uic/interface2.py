@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'interface2.ui'
+# Form implementation generated from reading ui file 'e:\programing\python\a1leader\y_data_assistant\interface2.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -3030,4 +3030,4 @@ class Ui_MainWindow(object):
         self.actionClose.setText(_translate("MainWindow", "Close"))
         self.actionClose.setShortcut(_translate("MainWindow", "Ctrl+C"))
         self.actionAbout.setText(_translate("MainWindow", "&About"))
-from resources import maps_rc
+import maps_rc

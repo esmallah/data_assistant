@@ -13,4 +13,4 @@ from .web import Mails_management
 from .web import AutomatedFilling
 from .web import Connection
 #for manage sqlite
-from .pyqt_sqlite import MainWindow
+#from .pyqt_sqlite import MainWindow

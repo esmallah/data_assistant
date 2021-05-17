@@ -173,26 +173,30 @@ class AutomatedFilling():
         MFZ67209701=[LG43UP81_high,LG43UP81_low]
 
             # "mmf" classification
-        LG_cover="3920EZ2058A"# الكفر
+        LG_cover="3920EZ2058A"# LGwasher machine cover
         LG_cover_high=[106,71.4,643.5,261.7]
         LG_cover_low=[97,68.6,638.5,258.3]
         LG_3920EZ2058A=[LG_cover_high,LG_cover_low]
-        lG_zayaza="3920FZ3114C"#الزوايا=
-        lG_zayaza_high=[57.24,185.7,542.5]
-        lG_zayaza_low=[50.76,182.3,537.5]
-        LG_3920FZ3114C=[lG_zayaza_high,lG_zayaza_low]
-        lg_kaeda="AGG76599801"#القاعده
+        lG_angels="3920FZ3114C"#LGwasher machine-angels=
+        lG_angels_high=[57.24,185.7,542.5]
+        lG_angels_low=[50.76,182.3,537.5]
+        LG_3920FZ3114C=[lG_angels_high,lG_angels_low]
+        lg_kaeda="AGG76599801"#LGwasher machine-base
         lg_kaeda_high=[276,640,645,100]
         lg_kaeda_low=[267,637.5,642.5,98.9]
         AGG76599801=[lg_kaeda_high,lg_kaeda_low]
 
+        lg_base_VIV="AGG76599802"#LGwasher machine base VIVACHE
+        lg_base_VIV_h=[294,642.5,647.5,101.4]
+        lg_base_VIV_l=[266,637.5,642.5,98.6]
+        AGG76599802=[lg_base_VIV_h,lg_base_VIV_l]
 
         #second version
         #time recorded for fill     30minint    #the time not accurecy because intenet speed defirince between time to time
         items=(MFZ65333701,MFZ65333801,MFZ65914801,MFZ66333001,mfz66236501,MFZ65262201,
                 MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
                 MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67207202,MFZ67209701,
-                LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801)
+                LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801,AGG76599801)
         #item=items[0]
         
         
@@ -242,7 +246,7 @@ class AutomatedFilling():
         if insert_name:
             items=[LG43UJ63,LG49UJ63,LG55UK630,LGLG32LM55,LGLG43LM63,lg_43LM63FRONT,lg_43LM55FRONT,
                     LG65UM73up,LG65UM73LR,LGLG43LM63,LG43UP77,LG65UP775Front,LG65UP77set,LG65UP81set,
-                    LG65UP81Side,LG75UP77FRONT,LG75UP77Set,LG75UP77Side,LG43UP81,LG_cover,lG_zayaza,lg_kaeda]
+                    LG65UP81Side,LG75UP77FRONT,LG75UP77Set,LG75UP77Side,LG43UP81,LG_cover,lG_angels,lg_kaeda,lg_base_VIV]
             
             item=items[itemSelection]
             print(item)

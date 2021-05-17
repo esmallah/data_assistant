@@ -13,7 +13,8 @@ road map:
 - automated fill data                                       ok
 - download reports in formating excel sheets                ok
 - convert multi item to pdf                                 ok
-
+for create ui and design it
+pip3 install PyQt5-tools
 for convert xml to ptyhon 
 pyuic5 interface2.ui > interface2.py
 pyrcc5 maps.qrc -o maps_rc.py
@@ -32,7 +33,8 @@ you can start alone by install
 pip install PyInstaller
 then
 pyinstaller -w main.py
-
+or
+pyinstaller main.py
  youssri
  estratigy@yahoo.com 
  00201009578537
