@@ -193,16 +193,17 @@ class AutomatedFilling():
 
         #second version
         #time recorded for fill     30minint    #the time not accurecy because intenet speed defirince between time to time
-        items=(MFZ65333701,MFZ65333801,MFZ65914801,MFZ66333001,mfz66236501,MFZ65262201,
-                MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
-                MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67207202,MFZ67209701,
-                LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801,AGG76599801)
-        #item=items[0]
+        
         
         
         #s=slice(items.lengh(),int(itemSelection))
         #item=items[int(itemSelection)]#type the varibale item______________________________
         if fill_data:
+            items=[MFZ65333701,MFZ65333801,MFZ65914801,MFZ66333001,mfz66236501,MFZ65262201,
+                MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
+                MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67207202,MFZ67209701,
+                LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801,AGG76599801]
+            
             item=items[itemSelection]
             lg_item=item
             specification_no_high=lg_item[0]
@@ -245,7 +246,7 @@ class AutomatedFilling():
                     pyautogui.typewrite(['tab'])
         if insert_name:
             items=[LG43UJ63,LG49UJ63,LG55UK630,LGLG32LM55,LGLG43LM63,lg_43LM63FRONT,lg_43LM55FRONT,
-                    LG65UM73up,LG65UM73LR,LGLG43LM63,LG43UP77,LG65UP775Front,LG65UP77set,LG65UP81set,
+                    LG65UM73up,LG65UM73LR,LG43UP77,LG65UP775Front,LG65UP77set,LG65UP81set,
                     LG65UP81Side,LG75UP77FRONT,LG75UP77Set,LG75UP77Side,LG43UP81,LG_cover,lG_angels,lg_kaeda,lg_base_VIV]
             
             item=items[itemSelection]

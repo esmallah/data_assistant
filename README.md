@@ -33,7 +33,7 @@ you can start alone by install
 pip install PyInstaller
 then
 pyinstaller -w main.py
-or
+or if there problems
 pyinstaller main.py
  youssri
  estratigy@yahoo.com 

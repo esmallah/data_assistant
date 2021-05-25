@@ -10,9 +10,6 @@ from interface import Ui_MainWindow
 
 import time
 import os
-
-
-
 import sys
 
 class AppWindow(Ui_MainWindow,QMainWindow):  
@@ -23,9 +20,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.setupUi(self)
         self.signals_control()
         self.show()
-        #self.listWebFilterLGItems.clearSelection()
         self.deepLearning()
-        self.clickedList()
     def signals_control(self):        
         from apps import Connection
         #switchers tabs
@@ -100,7 +95,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 if current_exit_code == -123456789:
                     break
     #___________________________automated web control section_____________________________#
-    @QtCore.pyqtSlot()    
+    #@QtCore.pyqtSlot()    
     def clickedList(self):
         from apps import AutomatedFilling
         print("___________________test interface______________")
@@ -128,6 +123,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         "LgWasherBase":20,
         "LgWasherBase_VIVACHE":21
         }
+        
         #self.ButWebFilterFIllNames.clicked.disconnect()
         
         item = self.listWebFilterLGItems.currentItem()
@@ -140,9 +136,9 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             x=switcher.get(item.text(), "Invalid items")
             print("now is printing","item:",item.text(),"code:",x,"its type:",type(x))
 
-            self.ButWebFilterFIllNames.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=False,insert_name=True))
-            self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,standard_spec=False,vertically=False))
-            
+            self.ButWebFilterFIllNames.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=False,insert_name=True,vertically=False,))
+            self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,standard_spec=False,vertically=False,))
+            self.listWebFilterLGItems.clearSelection()
             #print(map(x,switcher))   
             #self.close()
     
@@ -240,27 +236,6 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 self.tabMaps.setCurrentIndex(0)
     
     
-    def reconnect(self,signal, newhandler=None, oldhandler=None):   
-        self.listWebFilterLGItems.clearSelection()
-        #self.listWebFilterLGItems.currentItemChanged.disconnect()
-
-        #self.ButWebFilterFIllNames.clicked.disconnect()
-        #self.ButWebFilterFIllData.clicked.disconnect()        
-        while True:
-            try:
-                if oldhandler is not None:
-                    signal.disconnect(oldhandler)
-                else:
-                    signal.disconnect()
-            except TypeError:
-                break
-        if newhandler is not None:
-            signal.connect(newhandler)
-#    if connected:
- #       reconnect(self.ButWebFilterFIllNames.clicked.clicked, clickedList)
-  #  else:
-   #     reconnect(self.ButWebFilterFIllNames.clicked, clickedList2)        
-        #time.sleep(10)
     def mailControl():
         '''for contorl to operating system and its contents from files and sub filess'''
         from apps import Mails_management
@@ -365,9 +340,10 @@ class AppWindow(Ui_MainWindow,QMainWindow):
 
         upload_database=Block(r"\\AHMED-RASHAD\Users\Public\database","")
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        #format_path2 = os.path.dirname(os.path.abspath(__file__))
+        
         format_path = os.path.join(BASE_DIR, os.path.normpath(r".\y_data_assistant\apps\analysis\formats"))
-        #format_path = os.path.normpath(r".\apps\analysis\formats")
+        #format_path = os.path.join(BASE_DIR, os.path.normpath(__file__))
+
         print ("format path",format_path)
         #format_path = os.path.join(format_path2, )
         
