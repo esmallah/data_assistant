@@ -11,7 +11,7 @@ from interface import Ui_MainWindow
 import time
 import os
 import sys
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 class AppWindow(Ui_MainWindow,QMainWindow):  
     def __init__(self,parent=None):
         super(AppWindow,self).__init__(parent)
@@ -123,7 +123,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         "LgWasherBase":20,
         "LgWasherBase_VIVACHE":21
         }
-        
+
         #self.ButWebFilterFIllNames.clicked.disconnect()
         
         item = self.listWebFilterLGItems.currentItem()
@@ -330,20 +330,17 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         day=self.analysis_day.currentText()
         to_day=self.analysis_day_to.currentText()
         analysisInput=str(self.analsyisInputLineEdit.text())
-        analysisOutput=str(self.analsyisInputLineEdit.text())
-
+        analysisOutput=str(self.analsyisIOutputLineEdit.text())
         
-        #select date
-                
+        #select date                
         dailyReportName=str(year)+"-"+str(month)+"QC_molds_daily_archive_v3.xlsx"
         monthlyReportName=str(year)+"-"+str(month)+"QC_molds_monthly_v2.xlsx"
 
         upload_database=Block(r"\\AHMED-RASHAD\Users\Public\database","")
-        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         
         format_path = os.path.join(BASE_DIR, os.path.normpath(r".\y_data_assistant\apps\analysis\formats"))
         #format_path = os.path.join(BASE_DIR, os.path.normpath(__file__))
-
+        
         print ("format path",format_path)
         #format_path = os.path.join(format_path2, )
         
@@ -405,7 +402,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             print("the monthly report has downloaded for month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_yearlyInput.isChecked():
-            git_database.export_report_daily_yearly(year)
+            git_database.export_report_daily_yearly(year,month,day,to_day)
             print("the yearly input report has downloaded for day ",day," , month:",month,"and year:",year)
         if self.checkBox_analysis_DB_weekly.isChecked()==True:
             if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="quweekly production" : #for chose any type of files
@@ -419,37 +416,21 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                             ##generate_data
         #capabilty study
         new_molds=Select(r".\data\capabilty_study","capabilty_study.xlsx","eye",year,month,"capabilty_study.xlsx","عين-")
-        #(self,folder,readfile1,sheet1,writefile,writesheet):
-        #new_molds_capabilty_study(394,102,117,3,"FMMINI30000042","كولدير ميلو -زوايا خلفي","11/04/2019")#(mold,lower weight, upper weight,eye_numbers,,code,name,date)
-
+        
         #______________________________________________asistance operation______________________________
         #unique list for mold statistics or fix dublicat (folder,readfile,readsheet,column1,column2,writefile,sheetwriter)
         molds=Unique(self,analysisInput,"input","mold_name","machine_id","analyis_monthly.xls",4)
-        #list_id.unique_list()
-        #report_analysis()
-        #database_output.convert_excel()
-        #____append rows to another excel shet
-
-        #add_lastday.copy_excel()
-        yeary_append=Select(r"E:\work\programing\2data_analysis\files\yearly_report\molds\ct2018","9.xlsx","analysis",year,month,"2018.xlsx","c_t")
-        #yeary_append.copy_workbooks()
-        #append multy sheets in sperated workbooks
-        sales_quality=Unique(r"E:\work\contact_group\QHSE_activation\QC quality control\returns","qc_return - daily2.xlsx","input_return","","","QC_returns.xlsx","sheet1")
-        sceab_yearly=Select(r"E:\work\programing\data_analysis\files\yearly_report\molds","xlsx","scrap_input",year,month,"scrap_2018.xlsx","scrap_input")
-        weights_yearly=Select(r"E:\work\programing\data_analysis\files\yearly_report\molds","xlsx","weights_input",year,month,"weights_2018.xlsx","weights_input")
-        c_t_yearly=Select(r"E:\work\programing\data_analysis\files\yearly_report\molds","xlsx","c_t_input",year,month,"ct_2018.xlsx","c_t_input")
-        sceab_10=Select(r"E:\work\programing\data_analysis\files\yearly_report\molds","xlsx","scrap_input",year,month,"scrap_2018.xlsx","scrap_input")
-            
+               
+        sales_quality=Unique(analysisOutput,"qc_return - daily2.xlsx","input_return","","","QC_returns.xlsx","sheet1")
+        print ("analysis Output",analysisOutput)
+    
         if self.checkBox_analysis_returnReport.isChecked():           
             #sales_quality.returns_report()
             sales_quality.return_crosstab(year)
+
         #append multy sheets in same workbooks
         if self.checkBox_analysis_yearlyReport.isChecked():
-            
             sceab_yearly.multi_workbook()
-        #    def __init__(self,folder,readfile,readsheet,column1,column2,writefile,sheetwriter):
-            
-        
             item_master_all=Select(r"E:\work\programing\2data_analysis\files\master_data","warehouse2018.xlsx",None,year,month,"items_all.xlsx","sheet1")
             qc_yearly.multi_sheet()
     #___________________________________reports_from_PC_______________________________________

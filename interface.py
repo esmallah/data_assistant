@@ -699,7 +699,6 @@ class Ui_MainWindow(object):
         self.analsyisIOutputLineEdit = QtWidgets.QLineEdit(self.groupBox)
         self.analsyisIOutputLineEdit.setGeometry(QtCore.QRect(140, 50, 410, 20))
         self.analsyisIOutputLineEdit.setStyleSheet("")
-        self.analsyisIOutputLineEdit.setText("")
         self.analsyisIOutputLineEdit.setObjectName("analsyisIOutputLineEdit")
         self.ButWebFilterOpensites_4 = QtWidgets.QPushButton(self.groupBox)
         self.ButWebFilterOpensites_4.setGeometry(QtCore.QRect(10, 20, 121, 23))
@@ -2048,7 +2047,7 @@ class Ui_MainWindow(object):
         self.mainToolBar.addAction(self.actionClose)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget_left.setCurrentIndex(0)
+        self.tabWidget_left.setCurrentIndex(2)
         self.tabSubLeader.setCurrentIndex(1)
         self.tabSPFilter.setCurrentIndex(1)
         self.gridTabWidget.setCurrentIndex(1)
@@ -2273,6 +2272,7 @@ class Ui_MainWindow(object):
         self.label_28.setText(_translate("MainWindow", "from"))
         self.label_29.setText(_translate("MainWindow", "to"))
         self.analsyisInputLineEdit.setText(_translate("MainWindow", "E:\\ProgramData\\assistantApplcation\\qc_molds"))
+        self.analsyisIOutputLineEdit.setText(_translate("MainWindow", "E:\\ProgramData\\assistantApplcation\\returns"))
         self.ButWebFilterOpensites_4.setText(_translate("MainWindow", "input folders"))
         self.ButWebFilterOpensites_5.setText(_translate("MainWindow", "output folders"))
         self.checkBox_analysis_toCSV.setText(_translate("MainWindow", "convert to csv"))
@@ -3008,7 +3008,7 @@ class Ui_MainWindow(object):
 "<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">analysis_tester</p>\n"
 "<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">هو اداة تحقق من صحة تحليل البيانات التي تم ادخالها يجب تشغيله في بداية كل تحليل اوتغيير</p></body></html>"))
         self.tabMaps.setTabText(self.tabMaps.indexOf(self.UK_governators), _translate("MainWindow", "Tab 2"))
-        self.label_52.setText(_translate("MainWindow", "V1.3 © 2021 All right reserved - Aeraeg (qhse-erp.com)"))
+        self.label_52.setText(_translate("MainWindow", "V1.3 © 2021 All right reserved - Youssri Aboelseod estratigy@yahoo.com"))
         self.menuFile.setTitle(_translate("MainWindow", "&File"))
         self.menuOpen_Recent.setTitle(_translate("MainWindow", "Open &Recent"))
         self.menuEdit.setTitle(_translate("MainWindow", "&Edit"))
@@ -3030,4 +3030,5 @@ class Ui_MainWindow(object):
         self.actionClose.setText(_translate("MainWindow", "Close"))
         self.actionClose.setShortcut(_translate("MainWindow", "Ctrl+C"))
         self.actionAbout.setText(_translate("MainWindow", "&About"))
+
 from resources import maps_rc

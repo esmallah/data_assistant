@@ -2261,7 +2261,7 @@ class Block():
 #		SQL3 = SQL1+' and mold_id = (%s)'
 #		cursor.execute(SQL3, (args, ))
 		
-	def get_daily_dataentry_items_yearly(self,year):
+	def get_daily_dataentry_items_yearly(self,year,month,day,to_day):
 		SQL1='''with quary_items_report as (select * from yv_molds_report_daily
 									)
 							select * from quary_items_report where year=(%s)'''%year

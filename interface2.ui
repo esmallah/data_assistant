@@ -53,7 +53,7 @@ gridline-color: rgb(255, 255, 255,0%);
 </string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_AI_leader">
      <property name="accessibleName">
@@ -2015,7 +2015,7 @@ color: rgb(255, 255, 255);</string>
           <string notr="true"/>
          </property>
          <property name="text">
-          <string/>
+          <string>E:\ProgramData\assistantApplcation\returns</string>
          </property>
         </widget>
         <widget class="QPushButton" name="ButWebFilterOpensites_4">
@@ -5908,7 +5908,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>V1.3 © 2021 All right reserved - Aeraeg (qhse-erp.com)</string>
+     <string>V1.3 © 2021 All right reserved - Youssri Aboelseod estratigy@yahoo.com</string>
     </property>
    </widget>
    <zorder>label_meanBackground</zorder>

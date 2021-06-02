@@ -8,7 +8,7 @@ import os
 import numpy as np
 import glob
 
-
+from .database_postgrsql import Block,cursor
 #import database_postgrsql as database
 
 
@@ -255,7 +255,7 @@ class Unique():
         writer.save()
 
 class Select():
-    from .database_postgrsql import Block,cursor
+    
     """this class provide  work books and sheet names as input """
     def __init__(self,folder,readfile1,sheet1,year,month,writefile,writesheet):
         self.folder=folder
@@ -851,6 +851,7 @@ class Select():
             r += 1
         #for week
         ws1=wb["input-week"]
+        '''
         Block.yearly_report_molds_byWeeks(self,year,month,day,to_day)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
@@ -869,7 +870,7 @@ class Select():
             c = 1
             r += 1
 
-        
+        '''
         #for material
         ws1=wb["input_materials"]
         Block.materialToPorduct_daily(self,year)
