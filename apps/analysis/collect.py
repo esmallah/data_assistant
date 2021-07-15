@@ -39,30 +39,39 @@ columns_parts=['part_id','product_code','product_name_by_parts','Weight_kg','sta
 
 #prepare data entering tables
     #3collecting tables ct,weight and scrap(yt_quality)
-columns_quality=['year','month','day','machine_id','item_id','number_day_use','mold_id','product_parts','shift1_dry_weight1',
-'shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4','shift1_dry_weight5',
-'shift1_c_t1','shift1_c_t2','shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',
-'shift2_c_t1','shift2_c_t2',
-'shift3_dry_weight1','shift3_dry_weight2','shift3_dry_weight3','shift3_dry_weight4','shift3_dry_weight5',
-'shift3_c_t1','shift3_c_t2'
-,'average_dry_weight','dryweight_deviation_validation','rat_actually','rat_validation','c_t_actually','shift1_production_cards'
-,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
-'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
-,'shift1_scrabe_cloration','shift1_scrabe_no_parts','shift1_scrabe_no_item','shift1_all_production'
-,'shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
-'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
-,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item'
-,'shift2_all_production'
-,'shift3_production_cards','shift3_prod_page','shift3_proper_production','shift3_scrabe_shortage',
-'shift3_scrabe_roll','shift3_scrabe_broken','shift3_scrabe_curve','shift3_scrabe_shrinkage','shift3_scrabe_dimentions'
-,'shift3_scrabe_weight','shift3_scrabe_dirty','shift3_scrabe_cloration','shift3_scrabe_no_parts','shift3_scrabe_no_item'
-,'shift3_all_production'
-,'sum_scrabe_shortage_bySet','sum_scrabe_roll_bySet','sum_scrabe_broken_bySet'
-,'sum_scrabe_curve_bySet','sum_scrabe_shrinkage_bySet','sum_scrabe_dimentions_bySet','sum_scrabe_weight_bySet','sum_scrabe_dirty_bySet',
-'sum_scrabe_cloration_bySet','sum_scrabe_no_parts','number_scrab_by_item',
-'gross_production','scrap_percent_by_item','part_id','factory','scrab_ncr_reason'
-,'ct_ncr_reason','weight_ncr_reason','id_DayPartUnique','parts_patchsNumbers','Items_patchsNumbers','bachStartDate',
-'bachEndDate','date_day']
+columns_quality=['year',
+    'month',
+    'day',
+    'machine_id',
+    'item_id',
+    'number_day_use',
+    'mold_id',
+    'product_parts'
+    ,'shift1_wet_weight1',
+    'shift1_wet_weight2',
+    'shift1_wet_weight3',
+    'shift1_wet_weight4',
+    'shift1_wet_weight5'
+    ,'shift1_dry_weight1','shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4','shift1_dry_weight5',
+    'shift1_c_t1','shift1_c_t2',
+    'shift2_wet_weight1','shift2_wet_weight2','shift2_wet_weight3','shift2_wet_weight4','shift2_wet_weight5',
+    'shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',
+    'shift2_c_t1','shift2_c_t2'
+
+    ,'average_dry_weight','average_wet_weight','rat_actually','rat_validation','c_t_actually','shift1_production_cards'
+    ,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
+    'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
+    ,'shift1_scrabe_cloration','shift1_scrabe_no_parts','shift1_scrabe_no_item','shift1_all_production'
+    ,'shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
+    'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
+    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item'
+    ,'shift2_all_production'
+    ,'sum_scrabe_shortage_bySet','sum_scrabe_roll_bySet','sum_scrabe_broken_bySet'
+    ,'sum_scrabe_curve_bySet','sum_scrabe_shrinkage_bySet','sum_scrabe_dimentions_bySet','sum_scrabe_weight_bySet','sum_scrabe_dirty_bySet',
+    'sum_scrabe_cloration_bySet','sum_scrabe_no_parts','number_scrab_by_item',
+    'gross_production','scrap_percent_by_item','part_id','factory','scrab_ncr_reason'
+    ,'ct_ncr_reason','weight_ncr_reason','id_DayPartUnique','parts_patchsNumbers','Items_patchsNumbers','bachStartDate',
+    'date_day','bachEndDate']
     
     #the previous columns separate to 
         #1 cycle time table
@@ -71,13 +80,15 @@ columns_cycle_time=['year','month','day','machine_id','rat_actually','rat_valida
                 ,'parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
         #2 quality inspections scrap and weights
-columns_QCinspection=['year','month','day','machine_id','item_id','number_day_use','mold_id','product_parts','shift1_dry_weight1',
-    'shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4','shift1_dry_weight5','shift1_ct1','shift1_ct2','shift2_dry_weight1',
-    'shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5','shift2_ct1','shift2_ct2',
-    'shift3_dry_weight1',
-    'shift3_dry_weight2','shift3_dry_weight3','shift3_dry_weight4','shift3_dry_weight5','shift3_ct1','shift3_ct2'
+columns_QCinspection=['year','month','day','machine_id','item_id','number_day_use','mold_id','product_parts',
+    'shift1_wet_weight1','shift1_wet_weight2','shift1_wet_weight3','shift1_wet_weight4','shift1_wet_weight5',
+    'shift1_dry_weight1',    'shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4','shift1_dry_weight5','shift1_ct1','shift1_ct2',
+    'shift2_wet_weight1','shift2_wet_weight2','shift2_wet_weight3','shift2_wet_weight4','shift2_wet_weight5',
+    'shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',
 
-    ,'average_dry_weight','rat_actually','rat_validation','dryweight_deviation_validation','part_id','shift1_production_cards'
+    'shift2_ct1','shift2_ct2'
+
+    ,'average_wet_weight','average_dry_weight','rat_actually','rat_validation','dryweight_deviation_validation','part_id','shift1_production_cards'
     ,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
     'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
     ,'shift1_scrabe_cloration','shift1_scrabe_no_parts','shift1_scrabe_no_item'
@@ -88,10 +99,8 @@ columns_QCinspection=['year','month','day','machine_id','item_id','number_day_us
     ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item'
     ,'shift2_all_production'
 
-    ,'shift3_production_cards','shift3_prod_page','shift3_proper_production','shift3_scrabe_shortage',
-    'shift3_scrabe_roll','shift3_scrabe_broken','shift3_scrabe_curve','shift3_scrabe_shrinkage','shift3_scrabe_dimentions'
-    ,'shift3_scrabe_weight','shift3_scrabe_dirty','shift3_scrabe_cloration','shift3_scrabe_no_parts','shift3_scrabe_no_item'
-    ,'bachStartDate','shift3_all_production',
+    
+    ,'bachStartDate'
 
 
     'sum_scrabe_shortage_bySet','sum_scrabe_roll','sum_scrabe_broken'
@@ -105,7 +114,7 @@ columns_QCinspection=['year','month','day','machine_id','item_id','number_day_us
 columns_weight=['year','month','day','machine_id','item_id','number_day_use','mold_id','product_parts',
 'shift1_dry_weight1','shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4'
 ,'shift1_dry_weight5','shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4',
-'shift2_dry_weight5','average_dry_weight','dryweight_deviation_validation','part_id','id_DayPartUnique','factory'
+'shift2_dry_weight5','average_wet_weight','average_dry_weight','dryweight_deviation_validation','part_id','id_DayPartUnique','factory'
 ,'weight_ncr_reason','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
                     #2scrab table
@@ -426,7 +435,8 @@ class Select():
         #f = open(r'C:\Users\n\Desktop\data.csv', 'r')
         #cur.copy_from(f, temp_unicommerce_status, sep=',')
         #f.close()
-    def export_report_mothly(self,writerFile,year,month,*args,monthly=True):
+
+    def export_report_mothly(self,writerFile,year,month,day,to_day,*args,monthly=True):
         from .database_postgrsql import Block,cursor
 
         os.chdir(self.folder)
@@ -437,7 +447,7 @@ class Select():
         
         #daily input
     
-        ws1=wb["input"]
+        ws1=wb["items_daily"]
         Block.get_daily_dataentry_items(self,year,month,args)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
@@ -456,7 +466,7 @@ class Select():
             c = 1
             r += 1
         #Bache input
-        ws_bach=wb["baches"]
+        ws_bach=wb["batches"]
         Block.show_monthly_Baches(self,year,month)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
@@ -502,7 +512,25 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1    
-        #monthly machine report
+        #water content report
+        ws1=wb["moisture_daily"]
+        Block.show_water_content_daily(self,year,month,day,to_day)
+        get_data=cursor.fetchall()
+        #get_data.set_index("serial", inplace=True) #put index
+        
+        #get_data=pd.DataFrame(get_data["id"])
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
         #monthly output
         if monthly:
             ws2=wb["output"]

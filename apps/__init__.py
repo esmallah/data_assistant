@@ -1,5 +1,5 @@
 #own app puilding and all andalosy  compy rights is reseved
-from .analysis import Block , cursor,DatabaseTables
+from .analysis import Block , cursor,PgAccess
 from .analysis import Unique,Select
 from .analysis import Group
 from .files import Convert

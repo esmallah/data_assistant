@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  ydataassistant:
+    image: ydataassistant
+    build:
+      context: .
+      dockerfile: ./Dockerfile

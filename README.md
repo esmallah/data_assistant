@@ -6,7 +6,6 @@ this file as discktop application for maulible work as:
 2-convert excel and work sheet to pdf
 3-copy files to the another place every upating
 
-
 road map:
 - create UGI                                                ok
 - create tables and connections in posrgeqle                ok
@@ -22,12 +21,12 @@ pyrcc5 maps.qrc -o maps_rc.py
 for activate virusal environment
 source ../env/Scripts/activate
 source activate env_leader   
+python main.py
+
 conda activate env_leader   
 
 if not activate conda restart your texteditor as adminstrator
 #_____for backup enviroment ( or run as adminstrator)
-
-python main.py
 
 you can start alone by install
 pip install PyInstaller

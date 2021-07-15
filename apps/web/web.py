@@ -128,7 +128,7 @@ class AutomatedFilling():
 
 
         LG65UP775Front="MFZ67225101"#Lg65UP77_front
-        LG65UP775Front_high=[1555,265,38,110.3]
+        LG65UP775Front_high=[1555,247,38,110.3]
         LG65UP775Front_low=[1547,241,34.5,96.9]
         MFZ67225101=[LG65UP775Front_high,LG65UP775Front_low]
 

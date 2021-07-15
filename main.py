@@ -268,7 +268,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         from Lib import ModifyTableDialog
 
     def database_management(self):
-        from apps import Block
+        from apps import Block,PgAccess
+        
         year=str(self.analysis_DByear.currentText())
         month=str(self.analysis_DBmonth.currentText())
         day=str(self.analysis_DBday.currentText())
@@ -296,9 +297,9 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         
         if self.checkBox_analysis_DB_deleteRows.isChecked():
             if str(self.comboBox_analysisDb_deleteType.currentText())=="day" : #for chose any type of files
-                Block.delete_rows(self,"yt_quality",year,month,day)
+                PgAccess.delete_rows(self,"yt_quality",year,month,day)
             if str(self.comboBox_analysisDb_deleteType.currentText())=="month" : #for chose any type of files
-                Block.delete_rows(self,"yt_quality",year,month)
+                PgAccess.delete_rows(self,"yt_quality",year,month)
                     #create restructure
         #install infrastructure
         if self.checkBox_analysis_DB_instal_infrastrucure.isChecked():
@@ -320,7 +321,29 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             Block.install_befor_reports_item_master("")
             Block.install_befor_reports_material("")
             Block.install_reports("")
-    
+    #_______________tables Operation_________________________
+        old_column=str(self.analsyisDb_columnName.text())
+        new_column=str(self.analsyisDb_columnNew.text())
+        category=str(self.analsyisDb_tableName.text())
+        
+        if str(self.analysisDb_combo_object.currentText())=="table" : #for chose any type of files
+            if str(self.analysisDb_combo_altertables.currentText())=="select" : #for chose any type of files
+                PgAccess.select_tables(self,category,old_column)
+        if str(self.analysisDb_combo_object.currentText())=="column" : #for chose any type of files
+            if str(self.analysisDb_combo_altertables.currentText())=="add" : #for chose any type of files
+                PgAccess.add_columns(self,category,old_column,new_column)
+        if str(self.analysisDb_combo_object.currentText())=="column" : #for chose any type of files
+            if str(self.analysisDb_combo_altertables.currentText())=="delete" : #for chose any type of files
+                PgAccess.drop_columns(self,category,old_column)
+        
+        if str(self.analysisDb_combo_object.currentText())=="column" : #for chose any type of files
+            if str(self.analysisDb_combo_altertables.currentText())=="alter type" : #for chose any type of files
+                PgAccess.alterTybe_columns(self,category,old_column,new_column)
+        
+        if str(self.analysisDb_combo_object.currentText())=="column" : #for chose any type of files
+            if str(self.analysisDb_combo_altertables.currentText())=="alter name" : #for chose any type of files
+                PgAccess.alterName_columns(self,category,old_column,new_column)
+
     def connect_shareDb(self):
         from apps import Unique,Select,Group,Block
         
@@ -344,7 +367,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         print ("format path",format_path)
         #format_path = os.path.join(format_path2, )
         
-        git_database=Select(format_path,"formatQC_molds_monthly_v9.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
+        git_database=Select(format_path,"formatQC_molds_monthly.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
         
                     #import data
         #import database on share
@@ -392,13 +415,13 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         
         #for daily report
             print("year",type(year),"month",type(month),"day",type(day))
-            git_database.export_report_mothly(dailyReportName,year,month,monthly=False)
+            git_database.export_report_mothly(dailyReportName,year,month,day,to_day,monthly=False)
             print("the daily report has downloaded for day ",day," , month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_monthlyReport.isChecked():
         
         #for monthly report
-            git_database.export_report_mothly(monthlyReportName,year,month,monthly=True) #add output_batches for calculate items group by its continusliy production by RNN to learn brevious to get values
+            git_database.export_report_mothly(monthlyReportName,year,month,day,to_day,monthly=True) #add output_batches for calculate items group by its continusliy production by RNN to learn brevious to get values
             print("the monthly report has downloaded for month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_yearlyInput.isChecked():

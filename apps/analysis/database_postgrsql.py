@@ -26,8 +26,9 @@ import pandas as pd
 #try:
 pc__server="host='localhost' dbname='Block' user='postgres' password='Aa1234567#'"#connect to data base form my device
 network_server="host='AHMED-RASHAD' dbname='Block' user='youssri.ahmed' password='Aa1234567#'"
+network_server_test="host='AHMED-RASHAD' dbname='Block_test' user='youssri.ahmed' password='Aa1234567#'"
 
-conn_string = network_server
+conn_string = network_server_test
 table="yt_quality"
 
 # print the connection string we will use to connect
@@ -48,98 +49,86 @@ cursor = conn.cursor()
 	#	conn.close
 	
 SQL_quality_records="""
-				year ,
-				month ,
-				day ,
-				machine_id ,
-				item_id ,
-				number_day_use ,
-				mold_id ,
-				product_parts ,
-				shift1_dry_weight1  ,
-				shift1_dry_weight2  ,
-				shift1_dry_weight3  ,
-				shift1_dry_weight4  ,
-				shift1_dry_weight5  ,
-				shift1_c_t1  ,
-				shift1_c_t2  ,
-				shift2_dry_weight1  ,
-				shift2_dry_weight2  ,
-				shift2_dry_weight3  ,
-				shift2_dry_weight4  ,
-				shift2_dry_weight5  ,
-				shift2_c_t1  ,
-				shift2_c_t2  ,
-				shift3_dry_weight1  ,
-				shift3_dry_weight2  ,
-				shift3_dry_weight3  ,
-				shift3_dry_weight4  ,
-				shift3_dry_weight5  ,
-				shift3_c_t1  ,
-				shift3_c_t2  ,
-				average_dry_weight ,
-				dryweight_deviation_validation ,
-				rat_actually ,
-				rat_validation ,
-				c_t_actually  ,
-				shift1_production_cards  ,
-				shift1_prod_page  ,
-				shift1_proper_production  ,
-				shift1_scrabe_shortage  ,
-				shift1_scrabe_roll  ,
-				shift1_scrabe_broken  ,
-				shift1_scrabe_curve  ,
-				shift1_scrabe_shrinkage  ,
-				shift1_scrabe_dimentions  ,
-				shift1_scrabe_weight  ,
-				shift1_scrabe_dirty  ,
-				shift1_scrabe_cloration  ,
-				shift1_scrabe_No_parts  ,
-				shift1_scrabe_no_item  ,
-				shift1_all_production  ,
-				shift2_production_cards  ,
-				shift2_prod_page  ,
-				shift2_proper_production  ,
-				shift2_scrabe_shortage  ,
-				shift2_scrabe_roll  ,
-				shift2_scrabe_broken  ,
-				shift2_scrabe_curve  ,
-				shift2_scrabe_shrinkage  ,
-				shift2_scrabe_dimentions  ,
-				shift2_scrabe_weight  ,
-				shift2_scrabe_dirty  ,
-				shift2_scrabe_cloration  ,
-				shift2_scrabe_No_parts  ,
-				shift2_scrabe_no_item  ,
-				shift2_all_production  ,				
-				shift3_production_cards  ,
-				shift3_prod_page  ,
-				shift3_proper_production  ,
-				shift3_scrabe_shortage  ,
-				shift3_scrabe_roll  ,
-				shift3_scrabe_broken  ,
-				shift3_scrabe_curve  ,
-				shift3_scrabe_shrinkage  ,
-				shift3_scrabe_dimentions  ,
-				shift3_scrabe_weight  ,
-				shift3_scrabe_dirty  ,
-				shift3_scrabe_cloration  ,
-				shift3_scrabe_No_parts  ,
-				shift3_scrabe_no_item  ,
-				shift3_all_production  ,
-				sum_scrabe_shortage_bySet  ,
-				sum_scrabe_roll_bySet  ,
-				sum_scrabe_broken_bySet  ,
-				sum_scrabe_curve_bySet  ,
-				sum_scrabe_shrinkage_bySet  ,
-				sum_scrabe_dimentions_bySet  ,
-				sum_scrabe_weight_bySet  ,
-				sum_scrabe_dirty_bySet  ,
-				sum_scrabe_cloration_bySet  ,
-				sum_scrabe_No_parts  ,
-				number_scrab_by_item  ,
-				gross_production ,
-				scrap_percent_by_item  ,
+				year,
+				month,
+				day,
+				machine_id,
+				item_id,
+				number_day_use,
+				mold_id,
+				product_parts,
+				shift1_wet_weight1,
+				shift1_wet_weight2,
+				shift1_wet_weight3,
+				shift1_wet_weight4,
+				shift1_wet_weight5,
+				shift1_dry_weight1,
+				shift1_dry_weight2,
+				shift1_dry_weight3,
+				shift1_dry_weight4,
+				shift1_dry_weight5,
+				shift1_c_t1,
+				shift1_c_t2,
+				shift2_wet_weight1,
+				shift2_wet_weight2,
+				shift2_wet_weight3,
+				shift2_wet_weight4,
+				shift2_wet_weight5,
+				shift2_dry_weight1,
+				shift2_dry_weight2,
+				shift2_dry_weight3,
+				shift2_dry_weight4,
+				shift2_dry_weight5,
+				shift2_c_t1,
+				shift2_c_t2,
+				average_dry_weight,
+				average_wet_weight,
+				rat_actually,
+				rat_validation,
+				c_t_actually,
+				shift1_production_cards,
+				shift1_prod_page,
+				shift1_proper_production,
+				shift1_scrabe_shortage,
+				shift1_scrabe_roll,
+				shift1_scrabe_broken,
+				shift1_scrabe_curve,
+				shift1_scrabe_shrinkage,
+				shift1_scrabe_dimentions,
+				shift1_scrabe_weight,
+				shift1_scrabe_dirty,
+				shift1_scrabe_cloration,
+				shift1_scrabe_No_parts,
+				shift1_scrabe_no_item,
+				shift1_all_production,
+				shift2_production_cards,
+				shift2_prod_page,
+				shift2_proper_production,
+				shift2_scrabe_shortage,
+				shift2_scrabe_roll,
+				shift2_scrabe_broken,
+				shift2_scrabe_curve,
+				shift2_scrabe_shrinkage,
+				shift2_scrabe_dimentions,
+				shift2_scrabe_weight,
+				shift2_scrabe_dirty,
+				shift2_scrabe_cloration,
+				shift2_scrabe_No_parts,
+				shift2_scrabe_no_item,
+				shift2_all_production,
+				sum_scrabe_shortage_bySet,
+				sum_scrabe_roll_bySet,
+				sum_scrabe_broken_bySet,
+				sum_scrabe_curve_bySet,
+				sum_scrabe_shrinkage_bySet,
+				sum_scrabe_dimentions_bySet,
+				sum_scrabe_weight_bySet,
+				sum_scrabe_dirty_bySet,
+				sum_scrabe_cloration_bySet,
+				sum_scrabe_No_parts,
+				number_scrab_by_item,
+				gross_production,
+				scrap_percent_by_item,
 				part_id,
 				factory,
 				scrab_ncr_reason,
@@ -149,8 +138,8 @@ SQL_quality_records="""
 				parts_patchsNumbers,
 				Items_patchsNumbers,
 				bachStartDate,
-				bachEndDate,
-				date_day
+				date_day,
+				bachEndDate
 				"""
 sql_quality_reporty_yearly_item='''
 								year , mold_id,item_id,product_name
@@ -158,7 +147,9 @@ sql_quality_reporty_yearly_item='''
 								,standard_dry_weight
 								,standard_dry_weight_from
 								,standard_dry_weight_to
+								,round(avg(average_wet_weight),1)as average_wet_weight
 								,round(avg(average_dry_weight),1)as average_dry_weight
+								
 								,standard_rate_hour as standard_rate_hour
 								,c_t_standard_per_second c_t_standard_per_second
 								,round(avg(rat_actually),0)as rat_actually
@@ -216,7 +207,21 @@ sql_quality_reporty_yearly_mold='''year, mold_id,mold_name
 							round(avg(mold_avalibility),2)as "mold_avalibility"
 							
 					'''
-
+sql_quality_water_content='''
+				year,
+				month,
+				day,
+				machine_id,
+				item_id,
+				mold_id
+				,standard_dry_weight
+				,standard_dry_weight_from
+				,standard_dry_weight_to
+				,round(avg(average_wet_weight),1)as average_wet_weight
+				,round(avg(average_dry_weight),1)as average_dry_weight
+				
+				
+					'''
 class Block():
 	'''
 		this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries
@@ -536,6 +541,11 @@ class Block():
 				number_day_use int null,
 				mold_id int,
 				product_parts varchar(50),
+				shift1_wet_weight1 numeric null,
+				shift1_wet_weight2 numeric null ,
+				shift1_wet_weight3 numeric null ,
+				shift1_wet_weight4 numeric null ,
+				shift1_wet_weight5 numeric null ,
 				shift1_dry_weight1 numeric null,
 				shift1_dry_weight2 numeric null,
 				shift1_dry_weight3 numeric null,
@@ -543,6 +553,11 @@ class Block():
 				shift1_dry_weight5 numeric null,
 				shift1_c_t1 int null,
 				shift1_c_t2 int null,
+				shift2_wet_weight1 numeric null,
+				shift2_wet_weight2 numeric null,
+				shift2_wet_weight3 numeric null,
+				shift2_wet_weight4 numeric null,
+				shift2_wet_weight5 numeric null,
 				shift2_dry_weight1 numeric null,
 				shift2_dry_weight2 numeric null,
 				shift2_dry_weight3 numeric null,
@@ -550,16 +565,8 @@ class Block():
 				shift2_dry_weight5 numeric null,
 				shift2_c_t1 int null,
 				shift2_c_t2 int null,
-				
-				shift3_dry_weight1 numeric null,
-				shift3_dry_weight2 numeric null,
-				shift3_dry_weight3 numeric null,
-				shift3_dry_weight4 numeric null,
-				shift3_dry_weight5 numeric null,
-				shift3_c_t1 int null,
-				shift3_c_t2 int null,
+				average_wet_weight numeric,
 				average_dry_weight numeric,
-				dryweight_deviation_validation boolean,
 				rat_actually int,
 				rat_validation int,
 				c_t_actually int null,
@@ -594,25 +601,7 @@ class Block():
 				shift2_scrabe_cloration int null,
 				shift2_scrabe_No_parts int null,
 				shift2_scrabe_no_item int null,
-				
 				shift2_all_production int null,
-				shift3_production_cards int null,
-				shift3_prod_page int null,
-				shift3_proper_production int null,
-				shift3_scrabe_shortage int null,
-				shift3_scrabe_roll int null,
-				shift3_scrabe_broken int null,
-				shift3_scrabe_curve int null,
-				shift3_scrabe_shrinkage int null,
-				shift3_scrabe_dimentions int null,
-				shift3_scrabe_weight int null,
-				shift3_scrabe_dirty int null,
-				shift3_scrabe_cloration int null,
-				shift3_scrabe_no_parts int null,
-				shift3_scrabe_no_item int null,
-				
-				shift3_all_production int null,
-				
 				sum_scrabe_shortage_bySet int null,
 				sum_scrabe_roll_bySet int null,
 				sum_scrabe_broken_bySet int null,
@@ -623,12 +612,9 @@ class Block():
 				sum_scrabe_dirty_bySet int null,
 				sum_scrabe_cloration_bySet int null,
 				sum_scrabe_No_parts int null,
-				number_scrab_by_item int null,
-				
-				
+				number_scrab_by_item int null,			
 				gross_production int,
 				scrap_percent_by_item numeric ,
-			
 				part_id  varchar(50),
 				factory  varchar(50),
 				scrab_ncr_reason varchar(100),
@@ -689,7 +675,11 @@ class Block():
 			create_view_qulaity_inspection_as_molds_list='''/* for collect quality_inspection as yv_parts_items  */
 				create view Yv_quality_inspection_molds as (select 
 									q.year, q.month ,q.date_day as day ,q.mold_id,q.machine_id,
-		
+									round(sum(q.shift1_wet_weight1),1)as shift1_wet_weight1,
+									round(sum(q.shift1_wet_weight2),1)as shift1_wet_weight2,
+									round(sum(q.shift1_wet_weight3),1)as shift1_wet_weight3,
+									round(sum(q.shift1_wet_weight4),1)as shift1_wet_weight4,
+									round(sum(q.shift1_wet_weight5),1)as shift1_wet_weight5,
 									round(sum(q.shift1_dry_weight1),1)as shift1_dry_weight1,
 									round(sum(q.shift1_dry_weight2),1)as shift1_dry_weight2,
 									round(sum(q.shift1_dry_weight3),1)as shift1_dry_weight3,
@@ -697,7 +687,12 @@ class Block():
 									round(sum(q.shift1_dry_weight5),1)as shift1_dry_weight5,
 									round(avg(q.shift1_c_t1),0)as shift1_c_t1,
 									round(avg(q.shift1_c_t2),0) as shift1_c_t2,
-													
+
+									round(sum(q.shift2_wet_weight1),1)as shift2_wet_weight1,
+									round(sum(q.shift2_wet_weight2),1)as shift2_wet_weight2,
+									round(sum(q.shift2_wet_weight3),1)as shift2_wet_weight3,
+									round(sum(q.shift2_wet_weight4),1)as shift2_wet_weight4,
+									round(sum(q.shift2_wet_weight5),1)as shift2_wet_weight5,				
 									round(sum(q.shift2_dry_weight1),1)as shift2_dry_weight1,
 									round(sum(q.shift2_dry_weight2),1)as shift2_dry_weight2,
 									round(sum(q.shift2_dry_weight3),1)as shift2_dry_weight3,
@@ -705,14 +700,7 @@ class Block():
 									round(sum(q.shift2_dry_weight5),1)as shift2_dry_weight5,
 									round(avg(q.shift2_c_t1),0)as shift2_c_t1,		
 									round(avg(q.shift2_c_t2),0)as shift2_c_t2,
-									round(sum(q.shift3_dry_weight1),1)as shift3_dry_weight1,
-									round(sum(q.shift3_dry_weight2),1)as shift3_dry_weight2,
-									round(sum(q.shift3_dry_weight3),1)as shift3_dry_weight3,
-									round(sum(q.shift3_dry_weight4),1)as shift3_dry_weight4,
-									round(sum(q.shift3_dry_weight5),1)as shift3_dry_weight5,
-									round(avg(q.shift3_c_t1),0)as shift3_c_t1,		
-									round(avg(q.shift3_c_t2),0)as shift3_c_t2,
-						
+									round(sum(q.average_wet_weight ),1)as average_wet_weight ,
 									round(sum(q.average_dry_weight),1)as average_dry_weight,
 									
 									round(avg(q.rat_actually),0)as rat_actually ,
@@ -750,22 +738,6 @@ class Block():
 									round(min(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
 									
 									round(min(q.shift2_all_production),0)as shift2_all_production,
-									round(min(q.shift3_production_cards),0)as shift3_production_cards,
-									round(min(q.shift3_prod_page),0)as shift3_prod_page,
-									round(min(q.shift3_proper_production),0)as shift3_proper_production,
-									round(min(q.shift3_scrabe_shortage),0)as shift3_scrabe_shortage,
-									round(min(q.shift3_scrabe_roll),0)as shift3_scrabe_roll,
-									round(min(q.shift3_scrabe_broken),0)as shift3_scrabe_broken,
-									round(min(q.shift3_scrabe_curve),0)as shift3_scrabe_curve,
-									round(min(q.shift3_scrabe_shrinkage),0)as shift3_scrabe_shrinkage,
-									round(min(q.shift3_scrabe_dimentions),0)as shift3_scrabe_dimentions,
-									round(min(q.shift3_scrabe_weight),0)as shift3_scrabe_weight,
-									round(min(q.shift3_scrabe_dirty),0)as shift3_scrabe_dirty,
-									round(min(q.shift3_scrabe_cloration),0)as shift3_scrabe_cloration,
-									round(min(q.shift3_scrabe_No_parts),0)as shift3_scrabe_No_parts,
-									round(min(q.shift3_scrabe_no_item),0)as shift3_scrabe_no_item,
-									
-									round(min(q.shift3_all_production),0)as shift3_all_production,
 									
 									round(min(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
 									round(min(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
@@ -808,6 +780,11 @@ class Block():
 				create view Yv_quality_inspection_parts as (select 
 									q.year, q.month ,q.date_day as day,q.mold_id,q.part_id,q.machine_id,Items_patchsNumbers,
 		
+									round(sum(q.shift1_wet_weight1),1)as shift1_wet_weight1,
+									round(sum(q.shift1_wet_weight2),1)as shift1_wet_weight2,
+									round(sum(q.shift1_wet_weight3),1)as shift1_wet_weight3,
+									round(sum(q.shift1_wet_weight4),1)as shift1_wet_weight4,
+									round(sum(q.shift1_wet_weight5),1)as shift1_wet_weight5,
 									round(sum(q.shift1_dry_weight1),1)as shift1_dry_weight1,
 									round(sum(q.shift1_dry_weight2),1)as shift1_dry_weight2,
 									round(sum(q.shift1_dry_weight3),1)as shift1_dry_weight3,
@@ -816,6 +793,11 @@ class Block():
 									round(avg(q.shift1_c_t1),0)as shift1_c_t1,
 									round(avg(q.shift1_c_t2),0) as shift1_c_t2,
 													
+									round(sum(q.shift2_wet_weight1),1)as shift2_wet_weight1,
+									round(sum(q.shift2_wet_weight2),1)as shift2_wet_weight2,
+									round(sum(q.shift2_wet_weight3),1)as shift2_wet_weight3,
+									round(sum(q.shift2_wet_weight4),1)as shift2_wet_weight4,
+									round(sum(q.shift2_wet_weight5),1)as shift2_wet_weight5,
 									round(sum(q.shift2_dry_weight1),1)as shift2_dry_weight1,
 									round(sum(q.shift2_dry_weight2),1)as shift2_dry_weight2,
 									round(sum(q.shift2_dry_weight3),1)as shift2_dry_weight3,
@@ -824,16 +806,10 @@ class Block():
 									round(avg(q.shift2_c_t1),0)as shift2_c_t1,		
 									round(avg(q.shift2_c_t2),0)as shift2_c_t2,
 							
-									round(sum(q.shift3_dry_weight1),1)as shift3_dry_weight1,
-									round(sum(q.shift3_dry_weight2),1)as shift3_dry_weight2,
-									round(sum(q.shift3_dry_weight3),1)as shift3_dry_weight3,
-									round(sum(q.shift3_dry_weight4),1)as shift3_dry_weight4,
-									round(sum(q.shift3_dry_weight5),1)as shift3_dry_weight5,
-									round(avg(q.shift3_c_t1),0)as shift3_c_t1,		
-									round(avg(q.shift3_c_t2),0)as shift3_c_t2,
-						
+									round(sum(q.average_wet_weight ),1)as average_wet_weight ,
 									round(sum(q.average_dry_weight),1)as average_dry_weight,
 									
+
 									round(avg(q.rat_actually),0)as rat_actually ,
 									round(avg(q.rat_validation),0)as rat_validation,
 									round(avg(q.c_t_actually),0)c_t_actually,				
@@ -868,23 +844,6 @@ class Block():
 									round(sum(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
 									
 									round(sum(q.shift2_all_production),0)as shift2_all_production,
-									
-									round(sum(q.shift3_production_cards),0)as shift3_production_cards,
-									round(sum(q.shift3_prod_page),0)as shift3_prod_page,
-									round(sum(q.shift3_proper_production),0)as shift3_proper_production,
-									round(sum(q.shift3_scrabe_shortage),0)as shift3_scrabe_shortage,
-									round(sum(q.shift3_scrabe_roll),0)as shift3_scrabe_roll,
-									round(sum(q.shift3_scrabe_broken),0)as shift3_scrabe_broken,
-									round(sum(q.shift3_scrabe_curve),0)as shift3_scrabe_curve,
-									round(sum(q.shift3_scrabe_shrinkage),0)as shift3_scrabe_shrinkage,
-									round(sum(q.shift3_scrabe_dimentions),0)as shift3_scrabe_dimentions,
-									round(sum(q.shift3_scrabe_weight),0)as shift3_scrabe_weight,
-									round(sum(q.shift3_scrabe_dirty),0)as shift3_scrabe_dirty,
-									round(sum(q.shift3_scrabe_cloration),0)as shift3_scrabe_cloration,
-									round(sum(q.shift3_scrabe_No_parts),0)as shift3_scrabe_No_parts,
-									round(sum(q.shift3_scrabe_no_item),0)as shift3_scrabe_no_item,
-									
-									round(sum(q.shift3_all_production),0)as shift3_all_production,
 									
 									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
 									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
@@ -928,6 +887,11 @@ class Block():
 								create view Yv_quality_inspection_items as (select 
 								q.year, q.month ,q.date_day as day,q.mold_id,q.item_id,q.machine_id,q.factory,Items_patchsNumbers,
 	
+								round(sum(q.shift1_wet_weight1),1)as shift1_wet_weight1,
+								round(sum(q.shift1_wet_weight2),1)as shift1_wet_weight2,
+								round(sum(q.shift1_wet_weight3),1)as shift1_wet_weight3,
+								round(sum(q.shift1_wet_weight4),1)as shift1_wet_weight4,
+								round(sum(q.shift1_wet_weight5),1)as shift1_wet_weight5,
 								round(sum(q.shift1_dry_weight1),1)as shift1_dry_weight1,
 								round(sum(q.shift1_dry_weight2),1)as shift1_dry_weight2,
 								round(sum(q.shift1_dry_weight3),1)as shift1_dry_weight3,
@@ -936,6 +900,11 @@ class Block():
 								round(avg(q.shift1_c_t1),0)as shift1_c_t1,
 								round(avg(q.shift1_c_t2),0) as shift1_c_t2,
 												
+								round(sum(q.shift2_wet_weight1),1)as shift2_wet_weight1,
+								round(sum(q.shift2_wet_weight2),1)as shift2_wet_weight2,
+								round(sum(q.shift2_wet_weight3),1)as shift2_wet_weight3,
+								round(sum(q.shift2_wet_weight4),1)as shift2_wet_weight4,
+								round(sum(q.shift2_wet_weight5),1)as shift2_wet_weight5,
 								round(sum(q.shift2_dry_weight1),1)as shift2_dry_weight1,
 								round(sum(q.shift2_dry_weight2),1)as shift2_dry_weight2,
 								round(sum(q.shift2_dry_weight3),1)as shift2_dry_weight3,
@@ -944,14 +913,7 @@ class Block():
 								round(avg(q.shift2_c_t1),0)as shift2_c_t1,		
 								round(avg(q.shift2_c_t2),0)as shift2_c_t2,
 						
-								round(sum(q.shift3_dry_weight1),1)as shift3_dry_weight1,
-								round(sum(q.shift3_dry_weight2),1)as shift3_dry_weight2,
-								round(sum(q.shift3_dry_weight3),1)as shift3_dry_weight3,
-								round(sum(q.shift3_dry_weight4),1)as shift3_dry_weight4,
-								round(sum(q.shift3_dry_weight5),1)as shift3_dry_weight5,
-								round(avg(q.shift3_c_t1),0)as shift3_c_t1,		
-								round(avg(q.shift3_c_t2),0)as shift3_c_t2,
-						
+								round(sum(q.average_wet_weight ),1)as average_wet_weight ,
 								round(sum(q.average_dry_weight),1)as average_dry_weight,
 								
 								round(avg(q.rat_actually),0)as rat_actually ,
@@ -990,23 +952,6 @@ class Block():
 								round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
 								
 								round(sum(q.shift2_all_production),0)as shift2_all_production,
-								
-								round(sum(q.shift3_production_cards),0)as shift3_production_cards,
-								round(sum(q.shift3_prod_page),0)as shift3_prod_page,
-								round(sum(q.shift3_proper_production),0)as shift3_proper_production,
-								round(sum(q.shift3_scrabe_shortage),0)as shift3_scrabe_shortage,
-								round(sum(q.shift3_scrabe_roll),0)as shift3_scrabe_roll,
-								round(sum(q.shift3_scrabe_broken),0)as shift3_scrabe_broken,
-								round(sum(q.shift3_scrabe_curve),0)as shift3_scrabe_curve,
-								round(sum(q.shift3_scrabe_shrinkage),0)as shift3_scrabe_shrinkage,
-								round(sum(q.shift3_scrabe_dimentions),0)as shift3_scrabe_dimentions,
-								round(sum(q.shift3_scrabe_weight),0)as shift3_scrabe_weight,
-								round(sum(q.shift3_scrabe_dirty),0)as shift3_scrabe_dirty,
-								round(sum(q.shift3_scrabe_cloration),0)as shift3_scrabe_cloration,
-								round(sum(q.shift3_scrabe_No_parts),0)as shift3_scrabe_No_parts,
-								round(sum(q.shift3_scrabe_no_item),0)as shift3_scrabe_no_item,
-								
-								round(sum(q.shift3_all_production),0)as shift3_all_production,
 								
 								round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
 								round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
@@ -1083,14 +1028,9 @@ class Block():
 								round(avg(q.shift2_dry_weight5),0)as shift2_dry_weight5,
 								round(avg(q.shift2_c_t1),0)as shift2_c_t1,
 								round(avg(q.shift2_c_t2),0)as shift2_c_t2,
-								round(avg(q.shift3_dry_weight1),0)as shift3_dry_weight1,
-								round(avg(q.shift3_dry_weight2),0)as shift3_dry_weight2,
-								round(avg(q.shift3_dry_weight3),0)as shift3_dry_weight3,
-								round(avg(q.shift3_dry_weight4),0)as shift3_dry_weight4,
-								round(avg(q.shift3_dry_weight5),0)as shift3_dry_weight5,
-								round(avg(q.shift3_c_t1),0)as shift3_c_t1,
-								round(avg(q.shift3_c_t2),0)as shift3_c_t2,
+								round(avg(q.average_wet_weight),1)as average_wet_weight,
 								round(avg(q.average_dry_weight),1)as average_dry_weight,
+								round((avg(average_wet_weight)-p.standard_dry_weight)/avg(p.standard_dry_weight),1) as wet_average_percent,
 								p.standard_rate_hour,
 								p.c_t_standard_per_second,								
 								round(avg(q.rat_actually),0)as rat_actually,
@@ -1123,6 +1063,7 @@ class Block():
 								round((sum(q.gross_production))*(avg(q.average_dry_weight))/1000,1) as production_weight_kg,
 								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
 								date_part('week', q.day::date) AS weeksNumbers
+								
 								
 								
 				from Yv_quality_inspection_items q
@@ -1186,7 +1127,9 @@ class Block():
 								,p.standard_dry_weight
 								,p.standard_dry_weight_from
 								,p.standard_dry_weight_to
+								,round(avg(q.average_wet_weight),1)as average_wet_weight
 								,round(avg(q.average_dry_weight),1)as average_dry_weight
+								,round(avg(average_wet_weight)-avg(p.standard_dry_weight)/avg(p.standard_dry_weight),1) as wet_average_percent
 								,p.standard_rate_hour as standard_rate_hour
 								,p.c_t_standard_per_second c_t_standard_per_second
 								,round(avg(q.rat_actually),0)as rat_actually
@@ -1273,218 +1216,6 @@ class Block():
 		conn.commit()
 		print("complete install reports")		
 
-	def install_3tables_system(self):
-			
-			create_table_ct='''create table Yt2_cycle_time (
-					id varchar(50) primary key,
-					year int,
-					month int,
-					day int,
-					machine_id int,
-					rat_actually int,
-					rat_validation int,
-					c_t_deviation int,
-					shift1_c_t1 int null,
-					shift1_c_t2 int null,
-					shift2_c_t1 int null,
-					shift2_c_t2 int null,
-					c_t_actually int null,
-					mold_id int ,
-					part_id varchar(50),
-					item_id int,
-					number_day_use int
-					)'''
-			cursor.execute(create_table_ct)
-			create_table_weights='''create table Yt2_dry_weight (
-										id varchar(50) primary key,
-										year int,
-										month int,
-										day int,
-										machine_id int,
-										item_id int,
-										number_day_use int null,
-										mold_id int,
-										product_parts varchar(50) null,
-										shift1_dry_weight1 numeric null,
-										shift1_dry_weight2 numeric null,
-										shift1_dry_weight3 numeric null,
-										shift1_dry_weight4 numeric null,
-										shift1_dry_weight5 numeric null,
-										shift2_dry_weight1 numeric null,
-										shift2_dry_weight2 numeric null,
-										shift2_dry_weight3 numeric null,
-										shift2_dry_weight4 numeric null,
-										shift2_dry_weight5 numeric null,
-										average_dry_weight numeric,
-										dryweight_deviation_validation boolean null,
-										part_id  varchar(50)
-										)
-										;'''
-			cursor.execute(create_table_weights)
-			create_table_scrap='''create table Yt2_scrap (
-						id varchar(50) primary key,
-						year int,
-						month int,
-						day int,
-						machine_id int,
-						item_id int,
-						mold_id int,
-						product_parts varchar(50) null,
-						part_id  varchar(50),
-						shift1_production_cards int null,
-						shift1_prod_page numeric null,
-						shift1_proper_production int null,
-						shift1_scrabe_shortage int null,
-						shift1_scrabe_roll int null,
-						shift1_scrabe_broken int null,
-						shift1_scrabe_curve int null,
-						shift1_scrabe_shrinkage int null,
-						shift1_scrabe_dimentions int null,
-						shift1_scrabe_weight int null,
-						shift1_scrabe_dirty int null,
-						shift1_scrabe_cloration int null,
-						shift1_scrabe_No_parts int null,
-						shift1_scrabe_no_item int null,
-						shift1_production_by_set int null,
-						shift1_all_production int null,
-						shift2_production_cards int null,
-						shift2_prod_page int null,
-						shift2_proper_production int null,
-						shift2_scrabe_shortage int null,
-						shift2_scrabe_roll int null,
-						shift2_scrabe_broken int null,
-						shift2_scrabe_curve int null,
-						shift2_scrabe_shrinkage int null,
-						shift2_scrabe_dimentions int null,
-						shift2_scrabe_weight int null,
-						shift2_scrabe_dirty int null,
-						shift2_scrabe_cloration int null,
-						shift2_scrabe_No_parts int null,
-						shift2_scrabe_no_item int null,
-						shift2_production_by_set int null,
-						shift2_all_production int null,
-						sum_scrabe_shortage_bySet int null,
-						sum_scrabe_roll_bySet int null,
-						sum_scrabe_broken_bySet int null,
-						sum_scrabe_curve_bySet int null,
-						sum_scrabe_shrinkage_bySet int null,
-						sum_scrabe_dimentions_bySet int null,
-						sum_scrabe_weight_bySet int null,
-						sum_scrabe_dirty_bySet int null,
-						sum_scrabe_cloration_bySet int null,
-						sum_scrabe_No_parts int null,
-						number_scrab_by_item int null,
-						
-						gross_production int null,
-						scrap_percent_by_item numeric ,
-						Items_patchsNumbers varchar(50)
-						parts_patchsNumbers varchar(50)
-						)
-						;'''
-			cursor.execute(create_table_scrap)
-			create_view_cycle_time='''/*is collect each mold for each day for repar and repeat for cy*/
-							CREATE VIEW Yv2_cycle_time as( select c.year,c.month,c.day,c.machine_id,c.item_id,round(avg(c.c_t_actually),0)c_t_actually,round(avg(c.rat_actually),0)as rat_actually ,
-							round(avg(c.shift1_c_t1),0)as shift1_c_t1,round(avg(c.shift1_c_t2),0)as shift1_c_t2,round(avg(c.shift2_c_t1),0)as shift2_c_t1,
-							round(avg(c.shift2_c_t2),0)as shift2_c_t2,round(avg(c.rat_validation),0)as rat_validation,c.mold_id
-									from  Yt2_cycle_time C
-								
-							group by c.year,c.month,c.day,c.mold_id,c.item_id,c.machine_id)'''
-			cursor.execute(create_view_cycle_time)
-			create_view_quality_inspection='''/*
-							from 4 tables
-							for if you wan't to collect quality inspectio by collect weight tables and scrap table
-							*/
-							create view Yv2_quality_inspection as (select distinct s.*,w.number_day_use ,w.shift1_dry_weight1  ,
-									w.shift1_dry_weight2  ,
-									w.shift1_dry_weight3  ,
-									w.shift1_dry_weight4  ,
-									w.shift1_dry_weight5  ,
-									w.shift2_dry_weight1  ,
-									w.shift2_dry_weight2  ,
-									w.shift2_dry_weight3  ,
-									w.shift2_dry_weight4  ,
-									w.shift2_dry_weight5  ,
-									w.average_dry_weight ,
-									w.dryweight_deviation_validation 
-										
-							from  yt2_dry_weight w
-							full join Yt2_scrap s
-							on s.year=w.year and s.month=w.month and s.day=w.day and s.part_id=w.part_id
-							)'''
-			cursor.execute(create_view_cycle_time)
-
-			create_view_quality_inspection_item='''/* for collect quality_inspection as yv_parts_items  */
-						create view Yv2_quality_inspection_items as (select 
-							q.year, q.month ,q.day ,q.mold_id,q.item_id,q.machine_id,
-							round(sum(q.shift1_dry_weight1),1)as shift1_dry_weight1,
-							round(sum(q.shift1_dry_weight2),1)as shift1_dry_weight2,
-							round(sum(q.shift1_dry_weight3),1)as shift1_dry_weight3,
-							round(sum(q.shift1_dry_weight4),1)as shift1_dry_weight4,
-							round(sum(q.shift1_dry_weight5),1)as shift1_dry_weight5,
-							round(sum(q.shift2_dry_weight1),1)as shift2_dry_weight1,
-							round(sum(q.shift2_dry_weight2),1)as shift2_dry_weight2,
-							round(sum(q.shift2_dry_weight3),1)as shift2_dry_weight3,
-							round(sum(q.shift2_dry_weight4),1)as shift2_dry_weight4,
-							round(sum(q.shift2_dry_weight5),1)as shift2_dry_weight5,
-							round(sum(q.average_dry_weight),1)as average_dry_weight,
-							
-							round(sum(q.shift1_production_cards),0)as shift1_production_cards,
-							round(sum(q.shift1_prod_page),0)as shift1_prod_page,
-							round(sum(q.shift1_proper_production),0)as shift1_proper_production,
-							round(sum(q.shift1_scrabe_shortage),0)as shift1_scrabe_shortage,
-							round(sum(q.shift1_scrabe_roll),0)as shift1_scrabe_roll,
-							round(sum(q.shift1_scrabe_broken),0)as shift1_scrabe_broken,
-							round(sum(q.shift1_scrabe_curve),0)as shift1_scrabe_curve,
-							round(sum(q.shift1_scrabe_shrinkage),0)as shift1_scrabe_shrinkage,
-							round(sum(q.shift1_scrabe_dimentions),0)as shift1_scrabe_dimentions,
-							round(sum(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
-							round(sum(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
-							round(sum(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
-							round(sum(q.shift1_scrabe_No_parts),0)as shift1_scrabe_No_parts,
-							round(sum(q.shift1_scrabe_no_item),0)as shift1_scrabe_no_item,
-							round(sum(q.shift1_production_by_set),0)as shift1_production_by_set,
-							round(sum(q.shift1_all_production),0)as shift1_all_production,
-							
-							round(sum(q.shift2_production_cards),0)as shift2_production_cards,
-							round(sum(q.shift2_prod_page),0)as shift2_prod_page,
-							round(sum(q.shift2_proper_production),0)as shift2_proper_production,
-							round(sum(q.shift2_scrabe_shortage),0)as shift2_scrabe_shortage,
-							round(sum(q.shift2_scrabe_roll),0)as shift2_scrabe_roll,
-							round(sum(q.shift2_scrabe_broken),0)as shift2_scrabe_broken,
-							round(sum(q.shift2_scrabe_curve),0)as shift2_scrabe_curve,
-							round(sum(q.shift2_scrabe_shrinkage),0)as shift2_scrabe_shrinkage,
-							round(sum(q.shift2_scrabe_dimentions),0)as shift2_scrabe_dimentions,
-							round(sum(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
-							round(sum(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
-							round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
-							round(sum(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
-							round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
-							round(sum(q.shift2_production_by_set),0)as shift2_production_by_set,
-							round(sum(q.shift2_all_production),0)as shift2_all_production,
-							
-							round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-							round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-							round(sum(q.sum_scrabe_broken_bySet),0)as sum_scrabe_broken_bySet,
-							round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-							round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-							round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-							round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-							round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-							round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-							round(sum(q.sum_scrabe_no_parts),0)as sum_scrabe_no_parts,
-							round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-							
-							round(sum(q.gross_production),0)as gross_production,
-							round(avg(q.number_day_use),0)as number_day_use,
-							
-							from yv2_quality_inspection q
-							
-							
-							group by q.year, q.month ,q.day ,q.mold_id,q.item_id,q.machine_id
-							
-						order by q.year, q.month , q.day
-								)'''
-			conn.commit()
 	def import_infrastructure(self):	
 		print("_______test_________")
 		print(self.folder)
@@ -1659,118 +1390,6 @@ class Block():
 			print("import delivery records")
 
 							
-							
-	def import_data_3tables(self):
-			import_Yt2_cycle_time='''copy yt2_cycle_time (
-				year ,
-				month ,
-				day ,
-				machine_id ,
-				rat_actually ,
-				rat_validation ,
-				c_t_deviation,
-				shift1_c_t1  ,
-				shift1_c_t2,
-				shift2_c_t1  ,
-				shift2_c_t2  ,
-				c_t_actually  ,
-				mold_id  ,
-				part_id,
-				item_id,
-				number_day_use
-				id
-				)
-				FROM '%s\ct_input.csv' (FORMAT csv, HEADER, DELIMITER ',');'''%self.folder
-			cursor.execute(import_Yt2_cycle_time)
-			
-			import_Yt2_scrap='''copy Yt2_scrap(
-				id,
-				year ,
-				month ,
-				day ,
-				machine_id ,
-				item_id ,
-				mold_id ,
-				product_parts,
-				part_id  ,
-				shift1_production_cards  ,
-				shift1_prod_page  ,
-				shift1_proper_production  ,
-				shift1_scrabe_shortage  ,
-				shift1_scrabe_roll  ,
-				shift1_scrabe_broken  ,
-				shift1_scrabe_curve  ,
-				shift1_scrabe_shrinkage  ,
-				shift1_scrabe_dimentions  ,
-				shift1_scrabe_weight  ,
-				shift1_scrabe_dirty  ,
-				shift1_scrabe_cloration  ,
-				shift1_scrabe_No_parts  ,
-				shift1_scrabe_no_item  ,
-				shift1_production_by_set  ,
-				shift1_all_production  ,
-				shift2_production_cards  ,
-				shift2_prod_page  ,
-				shift2_proper_production  ,
-				shift2_scrabe_shortage  ,
-				shift2_scrabe_roll  ,
-				shift2_scrabe_broken  ,
-				shift2_scrabe_curve  ,
-				shift2_scrabe_shrinkage  ,
-				shift2_scrabe_dimentions  ,
-				shift2_scrabe_weight  ,
-				shift2_scrabe_dirty  ,
-				shift2_scrabe_cloration  ,
-				shift2_scrabe_No_parts  ,
-				shift2_scrabe_no_item  ,
-				shift2_production_by_set  ,
-				shift2_all_production  ,
-				
-				sum_scrabe_shortage_bySet  ,
-				sum_scrabe_roll_bySet  ,
-				sum_scrabe_broken_bySet  ,
-				sum_scrabe_curve_bySet  ,
-				sum_scrabe_shrinkage_bySet  ,
-				sum_scrabe_dimentions_bySet  ,
-				sum_scrabe_weight_bySet  ,
-				sum_scrabe_dirty_bySet  ,
-				sum_scrabe_cloration_bySet  ,
-				sum_scrabe_No_parts  ,
-				number_scrab_by_item  ,
-				
-				
-				gross_production,
-				scrap_percent_by_item  ,
-				Items_patchsNumbers,
-				parts_patchsNumbers 
-				)	FROM '%s\database\scrap_input.csv' (FORMAT csv, HEADER, DELIMITER ',');'''%self.folder
-			cursor.execute(import_Yt2_scrap)
-			
-			import_Yt2_dry_weight='''copy Yt2_dry_weight (id,year ,
-				month ,
-				day ,
-				machine_id ,
-				item_id,
-				number_day_use ,
-				mold_id ,
-				product_parts,
-				shift1_dry_weight1  ,
-				shift1_dry_weight2  ,
-				shift1_dry_weight3  ,
-				shift1_dry_weight4  ,
-				shift1_dry_weight5  ,
-				shift2_dry_weight1  ,
-				shift2_dry_weight2  ,
-				shift2_dry_weight3  ,
-				shift2_dry_weight4  ,
-				shift2_dry_weight5  ,
-				average_dry_weight ,
-				dryweight_deviation_validation ,
-				part_id
-			FROM '%a\weight_input.csv' (FORMAT csv, HEADER, DELIMITER ',');'''%self.folder
-			cursor.execute(import_Yt2_dry_weight)
-			conn.commit()
-			print("import 3 tabels for day")
 	#__________________________________________	___________________________________________________#
 	#show monthly reports	
 	def show_monthly_report_ar(self,year,month):
@@ -2549,113 +2168,37 @@ class Block():
 		else:
 			cursor.execute(SQL1, (year,))	
 	
+	def show_water_content_daily(self,year,month,day,to_day):#report depend of mold structure
+			SQL1='''select %s '''%sql_quality_water_content
+			sql2=SQL1+''' from yv_molds_report_daily 
+			
+			 where year = %s  ''' %year 
+			sql3=sql2+'''and month =%s 
+						group by year ,month,day,machine_id,mold_id,item_id,
+						product_name,standard_dry_weight,standard_dry_weight_from,
+						standard_dry_weight_to order by day'''  %month
+
+			if type(month) == tuple:   
+				cursor.execute(sql3, month)	
+			else:
+				cursor.execute(sql3,(month,))
+
 		#______________________________second section___________________________________________#
 		#this install as dublicate data for 2nd way to analysis data by create separated tables then collect it
 			#
 
-	def show__3tables_reports(self,year,month):
-			daily_ct_reports='''select * from yt2_cycle_time c
-					left join yv_item_specifications m
-					on c.part_id=m.id_part;	'''
-			cursor.execute(daily_ct_reports)
-			monthly_ct_report='''with quary_molds_report as (select 
-								c.year, c.month ,c.mold_id,p.mold_name,c.item_id,p.product_name,p.product_code,p.standard_rate_hour
-								,p.c_t_standard_per_second,
-								round(avg(c.rat_actually),0)as rat_actually,
-								round(avg(c.c_t_actually),0)as c_t_actually
-								
-								
-							from  Yv2_cycle_time c
-							
-							left join yv_items_master p
-							on c.mold_id=p.mold_id
-							left join yt_machine_list m
-							on m.id=c.machine_id
-							
-								group by c.year, c.month ,c.mold_id,p.mold_name,c.item_id,p.product_name,p.product_code,p.standard_rate_hour
-								,p.c_t_standard_per_second
-								
-							order by c.year, c.month 
-									)
-							select * from quary_molds_report'''
-
-			cursor.execute(monthly_ct_reports)
-			daily_report='''with view_quality_inspection as (select * from Yv2_quality_inspection q
-									full join  Yv2_cycle_time c
-									on c.year=q.year and c.month=q.month and c.day=q.day and c.mold_id=q.mold_id
-									left join yv_item_specifications p
-									on q.part_id=p.id_part 
-									left join yt_machine_list m
-									on m.id=q.machine_id
-									where q.year=2019 and q.month=3
-									order by q.year, q.month ,q.day ,q.machine_id asc
-											)
-									select * from view_quality_inspection'''
-			cursor.execute(daily_report)
-			monthly_report='''with quary_molds_report as (select 
-										q.year, q.month ,q.mold_id,q.item_id,p.product_name,p.product_code,p.standard_dry_weight
-										,p.standard_dry_weight_from,p.standard_dry_weight_to,p.standard_rate_hour
-										,p.c_t_standard_per_second,m.scrabe_standard,
-										round(avg(q.average_dry_weight),1)as average_dry_weight,
-										round(avg(q.rat_actually),0)as rat_actually,
-										round(avg(q.c_t_actually),0)as c_t_actually,
-										
-										round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-										round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-										round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-										round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-										round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-										round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-										round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-										round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-										round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									
-										round(sum(q.sum_scrabe_no_parts),0)as sum_scrabe_no_parts,
-										round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-										
-										round(sum(q.gross_production),0)as gross_production,
-										round(count(q.number_day_use),0)as number_day_use
-																
-							
-						from Yv_quality_inspection_items q
-									
-									
-									left join yv_items_master p
-									on q.item_id=p.item_id 
-									left join yt_machine_list m
-									on m.id=q.machine_id
-									
-										group by q.year, q.month ,q.mold_id,q.item_id,p.product_name,p.product_code,p.standard_dry_weight
-										,p.standard_dry_weight_from,p.standard_dry_weight_to,p.standard_rate_hour
-										,p.c_t_standard_per_second,m.scrabe_standard
-										
-									order by q.year, q.month 
-											)
-									select * from quary_molds_report'''
-			cursor.execute(monthly_report)			
-
-	def export_daily_report_3tables(self,year,month):
-		SQL1='''	with view_quality_inspection as (select * from Yt_quality_inspection q
-				
-					full join  Yv_cycle_time c
-					on c.year=q.year and c.month=q.month and c.day=q.day and c.mold_id=q.mold_id
-					left join yv_item_specifications p
-					on q.part_id=p.id_part 
-					left join yt_machine_list m
-					on m.id=q.machine_id
-					
-					order by q.year, q.month ,q.day asc
-							)
-					select * from view_quality_inspection
-					where q.year=(%s)'''%year
-
-		SQL2 = SQL1+' and month = (%s);'
+class PgAccess():
+	'''
+		this class for manage data base structre
 		
-		if type(month) == tuple:   
-			cursor.execute(SQL2, month)	
-		else:
-			cursor.execute(SQL2, (month,))	
-
+	'''		
+	def __init__(self,folder,table):
+		self.folder=folder
+		self.table=table
+	def head_show_monthly_Baches(self):
+				#with psycopg2.connect(DSN) as connection:
+			SQL1="select column_name from information_schema.columns where table_schema = 'public' and table_name='%s'"%table
+			cursor.execute(SQL1)	
 	def updateTable(self,table,column, day,item_id,newValue):
 		
 			print("Table Before updating record ")
@@ -2677,63 +2220,70 @@ class Block():
 			cursor.execute(SQL3_row, (item_id, ))
 
 			sql_update_query = """Update yt_quality set where year=2020 and month=2 and day =5 and item_id=%s"""
-			#cursor.execute(sql_update_query, (day, item_id))
-			#connection.commit()
-			#count = cursor.rowcount
-			#print(count, "Record Updated successfully ")
-			#print("Table After updating record ")
-			#sql_select_query = """select * from mobile where id = %s"""
-			#cursor.execute(sql_select_query, (mobileId,))
-			#record = cursor.fetchone()
-			#print(record)
-		#except (Exception, psycopg2.Error) as error:
-		#	print("Error in update operation", error)
-		#finally:
-			# closing database connection.
-		#	if (conn):
-		#		cursor.close()
-		#		conn.close()
-		#		print("PostgreSQL connection is closed")
 			
 	def delete_rows(self,table,year,month,*args):
 			
-				SQL_table=' DELETE from %s '%table
-				SQL_year=SQL_table+'where year=%s'%year
-				SQL_month=SQL_year+' and month =%s '%month
-									
-				
-				#SQL3_row=SQL3_day+'and item_id=%s;
-				if args == ():   			#for filter for specific items
-					cursor.execute(SQL_month)
-				else:
-					#day=int(args)
-					SQL_day=SQL_month+' and day =%s '%args
-
-					cursor.execute(SQL_day)	
-				#cursor.execute(SQL3_row, (args, ))
-				
-				conn.commit()
-				print("deleting rows for day "+str(args) ,"in month: "+str(month),"in year:"+str(year))
-	
-	#for notice in conn.notices:
-	#	print (notice)
-#except (Exception, psycopg2.Error) as error:
-#print("Error in Delete operation", error)
-#finally:
-#closing database connection.
-#		if (conn):
-#			cursor.close()
-#			conn.close
-#print("PostgreSQL connection is closed")
-class DatabaseTables():
-	'''
-		this class for manage data base structre
+		SQL_table=' select from %s '%table
+		SQL_year=SQL_table+'where year=%s'%year
+		SQL_month=SQL_year+' and month =%s '%month
+							
 		
-	'''		
-	def __init__(self,folder,table):
-		self.folder=folder
-		self.table=table
-	def head_show_monthly_Baches(self):
-				#with psycopg2.connect(DSN) as connection:
-			SQL1="select column_name from information_schema.columns where table_schema = 'public' and table_name='%s'"%table
-			cursor.execute(SQL1)	
+		#SQL3_row=SQL3_day+'and item_id=%s;
+		if args == ():   			#for filter for specific items
+			cursor.execute(SQL_month)
+		else:
+			#day=int(args)
+			SQL_day=SQL_month+' and day =%s '%args
+
+			cursor.execute(SQL_day)	
+			
+		conn.commit()
+		print("deleting rows for day "+str(args) ,"in month: "+str(month),"in year:"+str(year))
+
+	#manage tables
+	def select_tables(self,table,column_name,*args):
+		
+		sql1=' select %s '%column_name
+		sql2=sql1+'from %s'%table
+		
+		print (cursor.mogrify(sql2))
+		cursor.execute(sql2)	
+		conn.commit()
+		
+	def alterTybe_columns(self,table,column_name,datatype,*args):
+			
+		SQL_table=' alter table %s '%table
+		SQL2=SQL_table+'ALTER COLUMN %s'%column_name
+		SQL3=SQL2+' %s '%datatype
+							
+		cursor.execute(SQL3)	
+		
+		conn.commit()
+		print("alter table "+str(table) ,"column "+str(column_name)," to data type"+str(datatype))
+
+	def alterName_columns(self,table,column_name,newName,*args):
+			
+		SQL_table=' alter table %s '%table
+		SQL2=SQL_table+'rename COLUMN %s'%column_name
+		SQL3=SQL2+' to %s '%newName
+							
+		cursor.execute(SQL3)	
+		
+		conn.commit()
+		print("alter table "+str(table) ,"column "+str(column_name),"to:"+str(newName))
+	
+	def add_columns(self,table,column_name,dataType,*args):
+		SQL_table=' alter table %s '%table
+		SQL2=SQL_table+'add COLUMN %s'%column_name
+		SQL3=SQL2+' %s '%dataType
+							
+		cursor.execute(SQL3)	
+		
+		conn.commit()
+		print("add column "+str(column_name) ,"in table name "+str(table),"table tybe "+str(dataType))
+	def drop_columns(self,table,column_name):
+		SQL_table=' alter table %s '%table
+		SQL2=SQL_table+'drop COLUMN %s'%column_name
+		cursor.execute(SQL2)	
+		conn.commit()
+		print("drop column "+str(column_name) ,"in table name "+str(table))
