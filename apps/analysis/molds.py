@@ -415,10 +415,11 @@ class Group():
         last_year=mold_analysis4["year"].max()
         mold_analysis_bool4=mold_analysis4["year"]==last_year
         mold_analysis3=mold_analysis4[mold_analysis_bool4]
+        print("_________daily report___________for yearr________",last_year,type(last_year))       
         last_month=mold_analysis3["month"].max()
         mold_analysis_bool3=mold_analysis3["month"]==last_month
         mold_analysis2=mold_analysis3[mold_analysis_bool3]
-
+        print("_________daily report___________for month________",last_month,type(last_month))       
         dateDay3=mold_analysis2['date_day'].tail(1)
         #convert selecting to value
         dateDay2=dateDay3.values
@@ -427,12 +428,7 @@ class Group():
         #convert list  to string
         dateDay = ' '.join([str(elem) for elem in dateDay1]) 
 
-
         day=int(dateDay.split("/",2)[1])
-
-        mold_day = mold_analysis2["day"]==day
-
-        #mold_day=mold_day.head()
 
         mold_days=mold_analysis2["day"].count()
         day=int(dayDb)

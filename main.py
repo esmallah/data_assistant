@@ -297,9 +297,9 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         
         if self.checkBox_analysis_DB_deleteRows.isChecked():
             if str(self.comboBox_analysisDb_deleteType.currentText())=="day" : #for chose any type of files
-                PgAccess.delete_rows(self,"yt_quality",year,month,day)
+                PgAccess.delete_rows(self,"yt_quality",year,month,day,monthly=False)
             if str(self.comboBox_analysisDb_deleteType.currentText())=="month" : #for chose any type of files
-                PgAccess.delete_rows(self,"yt_quality",year,month)
+                PgAccess.delete_rows(self,"yt_quality",year,month,monthly=True)
                     #create restructure
         #install infrastructure
         if self.checkBox_analysis_DB_instal_infrastrucure.isChecked():

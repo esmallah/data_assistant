@@ -447,7 +447,7 @@ class Select():
         
         #daily input
     
-        ws1=wb["items_daily"]
+        ws1=wb["input_daily"]
         Block.get_daily_dataentry_items(self,year,month,args)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
@@ -859,7 +859,7 @@ class Select():
         
         wb = xl.load_workbook(self.readfile1)
         #daily input
-        ws1=wb["input"]
+        ws1=wb["input_daily"]
         Block.get_daily_dataentry_items_yearly(self,year,month,day,to_day)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index

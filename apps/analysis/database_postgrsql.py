@@ -28,7 +28,7 @@ pc__server="host='localhost' dbname='Block' user='postgres' password='Aa1234567#
 network_server="host='AHMED-RASHAD' dbname='Block' user='youssri.ahmed' password='Aa1234567#'"
 network_server_test="host='AHMED-RASHAD' dbname='Block_test' user='youssri.ahmed' password='Aa1234567#'"
 
-conn_string = network_server_test
+conn_string = network_server
 table="yt_quality"
 
 # print the connection string we will use to connect
@@ -149,7 +149,7 @@ sql_quality_reporty_yearly_item='''
 								,standard_dry_weight_to
 								,round(avg(average_wet_weight),1)as average_wet_weight
 								,round(avg(average_dry_weight),1)as average_dry_weight
-								
+								,round(avg(average_wet_weight)-avg(standard_dry_weight)/avg(standard_dry_weight),1) as wet_average_percent
 								,standard_rate_hour as standard_rate_hour
 								,c_t_standard_per_second c_t_standard_per_second
 								,round(avg(rat_actually),0)as rat_actually
@@ -1013,7 +1013,11 @@ class Block():
 								,p.standard_dry_weight,p.standard_dry_weight_from,p.standard_dry_weight_to,
 								
 								/*weight and ct record*/									
-							
+								round(avg(q.shift1_wet_weight1),0)as shift1_wet_weight1,
+								round(avg(q.shift1_wet_weight2),0)as shift1_wet_weight2,
+								round(avg(q.shift1_wet_weight3),0)as shift1_wet_weight3,
+								round(avg(q.shift1_wet_weight4),0)as shift1_wet_weight4,
+								round(avg(q.shift1_wet_weight5),0)as shift1_wet_weight5,
 								round(avg(q.shift1_dry_weight1),0)as shift1_dry_weight1,
 								round(avg(q.shift1_dry_weight2),0)as shift1_dry_weight2,
 								round(avg(q.shift1_dry_weight3),0)as shift1_dry_weight3,
@@ -1021,6 +1025,11 @@ class Block():
 								round(avg(q.shift1_dry_weight5),0)as shift1_dry_weight5,
 								round(avg(q.shift1_c_t1),0)as shift1_c_t1,
 								round(avg(q.shift1_c_t2),0)as shift1_c_t2,
+								round(avg(q.shift2_wet_weight1),0)as shift2_wet_weight1,
+								round(avg(q.shift2_wet_weight2),0)as shift2_wet_weight2,
+								round(avg(q.shift2_wet_weight3),0)as shift2_wet_weight3,
+								round(avg(q.shift2_wet_weight4),0)as shift2_wet_weight4,
+								round(avg(q.shift2_wet_weight5),0)as shift2_wet_weight5,
 								round(avg(q.shift2_dry_weight1),0)as shift2_dry_weight1,
 								round(avg(q.shift2_dry_weight2),0)as shift2_dry_weight2,
 								round(avg(q.shift2_dry_weight3),0)as shift2_dry_weight3,
@@ -2221,15 +2230,16 @@ class PgAccess():
 
 			sql_update_query = """Update yt_quality set where year=2020 and month=2 and day =5 and item_id=%s"""
 			
-	def delete_rows(self,table,year,month,*args):
+	def delete_rows(self,table,year,month,*args,monthly=True):
 			
-		SQL_table=' select from %s '%table
+		SQL_table=' DELETE from %s '%table
 		SQL_year=SQL_table+'where year=%s'%year
 		SQL_month=SQL_year+' and month =%s '%month
-							
-		
+				
 		#SQL3_row=SQL3_day+'and item_id=%s;
-		if args == ():   			#for filter for specific items
+		#if args == ():   			#for filter for specific items
+		#	cursor.execute(SQL_month)
+		if monthly:
 			cursor.execute(SQL_month)
 		else:
 			#day=int(args)

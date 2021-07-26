@@ -1,10 +1,8 @@
 # control web pages by pyautogui or sellenium
-import os
 import webbrowser
 import socket
 import pyautogui
 import time
-import pyperclip
 
 class Connection():
     '''
@@ -61,7 +59,7 @@ class AutomatedFilling():
                 
     def past_form(itemSelection,standard_spec=True,vertically=True,insert_name=True,fill_data=True):
         #self.itemSelection=itemSelection
-        from random import randint,seed
+        from random import randint
         time.sleep(0.007*60)
         
         #lock at the object
@@ -122,7 +120,7 @@ class AutomatedFilling():
         MFZ66236702=[LG65UM73LR_high,LG65UM73LR_low]
 
         LG43UP77="MFZ67209801"#LG43UP77
-        LG43UP77_high=[1044,131,204,181,1044,131,201,138.16]
+        LG43UP77_high=[1044,131,204,181,1044,131,206,138.16]
         LG43UP77_low=[1037,127,199,159.3,1037,127,201,121.39]
         MFZ67209801=[LG43UP77_high,LG43UP77_low]
 
@@ -221,7 +219,7 @@ class AutomatedFilling():
             for s in range(lg_range):
                 #i=1
                 for i in range(printRange):
-                    seed(i)
+                    
                     #distribution=specification_no_high[s]
                     low_value=int(round(specification_no_low[s],0))+1 #approximat to higher value and convert to in
                     high_value=int(specification_no_high[s])
