@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'e:\programing\python\a1leader\y_data_assistant\ui\interface2.ui'
+# Form implementation generated from reading ui file 'e:\programing\python\a1leader\y_data_assistant\ui\authority.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -1678,16 +1678,25 @@ class Ui_MainWindow(object):
         self.frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_6.setObjectName("frame_6")
         self.pushButton = QtWidgets.QPushButton(self.frame_6)
-        self.pushButton.setGeometry(QtCore.QRect(140, 100, 101, 23))
+        self.pushButton.setGeometry(QtCore.QRect(170, 30, 101, 23))
         self.pushButton.setObjectName("pushButton")
-        self.butRestart = QtWidgets.QPushButton(self.tab_controlBanel)
-        self.butRestart.setGeometry(QtCore.QRect(510, 20, 71, 23))
+        self.textEdit_9 = QtWidgets.QTextEdit(self.frame_6)
+        self.textEdit_9.setGeometry(QtCore.QRect(60, 90, 81, 41))
+        self.textEdit_9.setObjectName("textEdit_9")
+        self.pushButton_2 = QtWidgets.QPushButton(self.frame_6)
+        self.pushButton_2.setGeometry(QtCore.QRect(160, 100, 101, 23))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.butRestart = QtWidgets.QPushButton(self.frame_6)
+        self.butRestart.setGeometry(QtCore.QRect(300, 60, 71, 23))
         self.butRestart.setStyleSheet("background-color: rgb(161, 161, 171);\n"
 "selection-background-color: rgb(77, 145, 215);\n"
 "font: 75 9pt \"MS Shell Dlg 2\";\n"
 "selection-background-color: rgb(85, 85, 255);\n"
 "color: rgb(255, 255, 255);")
         self.butRestart.setObjectName("butRestart")
+        self.textEdit_8 = QtWidgets.QTextEdit(self.tab_controlBanel)
+        self.textEdit_8.setGeometry(QtCore.QRect(173, 150, 81, 41))
+        self.textEdit_8.setObjectName("textEdit_8")
         self.tabWidget_left.addTab(self.tab_controlBanel, "")
         self.button_config = QtWidgets.QPushButton(self.centralwidget)
         self.button_config.setGeometry(QtCore.QRect(93, 0, 65, 31))
@@ -2096,7 +2105,7 @@ class Ui_MainWindow(object):
         self.mainToolBar.addAction(self.actionClose)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget_left.setCurrentIndex(2)
+        self.tabWidget_left.setCurrentIndex(5)
         self.tabSubLeader.setCurrentIndex(1)
         self.tabSPFilter.setCurrentIndex(10)
         self.gridTabWidget.setCurrentIndex(1)
@@ -2858,15 +2867,16 @@ class Ui_MainWindow(object):
         self.but_web_filler.setText(_translate("MainWindow", "web filler"))
         self.tabWidget_left.setTabText(self.tabWidget_left.indexOf(self.tabWebControl), _translate("MainWindow", "Import"))
         self.tab_controlBanel.setAccessibleName(_translate("MainWindow", "tab_reporting"))
-        self.pushButton.setText(_translate("MainWindow", "create database"))
-        self.butRestart.setText(_translate("MainWindow", "restart"))
+        self.pushButton.setText(_translate("MainWindow", "user name"))
+        self.pushButton_2.setText(_translate("MainWindow", "pasword"))
+        self.butRestart.setText(_translate("MainWindow", "login"))
         self.tabWidget_left.setTabText(self.tabWidget_left.indexOf(self.tab_controlBanel), _translate("MainWindow", "Reporting"))
         self.button_AI_leader.setText(_translate("MainWindow", "the Leader"))
         self.buttonKnowledge.setText(_translate("MainWindow", "Knowledge"))
         self.button_analysis.setText(_translate("MainWindow", "Analysis"))
         self.buttonFiles.setText(_translate("MainWindow", "Files"))
         self.buttonWeb.setText(_translate("MainWindow", "Web"))
-        self.button_reporting.setText(_translate("MainWindow", "Control Banel"))
+        self.button_reporting.setText(_translate("MainWindow", "login"))
         self.groupBox_2.setTitle(_translate("MainWindow", "LG items details"))
         item = self.table_web_itemsDetails.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "0"))

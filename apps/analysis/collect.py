@@ -8,7 +8,7 @@ import os
 import numpy as np
 import glob
 
-from .database_postgrsql import Block,cursor
+from .database_postgrsql import Block,cursor,Material
 #import database_postgrsql as database
 
 
@@ -284,9 +284,7 @@ class Select():
         day=False , its mean the selection for month
         '''
         os.chdir(self.folder)   # for work in the same folder
-        
-        
-        
+
         #filter master data
         if masterData:
             master_data2=pd.read_excel(self.readfile1,"items_spec")  
@@ -304,27 +302,27 @@ class Select():
         
         #filter inspection data
         daily_data3=pd.read_excel(self.readfile1,"input")
+        material_data3=pd.read_excel(self.readfile1,"material")
         #filter the time
         last_year=daily_data3["year"].max()
-        daily_data_bool2=daily_data3["year"]==last_year
-        daily_data2=daily_data3[daily_data_bool2]
+        
+
+        daily_data2=daily_data3[daily_data3["year"]==last_year]
+        daily_data_material2=material_data3[material_data3["year"]==last_year]
         last_month=daily_data2["month"].max()
-        daily_data_bool=daily_data2["month"]==int(monthDb)
-        daily_data1=daily_data2[daily_data_bool]
+
+        daily_data1=daily_data2[daily_data2["month"]==int(monthDb)]
+        daily_data_material1=daily_data_material2[daily_data_material2["month"]==int(monthDb)]
         last_day=daily_data1["day"].max()
         
         if day:
-            daily_data_bool=daily_data1["day"]==int(dayDb)
-            daily_analysis=daily_data1[daily_data_bool]
+            daily_analysis=daily_data1[daily_data1["day"]==int(dayDb)]
+            daily_analysis_materia=daily_data_material1[daily_data_material1["day"]==int(dayDb)]
         else:    
-            daily_analysis=daily_data1[daily_data_bool]
-        #daily_data_bool=daily_data1["day"]==1
-        
-        #daily_analysis=daily_data1#if you change to select all records show this month and hide all previous until dily_data3
-        #daily_analysis=daily_data3#if you change to select all records show all data and hide all previous until dily_data3
-              
+            daily_analysis=daily_data1
+            daily_analysis_materia=daily_data_material1
+        #daily_analysis_materia=material_data3      #for get all rows
         #filter master data
-        
             #filter weights and scrap table
         productions_isnpection=daily_analysis[columns_quality]
          #filter ct tables
@@ -348,13 +346,13 @@ class Select():
             infr_data.to_excel(writer,"machines_list", index=False)
         else:
             productions_isnpection.to_excel(writer,"quality_records", index=False)        
+            daily_analysis_materia.to_excel(writer,"materials", index=False)        
             dry_weight2.to_excel(writer,"weight_input", index=False)
             molds_rate2.to_excel(writer,"ct_input", index=False)        
             dry_weight2.to_excel(writer,"weight_input", index=False)
             scrap2.to_excel(writer,"scrap_input", index=False)
         writer.save()    
 
-        
         print ("completed catch data  for ")
         print("year",daily_analysis["year"].unique())
         print("month",daily_analysis["month"].unique())
@@ -371,15 +369,18 @@ class Select():
         df=pd.read_excel("input_to_csv.xlsx")
         if quality_records:
             pd.read_excel("input_to_csv.xlsx", "quality_records").to_csv("quality_records.csv", index=False)#input_to_database.csv
+            pd.read_excel("input_to_csv.xlsx", "materials").to_csv("materials.csv", index=False)#input_to_database.csv
+
         if material:
-            df=pd.read_excel("material.xlsx")
-            pd.read_excel("material.xlsx", "Sheet1").to_csv("material.csv", index=False)#input_to_database.csv
+            df=pd.read_excel("materials.xlsx")
+            pd.read_excel("materials.xlsx", "Sheet1").to_csv("materials.csv", index=False)#input_to_database.csv
         if masterData:
             pd.read_excel("input_to_csv.xlsx", "machines_list").to_csv("machines.csv", index=False)#input_to_database.csv
             pd.read_excel("input_to_csv.xlsx", "molds_list").to_csv("molds_list.csv", index=False)#input_to_database.csv
             pd.read_excel("input_to_csv.xlsx", "parts_list").to_csv("parts_list.csv", index=False)#input_to_database.csv
         else:  
             pd.read_excel("input_to_csv.xlsx", "quality_records").to_csv("quality_records.csv", index=False)#input_to_database.csv
+            pd.read_excel("input_to_csv.xlsx", "materials").to_csv("materials.csv", index=False)#input_to_database.csv
 #_________________ to copy rang to another
     #File to be copied
         print("data is ready for upload to data base")
@@ -465,6 +466,26 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1
+        #material by silo
+        
+        ws_bach=wb["material_daily"]
+        Material.material_bySilo_daily(self,year,month,day,to_day)
+        get_data=cursor.fetchall()
+        #get_data.set_index("serial", inplace=True) #put index
+        
+        #get_data=pd.DataFrame(get_data["id"])
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws_bach.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
         #Bache input
         ws_bach=wb["batches"]
         Block.show_monthly_Baches(self,year,month)
@@ -534,7 +555,7 @@ class Select():
         #monthly output
         if monthly:
             ws2=wb["output"]
-            Block.show_monthly_report_ar(self,year,month)
+            Block.show_monthly_report_ar(self,year,month,day,to_day)
             rows = cursor.fetchall()
             r = 3  # start at third row
             c = 1 # column 'a'
@@ -782,7 +803,7 @@ class Select():
                 r += 1
             #for material
             ws1=wb["materials"]
-            Block.materialToPorduct(self,year)
+            Material.materialToPorduct(self,year)
             get_data=cursor.fetchall()
             #get_data.set_index("serial", inplace=True) #put index
             

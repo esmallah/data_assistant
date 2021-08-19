@@ -384,7 +384,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 print("convert csv quality for month:",month," year:",year)
 
             if str(self.comboBox_analysisDb_convertCsv.currentText())=="material":
-                quality1.convert_csv(material=True)
+                quality1.convert_csv(material=True,masterData=False)
             if str(self.comboBox_analysisDb_convertCsv.currentText())=="masterData":
                 quality1.select_data(year,month,day,masterData=True,quality_records=False)   #true for select alst day , false for select all month
                 quality1.convert_csv(masterData=True,quality_records=False)
@@ -466,7 +466,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         qc_daily=Group(analysisInput,"QC_daily_v2.xlsx","input","253","254",1,31)
         #if self.checkBox_analsys_monthlyreport.isChecked():
         if self.checkBox_analysis_summaryReport.isChecked():
-            print ("checkBox_analysis_summaryReport",analysisInput)
+            print ("checkBox_analysis_summaryReport start",analysisInput)
             qc_daily.daily_molds(year,month,day)#____________________________________daily report______________________________
         if self.checkBox_analysis_spc.isChecked():
             item_id=int(self.comboBox_analysisDb_analysis_spc.currentText())    

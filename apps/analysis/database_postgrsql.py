@@ -174,7 +174,8 @@ sql_quality_reporty_yearly_item='''
 								round(sum(production_weight_kg),1)as production_weight_kg,
 								round(count(number_day_use),0)as number_day_use,
 								round(sum(number_scrab_by_item)/avg(rat_actually),1) as HoursScrap,
-								round(avg(mold_avalibility),2)as "mold_avalibility"
+								round(avg(mold_avalibility),2)as "mold_avalibility",
+								customer_name
 								
 '''
 sql_quality_reporty_yearly_mold='''year, mold_id,mold_name
@@ -211,16 +212,34 @@ sql_quality_water_content='''
 				year,
 				month,
 				day,
-				machine_id,
 				item_id,
 				mold_id
-				,standard_dry_weight
+				,product_name,
+				product_code
+				machine_id,
+				standard_dry_weight
 				,standard_dry_weight_from
 				,standard_dry_weight_to
 				,round(avg(average_wet_weight),1)as average_wet_weight
 				,round(avg(average_dry_weight),1)as average_dry_weight
 				
 				
+					'''
+sql_material_daily='''
+				date_day,
+				shift,
+				silo_number,
+				line_number,
+				material
+				,density,
+				standard_denisty_from,
+				standard_denisty_to,
+				actually_denisty_1,
+				actually_denisty_2
+				,actually_denisty_3
+				,midian_actually_denisty
+				,min_actually_denisty
+				,max_actually_denisty
 					'''
 class Block():
 	'''
@@ -639,9 +658,25 @@ class Block():
 				date_day date,
 				shift int,
 				machine_id int,
-				material varchar(50),
+				silo_number int,
+				line_number int,
+				ingoing_date date,
+				material varchar(50)/*mateiral by density*/,
+				density int,
+				row_material_name varchar(50),
+				standard_denisty_from numeric,
+				standard_denisty_to numeric,
+				actually_denisty_1 numeric,
+				actually_denisty_2 numeric,
+				actually_denisty_3 numeric,
+				min_actually_denisty numeric,
+				midian_actually_denisty numeric,
+				max_actually_denisty numeric,
 				quantity numeric null,
-				density int);'''
+				id_DayUnique varchar(50) UNIQUE /*for validate not upload any duplicate rows*/
+
+
+				 );'''
 			cursor.execute(create_table_material)
 			conn.commit()
 			print("complete install material records")
@@ -654,7 +689,7 @@ class Block():
 							product_code varchar(50),
 							product_name varchar(50),
 							unit varchar(50),,
-							warehouse_type varchar(50),,
+							warehouse_type varchar(50),
 							gross_quantity int,
 							customer_code int,
 							customer_name varchar(50),,
@@ -1138,7 +1173,7 @@ class Block():
 								,p.standard_dry_weight_to
 								,round(avg(q.average_wet_weight),1)as average_wet_weight
 								,round(avg(q.average_dry_weight),1)as average_dry_weight
-								,round(avg(average_wet_weight)-avg(p.standard_dry_weight)/avg(p.standard_dry_weight),1) as wet_average_percent
+								,round((avg(average_wet_weight)-avg(p.standard_dry_weight))/avg(p.standard_dry_weight),1) as wet_average_percent
 								,p.standard_rate_hour as standard_rate_hour
 								,p.c_t_standard_per_second c_t_standard_per_second
 								,round(avg(q.rat_actually),0)as rat_actually
@@ -1352,17 +1387,32 @@ class Block():
 		conn.commit()
 	def import_material_records(self):
 		SQL1='''copy yt_material(
-				year,
-				month,
-				day,
-				date_day,
-				shift,
-				machine_id,
-				material,
-				quantity,
-				density)
+			year,
+			month,
+			day,
+			date_day,
+			shift,
+			machine_id,
+			silo_number,
+			line_number,
+			material,
+			ingoing_date,
+			density/*density starndards*/,
+			standard_denisty_from,
+			standard_denisty_to,
+			actually_denisty_1,
+			actually_denisty_2,
+			actually_denisty_3,
+			min_actually_denisty,
+			midian_actually_denisty,
+			max_actually_denisty,
+			quantity,
+			id_DayUnique,
+			row_material_name
+			
+			)
 			'''
-		SQL2=SQL1+" FROM '%s\material.csv' (FORMAT csv, HEADER, DELIMITER ',');"%self.folder
+		SQL2=SQL1+" FROM '%s\materials.csv' (FORMAT csv, HEADER, DELIMITER ',');"%self.folder
 		
 		cursor.execute(SQL2)
 
@@ -1401,7 +1451,7 @@ class Block():
 							
 	#__________________________________________	___________________________________________________#
 	#show monthly reports	
-	def show_monthly_report_ar(self,year,month):
+	def show_monthly_report_ar(self,year,month,day,to_day):
 		SQL1='select * from yv_items_molds_report where year = (%s) '%year
 		
 		SQL2 = SQL1+' and month=(%s);'
@@ -1955,14 +2005,14 @@ class Block():
 			where year = (%s) '''%year
 	
 
-		SQL3=SQL2+''' group by year ,scrabe_standard, mold_id,item_id,product_name
+		SQL3=SQL2+''' group by year ,customer_name,scrabe_standard, mold_id,item_id,product_name
 			,product_code,standard_dry_weight,standard_dry_weight_from,standard_dry_weight_to,standard_rate_hour,c_t_standard_per_second order by year;
 			'''
 		
 		if type(args) == tuple:   
 			cursor.execute(SQL3)
 		else:  
-			SQL_mold = SQL2+''' and item_id =(%s) group by year ,scrabe_standard, mold_id,item_id,product_name
+			SQL_mold = SQL2+''' and item_id =(%s) group by year ,customer_name,scrabe_standard, mold_id,item_id,product_name
 			,product_code,standard_dry_weight,standard_dry_weight_from,standard_dry_weight_to,standard_rate_hour,c_t_standard_per_second order by year;'''
 			cursor.execute(SQL_mold, (args, ))
 
@@ -2078,6 +2128,75 @@ class Block():
 		else:
 			cursor.execute(SQL2, (month,))	
 	
+	def deliveryToCustomers_week(self,year):#report depend of mold structure
+			#report depend of mold structure
+		SQL1='''with material_product as (select
+							
+							year,
+							month,
+							weeksNumbers,
+							permission_number,
+							product_code,
+							product_name,
+							unit,
+							warehouse_type,
+							gross_quantity,
+							customer_code,
+							customer_name,
+							sale_order,
+							invoice_numbers,
+							driver_name,
+							freighter,
+							deliverad_place,
+							planned_date,
+							date_date
+							
+
+				
+							from delivery_to_customers
+							
+							group by year, month,material,scrabe_standard,item_id,product_name,product_code,standard_dry_weight_from,standard_dry_weight_to
+							,standard_rate_hour,c_t_standard_per_second,density
+							)
+							select distinct t1.* 
+							from material_product t1
+							
+							where year = (%s)
+							order by year , month  , material,product_name'''%year
+		
+		if type(year) == tuple:   
+			cursor.execute(SQL1, year)	
+		else:
+			cursor.execute(SQL1, (year,))	
+	
+	def show_water_content_daily(self,year,month,day,to_day):#report depend of mold structure
+			SQL1='''select %s '''%sql_quality_water_content
+			sql2=SQL1+''' from yv_molds_report_daily 
+			
+			 where year = %s  ''' %year 
+			sql3=sql2+'''and month =%s 
+						group by year ,month,day,machine_id,mold_id,item_id,product_code,
+						product_name,standard_dry_weight,standard_dry_weight_from,
+						standard_dry_weight_to order by day'''  %month
+
+			if type(month) == tuple:   
+				cursor.execute(sql3, month)	
+			else:
+				cursor.execute(sql3,(month,))
+
+		#______________________________second section___________________________________________#
+		#this install as dublicate data for 2nd way to analysis data by create separated tables then collect it
+			#
+class Material():
+	def material_bySilo_daily(self,year,month,day,to_day):#report depend of mold structure
+			#report depend of mold structure
+		SQL0='''select %s  '''%sql_material_daily
+		SQL1=SQL0+''' from yt_material q where year = (%s)'''%year
+		SQL2=SQL1+'''and month= (%s) '''%month
+		SQL3=SQL2+'''and day=(%s) order by date_day,shift,silo_number,material
+				 '''%day
+	
+		cursor.execute(SQL3)	
 	def materialToPorduct_daily(self,year):#report depend of mold structure
 			#report depend of mold structure
 		SQL1='''select * from yv_material_product_daily q
@@ -2136,66 +2255,6 @@ class Block():
 			cursor.execute(SQL1, year)	
 		else:
 			cursor.execute(SQL1, (year,))	
-	def deliveryToCustomers_week(self,year):#report depend of mold structure
-			#report depend of mold structure
-		SQL1='''with material_product as (select
-							
-							year,
-							month,
-							weeksNumbers,
-							permission_number,
-							product_code,
-							product_name,
-							unit,
-							warehouse_type,
-							gross_quantity,
-							customer_code,
-							customer_name,
-							sale_order,
-							invoice_numbers,
-							driver_name,
-							freighter,
-							deliverad_place,
-							planned_date,
-							date_date
-							
-
-				
-							from delivery_to_customers
-							
-							group by year, month,material,scrabe_standard,item_id,product_name,product_code,standard_dry_weight_from,standard_dry_weight_to
-							,standard_rate_hour,c_t_standard_per_second,density
-							)
-							select distinct t1.* 
-							from material_product t1
-							
-							where year = (%s)
-							order by year , month  , material,product_name'''%year
-		
-		if type(year) == tuple:   
-			cursor.execute(SQL1, year)	
-		else:
-			cursor.execute(SQL1, (year,))	
-	
-	def show_water_content_daily(self,year,month,day,to_day):#report depend of mold structure
-			SQL1='''select %s '''%sql_quality_water_content
-			sql2=SQL1+''' from yv_molds_report_daily 
-			
-			 where year = %s  ''' %year 
-			sql3=sql2+'''and month =%s 
-						group by year ,month,day,machine_id,mold_id,item_id,
-						product_name,standard_dry_weight,standard_dry_weight_from,
-						standard_dry_weight_to order by day'''  %month
-
-			if type(month) == tuple:   
-				cursor.execute(sql3, month)	
-			else:
-				cursor.execute(sql3,(month,))
-
-		#______________________________second section___________________________________________#
-		#this install as dublicate data for 2nd way to analysis data by create separated tables then collect it
-			#
-
 class PgAccess():
 	'''
 		this class for manage data base structre

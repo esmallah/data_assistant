@@ -20,9 +20,10 @@ pyrcc5 maps.qrc -o maps_rc.py
 
 for activate virusal environment
 source ../env/Scripts/activate
-source activate env_leader   
+source activate env_leader
 python main.py
 
+conda init
 conda activate env_leader   
 
 if not activate conda restart your texteditor as adminstrator

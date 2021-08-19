@@ -1,7 +1,12 @@
 #test road map
 #un upload dublicate data
 #the same value to each value by more one process
-
+'''
+for test discovery
+batches sheet comprartibe by input_daily sheet 
+    if batches > input_daily 
+    if batches < input_daily there are error in date of start or 
+'''
 import unittest
 
 from analysis import Block,cursor,DatabaseTables

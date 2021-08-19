@@ -176,259 +176,30 @@ class Group():
         print("for the days")
         print(daily_analysis["day"].unique())
         writer.save()
-
-    def daily(self,*day):
-        os.chdir(self.folder)
-        mold_analysis4= pd.read_excel(self.readfile,self.readsheet)
-        last_year=mold_analysis4["year"].max()
-        mold_analysis_bool4=mold_analysis4["year"]==last_year
-        mold_analysis3=mold_analysis4[mold_analysis_bool4]
-        last_month=mold_analysis3["month"].max()
-        mold_analysis_bool3=mold_analysis3["month"]==last_month
-        mold_analysis2=mold_analysis3[mold_analysis_bool3]
-        mold_day=mold_analysis2["day"].max()
-        mold_days=mold_analysis2["day"].count()
-        daily_analysis1_bool=mold_analysis2["day"]==mold_day
-        daily_analysis1=mold_analysis2[daily_analysis1_bool]
-        
-        #for xps report
-        xps_analysis4= pd.read_excel(self.readfile,self.column1)
-        last_year_xps=mold_analysis4["year"].max()
-        mold_analysis_bool4=xps_analysis4["year"]==last_year_xps
-        
-        xps_analysis3=xps_analysis4[mold_analysis_bool4]
-        last_month_xps=mold_analysis3["month"].max()
-        xps_analysis_bool3=xps_analysis3["month"]==last_month_xps
-        xps_analysis2=xps_analysis3[xps_analysis_bool3]
-
-        xps3=xps_analysis2[["year","month","day","date","line_no","density_average","gross_production_metre",'proper_production_metre',"scrap_density","scrap_dimention","scrap_cracs","scrap_color"]]
-
-        #validate input 
-        
-        #the production on xps not huge
-                
-        xps_day=xps3["day"].max()
-
-        xps_analysis1_bool=xps3["day"]==xps_day
-        xps_analysis1=xps3[xps_analysis1_bool]        
-        
-        #validatd data####
-            #check the day is right
-        if mold_day!=xps_day :
-            print("the date is wrong kinldy review the date of input for molds and xps")
-
-            exit
-            #check the data is logically
-                # check weight 
-        #if daily_analysis1['average_dry_weight']>daily_analysis1['standard_dry_weight_to']*1.02:
-         #   exit
-        #if daily_analysis1['average_dry_weight']<daily_analysis1['standard_dry_weight_from']-daily_analysis1['standard_dry_weight_from']*1.02:
-          #  exit
-                #check ct
-        #if daily_analysis1['c_t_actually']>daily_analysis1['c_t_standard_per_second']*1.02:
-           # exit
-                #check scrap
-        #if average_dry_wight < standard_avaerage_   
-        #check the ct is repeating correctly for the same mold
-        #for daily_analysis1["id_molds"]
-         #   if []
-            #fetch molds
-            #
-        #validation from tow sources
-            #past source
-            #new soruce
-        #summary_report
-        report=daily_analysis1.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","c_t_standard_per_second","standard_rate_hour","average_dry_weight","rat_actually","c_t_actually","rat_validation"].mean()
-        
-        mold_count=report["rat_actually"].count()
-        
-        #cycle timpe report
-        c_t=report[["c_t_standard_per_second","standard_rate_hour","rat_actually","rat_validation","c_t_actually"]]
-        c_t_nonconfomity=c_t[c_t['rat_actually']*1.05<c_t['standard_rate_hour']]
-        c_t_nonconfomity_count=c_t_nonconfomity["rat_actually"].count()
-        c_t_nonconfomity["c_t_nonconfomity_count"]=c_t_nonconfomity_count
-        ct_ok=mold_count-c_t_nonconfomity_count
-        
-        c_t_nonconfomity["ct_ok"]=ct_ok
-
-        if mold_count==0:  # for ignor impty index error
-            c_t_nonconfomity=pd.DataFrame(index=[0])
-        if mold_count>1:  # for ignor impty index error
-            c_t_nonconfomity=pd.DataFrame()
-        #weight report
-        wieght=report[["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"]]
-        #filter low weithrs
-        weight_nonconfomity_low=wieght[wieght['average_dry_weight']<wieght["standard_dry_weight_from"]] #add column tocount number of non conformity product
-        
-        #add rows for filter high weight
-            #fix error for zero ncr
-        #if daily_analysis1["dryweight_deviation_validation"]==0 
-        weight_nonconfomity_high=wieght[wieght['average_dry_weight']>wieght["standard_dry_weight_to"]]
-        #weight_nonconfomity=pd.DataFrame(index=[["machine_id","mold_name"],0])
-        #weight_nonconfomity=pd.DataFrame(index=[wieght["machine_id","mold_name"]])
-        weight_nonconfomity=weight_nonconfomity_high
-        weight_nonconfomity_count=weight_nonconfomity["average_dry_weight"].count()
-        if weight_nonconfomity_count==0:  # for ignor impty index error        
-            weight_nonconfomity=pd.DataFrame(index=[0])
-        if weight_nonconfomity_count>1:  # for ignor impty index error        
-            weight_nonconfomity=pd.DataFrame()
-        
-        #weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_low)    #for append the light weights
-        weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_high)    #for append the heavy weights
-        
-        weight_nonconfomity['weight_nonconfomity_count']=weight_nonconfomity_count
-        weight_ok=mold_count-weight_nonconfomity_count
-        weight_nonconfomity['weight_ok']=weight_ok
-
-        #screap report
-
-        
-        #scap by parts
-        scrap5=daily_analysis1[["machine_type","machine_id","product_name_by_parts",'number_scrab_by_item','gross_production_by_set','gross_production',"number_day_use"]]
-        
-        scrap_newmachines=scrap5[scrap5["machine_type"]=="new_machine"]
-        scrap_oldmachines=scrap5[scrap5["machine_type"]=="old_machine"]
-        
-        scrap_part_new=scrap_newmachines["number_scrab_by_item"].sum()
-        production_part_new=scrap_newmachines["gross_production"].sum()
-        
-        scrap_percent_new=scrap_part_new/production_part_new * 100
-        scrap_part=scrap5["number_scrab_by_item"].sum()
-        production_set=scrap5["gross_production"].sum()
-        scrap_percent=scrap_part/production_set * 100
-        scrap4=scrap5[scrap5["number_day_use"]==1]      #for filter the using machines only
-        scrap2=scrap4[scrap_percent<scrap4['scrabe_standard']]
-        scrap=scrap2[scrap2["gross_production"]>scrap2["number_scrab_by_item"]]
-        #scrap2=scrap3[scrap3["gross_production_by_set"]> (scrap3["number_scrab_by_item"]+1)] # for filter any machines didn't create production
-        scrap["scrab_parts_new_machine"]=scrap_part_new
-        
-        scrap["production_parts_new_machine"]=production_part_new
-        scrap["production_parts_all"]=production_set
-        scrap["scrap_percent_new_machine"]=scrap_percent_new
-        scrap["scrap_percent_all"]=scrap_percent
-        scrap["scrab_parts_all"]=scrap_part
-        scrap_nonconfomity_count=scrap["number_scrab_by_item"].count()
-        if scrap_nonconfomity_count==0:  # for ignor impty index error
-            scrap=pd.DataFrame(index=[0])
-        #xps=xps_analysis1.groupy(["line_no"]).agg({'proper_production_metre':'sum', 'density_average':'mean'})
-        xps2=xps_analysis1.groupby(["line_no"])['gross_production_metre',"scrap_density","scrap_cracs","scrap_dimention","scrap_color"].sum()
-        xps2["density_average"]=xps_analysis1.groupby(["line_no"])['density_average'].mean()
-        xps2["gross_proper_2lines"]=xps2["gross_production_metre"].sum()
-
-        #summesion scrab
-        sum_scrab_density=xps2["scrap_density"].sum()
-        sum_scrab_cracs=xps2["scrap_cracs"].sum()
-        sum_scrab_dimention=xps2["scrap_dimention"].sum()
-        sum_scrab_color=xps2["scrap_color"].sum()
-        
-        xps2["sum_scrap"]=sum_scrab_density+sum_scrab_cracs+sum_scrab_dimention+sum_scrab_color
-
-        #corm columns for select cell in excel shee
-        xps=xps2[["gross_production_metre","scrap_density","scrap_cracs","scrap_dimention","scrap_color","density_average","gross_proper_2lines","sum_scrap"]]
-        
-        #extract excel report
-        writer_report = pd.ExcelWriter("QC_molds_daily_archive.xlsx")
-        mold_analysis2.to_excel(writer_report,"input", index=False)
-        writer_report.save()
-
-        writer = pd.ExcelWriter("day_analysis2.xlsx")
-
-        weight_nonconfomity.to_excel(writer,"weight_ncr")
-        
-        c_t_nonconfomity.to_excel(writer,"c.t")
-        
-        scrap.to_excel(writer,"scrap")
-        #report.to_excel(writer,"mold_report")
-        daily_analysis1.to_excel(writer,"input_molds", index=False)
-        xps.to_excel(writer,"xps")
-        xps_analysis1.to_excel(writer,"input_xps", index=False)
-        writer.save()
-        
-        #extract daily excel report by formating
-
-        wb = load_workbook("format_QC_reports.xlsx")
-        ws=sheet = wb.get_sheet_by_name('daily')
-        #ws=wb.create_sheet(mold_day)
-        
-        #print(ws2)
-        # grab the active worksheet
-        #ws2=wb.copy_worksheet(1)
-                
-        # Data can be assigned directly to cells
-        ws['b1'] = mold_day            #day for molds report
-        ws['c1'] = last_month    #month for molds report
-        ws['d1'] = last_year    #year for molds report
-        ws['A4'] = scrap_percent            #scrap on all machie
-        ws['B4'] = scrap_percent_new    #scrap on new macine
-        
-        
-        ws['a7'] =c_t_nonconfomity.iloc[0][6]                #ct pass 
-        ws['b7'] =c_t_nonconfomity.iloc[0][5]   #ct not acceptable
-        
-        ws['a10'] = weight_nonconfomity.iloc[0][5]             #weight pass 
-        ws['b10'] =weight_nonconfomity.iloc[0][4]            #weights not acceptable
-        #_______
-        #name of ncr product for weight
-        rows = weight_nonconfomity
-
-        r = 10  # start at third row
-        c = 3 # column 'c'
-        for row in rows:       
-            ws.cell(row=r, column=c).value = row
-            c += 1 # Column 'b'
-            c = 1
-            r += 1
-        #______xps report
-        ws['b11'] = xps_day            #day for xpscreport
-        ws['c11'] = last_month_xps    #month for xps report
-        ws['d11'] = last_year_xps    #year for xps report
-        ws['b12']=xps.iloc[0][6]#density xps line1
-                
-        #ws['b13'] = xps.iloc[1][6]              #density xps line2
-        #ws['b14'] = xps.iloc[0][8]               #scrap and row material in tow lines
-        ws['b15'] = xps.iloc[0][8]               #scap in lines 1
-        #ws['a16'] = xps.iloc[1][10]              #scrap in line2
-        ws['b17'] = xps.iloc[0][1]               #gross production in line1
-        #ws['b18'] = xps.iloc[1][1]              #gross production in line2
-        ws['b19'] = xps.iloc[0][7]     #all gross production
-        # Save the file
-        
-        wb.save("examples.xlsx")
-        #extract monthly excel report by formating
-
-        wb2 = load_workbook("format_QC_reports.xlsx")
-        ws2 = wb.get_sheet_by_name('input')
-
-        #verification for day of analysis
-        wb2.save("examples2.xlsx")
-        #print ("daily report for molds")
-        #print(self.column2)
-        #print(self.writefile)
-        #print("for the days")
-        #print(daily_analysis1["day"].unique())
-        #print("analysis for day to xps") 
-        #print(xps_day)                     
+                    
     def daily_molds(self,yearDb,monthDb,dayDb):
         os.chdir(self.folder)
         mold_analysis4= pd.read_excel(self.readfile,self.readsheet)
+        print("the excel sheet was read")
         '''must be in excel sheet (input) not showing null value for not mistacks in average result'''
-        last_year=mold_analysis4["year"].max()
+        last_year=int(mold_analysis4["year"].max())
+        print("_________daily report___________for yearr________",last_year,type(last_year))       
         mold_analysis_bool4=mold_analysis4["year"]==last_year
         mold_analysis3=mold_analysis4[mold_analysis_bool4]
-        print("_________daily report___________for yearr________",last_year,type(last_year))       
-        last_month=mold_analysis3["month"].max()
+        
+        last_month=int(mold_analysis3["month"].max())
         mold_analysis_bool3=mold_analysis3["month"]==last_month
         mold_analysis2=mold_analysis3[mold_analysis_bool3]
+        
+        #dateDay3=mold_analysis2['date_day'].tail(1)
         print("_________daily report___________for month________",last_month,type(last_month))       
-        dateDay3=mold_analysis2['date_day'].tail(1)
         #convert selecting to value
-        dateDay2=dateDay3.values
+        #dateDay2=dateDay3.values
         #convert numpy ndarray to list
-        dateDay1 = dateDay2.tolist()
+        #dateDay1 = dateDay2.tolist()
         #convert list  to string
-        dateDay = ' '.join([str(elem) for elem in dateDay1]) 
-
-        day=int(dateDay.split("/",2)[1])
+        #dateDay = ' '.join([str(elem) for elem in dateDay1]) 
+        #day=int(dateDay.split("/",2)[1])
 
         mold_days=mold_analysis2["day"].count()
         day=int(dayDb)
@@ -437,7 +208,6 @@ class Group():
         #validate input 
         
 
-        print("_________daily report___________for day________",day,type(day))       
 
         #for fix nan error in ct
         daily_analysis = daily_analysis1.dropna(subset=['c_t_actually'])#remove all numric data
@@ -445,7 +215,9 @@ class Group():
         daily_analysis["c_t_actually"]=daily_analysis["c_t_actually"].astype(int)#Last convert values to ints:
 
         report_forCt=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","c_t_standard_per_second","standard_rate_hour","average_dry_weight","rat_actually","c_t_actually","rat_validation"].mean()
-        report=daily_analysis1.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
+        report=daily_analysis1.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight","dryweight_deviation_validation"].mean()
+        
+
         print("___________report   data",report)
         #report=pd.DataFrame()
         
@@ -473,9 +245,9 @@ class Group():
         c_t_nonconfomity["ct_ok"]=ct_ok
         #weight report
        
-        wieght3=report
-        wieght2=wieght3[wieght3["average_dry_weight"]<wieght3["standard_dry_weight_from"]]#filter nonconformity data
-        wieght=wieght2[wieght2["average_dry_weight"]>wieght2["standard_dry_weight_to"]]#filter nonconformity data
+        
+        wieght2=report
+        wieght=wieght2[wieght2["dryweight_deviation_validation"]<1]#filter nonconformity data
         print("___________weight   data",wieght)
         #filter low weithrs
         weight_nonconfomity_low=wieght[wieght['average_dry_weight']<wieght["standard_dry_weight_from"]] #add column tocount number of non conformity product
@@ -493,7 +265,7 @@ class Group():
         if weight_nonconfomity_count>1:  # for ignor impty index error        
             weight_nonconfomity=pd.DataFrame()##error we muast select index of groupby
         
-        #weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_low)    #for append the light weights
+        weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_low)    #for append the light weights
         weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_high)    #for append the heavy weights
         
         weight_nonconfomity['weight_nonconfomity_count']=weight_nonconfomity_count
@@ -503,9 +275,11 @@ class Group():
         ##screap report by parts##_________
                 #scap by parts
         #report=pd.DataFrame()
-        scrap5=daily_analysis1[["machine_type","machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"number_day_use","mold_name","product_name","scrabe_standard"]]
+        scrap5=daily_analysis1[["machine_type","machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"number_day_use","mold_name","scrap_weight_kg","production_weight_kg","product_name","scrabe_standard"]]
+        
         #scrap5=report.append(scrap5)#we need fix rong calucate sacrap percent for 
         
+
         scrap_newmachines=scrap5[scrap5["machine_type"]=="new_machine"]
         scrap_oldmachines=scrap5[scrap5["machine_type"]=="old_machine"]
         
@@ -519,13 +293,13 @@ class Group():
         scrap_percent=scrap_part/production_set * 100
         scrap4=scrap5[scrap5["number_day_use"]==1]      #for filter the using machines only
         
-        
+    
         scrap3=scrap4[scrap4["scrap_percent_by_item"]>scrap4["scrabe_standard"]]
         
         scrap2=scrap3[scrap3["gross_production"]>scrap3["number_scrab_by_item"]]# for filter any machines didn't create production
         
         scrap=scrap2
-        
+        print("_______________scrap____________________",scrap)
         scrap["scrab_parts_new_machine"]=scrap_part_new
         
         scrap["production_parts_new_machine"]=production_part_new
@@ -539,8 +313,8 @@ class Group():
         '''must be in excel sheet (input) not showing null value for not mistacks in average result'''
         scrap_molds=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
         scrap_molds["gross_production"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['gross_production'].sum()
-        #scrap_molds["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['scrap_weight_kg'].sum()
-        #scrap_molds["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['gross_production'].sum()
+        scrap_molds["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['scrap_weight_kg'].sum()
+        scrap_molds["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['production_weight_kg'].sum()
         scrap_molds["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
         production_set_molds=scrap_molds["gross_production"].sum()
         scrap_set_molds=scrap_molds["number_scrab_by_item"].sum()
@@ -551,8 +325,8 @@ class Group():
         
         scrap_items["gross_production"]=scrap5.groupby(["machine_type","machine_id","product_name"])['gross_production'].sum()
         scrap_items["number_day_use"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_day_use'].mean()
-        #scrap_items["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['scrap_weight_kg'].sum()
-        #scrap_items["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['production_weight_kg'].sum()
+        scrap_items["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['scrap_weight_kg'].sum()
+        scrap_items["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['production_weight_kg'].sum()
         scrap_items["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
         scrap_items["percent"]=((scrap_items["number_scrab_by_item"])/(scrap_items["gross_production"]))*100
 #        molds_newmachines=scrap_molds.filter(lambda x: x['machine_type']=="new_machine")
@@ -567,13 +341,13 @@ class Group():
         #    scrap=pd.DataFrame(index=[0])
             scrap_nonconfomity=scrap2.groupby(["machine_id","mold_name"])['number_scrab_by_item'].sum()
             #for ignor error when srcap is 0
-            print("_____________test______scrap_______")
-            print(scrap_nonconfomity)
+            
             
         else:
             #if scrap_nonconfomity.datatypt==0:  # for ignor impty index error
             scrap_nonconfomity=pd.DataFrame(index=[0])
             scrap_nonconfomity["mold_name"]=0
+        print("_____________test__________scrap nonconfromity____",scrap_nonconfomity)
         #extract excel report
         writer_report = pd.ExcelWriter("QC_molds_daily_archive.xlsx")
         mold_analysis2.to_excel(writer_report,"input", index=False)
@@ -651,11 +425,24 @@ class Group():
                 c = 3
                 r += 1
         
-        #to select index of columns to weights
+        #to select index of columns to light weights 
         if weight_nonconfomity_count>=1:  # for ignor impty index error        
-            rows = weight_nonconfomity.index
+            rows = weight_nonconfomity_low.index
             #rows = weight_nonconfomity.index
             r = 25  # start at 10th row
+            c = 3 # column 'c'
+            
+            for row in rows:       
+                for item in row:
+                    ws.cell(row=r, column=c).value = item
+                    c += 1 # Column 'd'
+                c = 3
+                r += 1
+        #to select index of columns to hight weights 
+        if weight_nonconfomity_count>=1:  # for ignor impty index error        
+            rows = weight_nonconfomity_high.index
+            #rows = weight_nonconfomity.index
+            r = 35  # start at 10th row
             c = 3 # column 'c'
             
             for row in rows:       
