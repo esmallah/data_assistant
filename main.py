@@ -3,24 +3,29 @@ __copyright__ = 'Copyright (c) 2021'
 __version__ = '1.0.0'
 
 import PyQt5
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5 import QtGui, QtCore
+from PyQt5.QtWidgets import QApplication, QMainWindow,QLabel,QLineEdit,QPushButton,QDialog,QStyle,QSizePolicy,QVBoxLayout,QHBoxLayout
+from PyQt5 import QtGui, QtCore,QtWidgets
 from interface import Ui_MainWindow
+
+from PyQt5.QtCore  import pyqtSlot,QSize
 
 import time
 import os
 import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 class AppWindow(Ui_MainWindow,QMainWindow):  
+    switch_window = QtCore.pyqtSignal(str)
     def __init__(self,parent=None):
         super(AppWindow,self).__init__(parent)
-
+        self.setWindowTitle('Main Window')
         #self.Ui_MainWindow = Ui_MainWindow()
         self.setupUi(self)
         self.signals_control()
         self.show()
         self.deepLearning()
+    def switch(self):
+        self.switch_window.emit(self.line_edit.text())
+
     def signals_control(self):        
         from apps import Connection
         #switchers tabs
@@ -368,7 +373,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         #format_path = os.path.join(format_path2, )
         
         git_database=Select(format_path,"formatQC_molds_monthly.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
-        
+        git_dashboard=Select(format_path,"formatQC_molds_daily.xlsx","output",year,month,'QC_dashboard_v1.xlsx',"Sheet1")
                     #import data
         #import database on share
         quality1=Select(r"\\AHMED-RASHAD\Users\Public\database","QC_daily_v2 - Copy.xlsx","input",year,month,"","")
@@ -376,7 +381,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         if self.checkBox_analysis_toCSV.isChecked()==True:
             if str(self.comboBox_analysisDb_convertCsv.currentText())=="quality_daily" : #for chose any type of files
                 quality1.select_data(year,month,day,day=True,masterData=False)   #true for select alst day , false for select all month
-                quality1.convert_csv(quality_records=True,masterData=False)
+                quality1.convert_csv(quality_records=True,masterData=False,material=False)
                 print("convert csv quality for day:",day," month:",month," year:",year)
             if str(self.comboBox_analysisDb_convertCsv.currentText())=="quality_monthly" : #for chose any type of files
                 quality1.select_data(year,month,day,day=False,masterData=False)
@@ -415,7 +420,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         
         #for daily report
             print("year",type(year),"month",type(month),"day",type(day))
-            git_database.export_report_mothly(dailyReportName,year,month,day,to_day,monthly=False)
+            git_dashboard.export_report_mothly(dailyReportName,year,month,day,to_day,monthly=False)
             print("the daily report has downloaded for day ",day," , month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_monthlyReport.isChecked():
@@ -564,13 +569,87 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         if self.checkBox_FileControl_resizeImage.isChecked():       
             audit=r"C:\Backup\5s_photos\2020-10-5"
             audit.resize_image(audit)
-from PyQt5.QtCore import pyqtSignal,QThread
+
 
 universe_1 = [0 for i in range(512)]
+class Window2(QDialog):
+    def __init__(self, value, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle('Window2')
+        self.setWindowIcon(self.style().standardIcon(QStyle.SP_FileDialogInfoView))
 
+        label1 = QLabel(value)
+        self.button = QPushButton()
+        self.button.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.button.setIcon(self.style().standardIcon(QStyle.SP_ArrowLeft))
+        self.button.setIconSize(QSize(200, 200))
+        
+        layoutV = QVBoxLayout()
+        self.pushButton = QPushButton(self)
+        self.pushButton.setStyleSheet('background-color: rgb(0,0,255); color: #fff')
+        self.pushButton.setText('Click me!')
+        self.pushButton.clicked.connect(self.goMainWindow)
+        layoutV.addWidget(self.pushButton)
+        
+        layoutH = QHBoxLayout()
+        layoutH.addWidget(label1)
+        layoutH.addWidget(self.button)
+        layoutV.addLayout(layoutH)
+        self.setLayout(layoutV)
+
+    def goMainWindow(self):
+        self.cams = Login()
+        self.cams.show()
+        self.close()    
+
+class Login(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.title = "App"
+        self.top = 100
+        self.left = 100
+        self.width = 680
+        self.height = 500
+        self.InitUI()
+
+    def InitUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.top, self.left, self.width, self.height)
+
+        buttonWindow1 = QPushButton('Control Panel', self)
+        buttonWindow1.move(100, 100)
+        buttonWindow1.clicked.connect(self.buttonWindow1_onClick)
+        self.lineEdit1 = QLineEdit("admin page [Window1].", self)
+        self.lineEdit1.setGeometry(250, 100, 400, 30)
+
+        buttonWindow2 = QPushButton('QC Screen', self)
+        buttonWindow2.move(100, 200)
+        buttonWindow2.clicked.connect(self.buttonWindow2_onClick)        
+        self.lineEdit2 = QLineEdit("user page for data entry and get reports [Window2].", self)
+        self.lineEdit2.setGeometry(250, 200, 400, 30)
+        self.show()
+
+    
+    @pyqtSlot()
+    def buttonWindow1_onClick(self):
+        
+        self.cams = AppWindow() 
+        self.cams.show()
+        self.close()
+
+    @pyqtSlot()
+    def buttonWindow2_onClick(self):
+        
+        self.cams = Window2(self.lineEdit2.text()) 
+        self.cams.show()
+        self.close()
+            
+        
+        #self.close()
 def main():
-    app = QApplication([])
-    ex = AppWindow()
+    app = QApplication(sys.argv)
+    #ex = AppWindow()    
+    ex = Login()
     ex.show()
     sys.exit(app.exec_())
 if __name__ == '__main__':

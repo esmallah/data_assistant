@@ -35,6 +35,11 @@ then
 pyinstaller -w main.py
 or if there problems
 pyinstaller main.py
+
+
+but you must be add the formating excel sheet here
+E:\programing\python\a1leader\y_data_assistant\dist\y_data_assistant\apps\analysis\formats
+
  youssri
  estratigy@yahoo.com 
  00201009578537
