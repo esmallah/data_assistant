@@ -589,20 +589,37 @@ class Login(QtWidgets.QWidget):
         self.setWindowTitle(self.title)
         self.setGeometry(self.top, self.left, self.width, self.height)
 
-        buttonWindow1 = QPushButton('Control Panel', self)
-        buttonWindow1.move(100, 100)
-        buttonWindow1.clicked.connect(self.buttonWindow1_onClick)
+        self.buttonWindow1 = QPushButton('Control Panel', self)
+        self.buttonWindow1.move(100, 100)
+        self.buttonWindow1.clicked.connect(self.buttonWindow1_onClick)
         self.lineEdit1 = QLineEdit("admin page [Window1].", self)
         self.lineEdit1.setGeometry(250, 100, 400, 30)
 
-        buttonWindow2 = QPushButton('QC Screen', self)
-        buttonWindow2.move(100, 200)
-        buttonWindow2.clicked.connect(self.buttonWindow2_onClick)        
+        self.buttonWindow2 = QPushButton('QC Screen', self)
+        self.buttonWindow2.move(100, 200)
+        self.buttonWindow2.clicked.connect(self.buttonWindow2_onClick)        
         self.lineEdit2 = QLineEdit("user page for data entry and get reports [Window2].", self)
         self.lineEdit2.setGeometry(250, 200, 400, 30)
+
+
+        self.combo = QtWidgets.QComboBox(self)
+        self.combo.currentIndexChanged.connect(self.change_func)
+        #____for translation
+        self.trans = QtCore.QTranslator(self)
+
+        self.v_layout = QtWidgets.QVBoxLayout(self)
+        self.v_layout.addWidget(self.combo)
+        
+        options = ([('English', ''), ('عربي', 'eng-ar' ),])
+        
+        for i, (text, lang) in enumerate(options):
+            self.combo.addItem(text)
+            self.combo.setItemData(i, lang)
+        self.retranslateUi()
+
         self.show()
 
-    
+
     @pyqtSlot()
     def buttonWindow1_onClick(self):
         
@@ -616,7 +633,26 @@ class Login(QtWidgets.QWidget):
         self.cams = Window2(self.lineEdit2.text()) 
         self.cams.show()
         self.close()
-            
+    #______________________translation
+    @QtCore.pyqtSlot(int)
+    def change_func(self, index):
+        data = self.combo.itemData(index)
+        if data:
+            self.trans.load(data)
+            QtWidgets.QApplication.instance().installTranslator(self.trans)
+        else:
+            QtWidgets.QApplication.instance().removeTranslator(self.trans)
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.LanguageChange:
+            self.retranslateUi()
+        super(Login, self).changeEvent(event)
+
+    def retranslateUi(self):
+        self.buttonWindow1.setText(QtWidgets.QApplication.translate('Login', 'Control Panel'))
+        self.lineEdit1.setText(QtWidgets.QApplication.translate('Login', 'admin page [Window1]'))
+        self.buttonWindow2.setText(QtWidgets.QApplication.translate('Login', 'QC Screen'))
+        self.lineEdit2.setText(QtWidgets.QApplication.translate('Login', 'user page for data entry and get reports [Window2].'))
         
         #self.close()
 def main():
