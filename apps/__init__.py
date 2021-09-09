@@ -1,7 +1,5 @@
 #own app puilding and all andalosy  compy rights is reseved
-from .analysis import Block , cursor,PgAccess,Material
-from .analysis import Unique,Select
-from .analysis import Group
+from .analysis import Block , cursor,PgAccess,Material,MoldsQuality,Unique,Select, Group
 from .files import Convert
 from .files import Names
 from .files import Files_control

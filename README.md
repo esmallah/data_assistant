@@ -36,6 +36,11 @@ pyinstaller -w main.py
 or if there problems
 pyinstaller main.py
 
+
+for translation
+translate what do you want in xls then thype this command
+lrelease eng-ar.ts eng-ar.qm
+
 but you must be add the formating excel sheet here
 E:\programing\python\a1leader\y_data_assistant\dist\y_data_assistant\apps\analysis\formats
 
@@ -47,3 +52,5 @@ application building start in 21 may 2019
 deep learning modue applying in 3/3/2021
 
 its free and updated as we can
+
+for 

@@ -275,7 +275,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         from Lib import ModifyTableDialog
 
     def database_management(self):
-        from apps import Block,PgAccess
+        from apps import Block,PgAccess,MoldsQuality
         
         year=str(self.analysis_DByear.currentText())
         month=str(self.analysis_DBmonth.currentText())
@@ -302,12 +302,19 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             #uninstall infrastructure
             Block.uninstall_infrastrucure("")#choice3
         
+            #uninstall data entry
+        if self.checkBox_analysis_db_uninstall_report_dataentry_views.isChecked():
+            MoldsQuality.uninstall_dataentry_reports(self)
+        if self.checkBox_analysis_db_uninstall_report_dataentry_records.isChecked():
+            MoldsQuality.uninstall_dataentry_views(self)
+        
         if self.checkBox_analysis_DB_deleteRows.isChecked():
             if str(self.comboBox_analysisDb_deleteType.currentText())=="day" : #for chose any type of files
                 PgAccess.delete_rows(self,"yt_quality",year,month,day,monthly=False)
             if str(self.comboBox_analysisDb_deleteType.currentText())=="month" : #for chose any type of files
                 PgAccess.delete_rows(self,"yt_quality",year,month,monthly=True)
                     #create restructure
+        
         #install infrastructure
         if self.checkBox_analysis_DB_instal_infrastrucure.isChecked():
             Block.install_infrastrucure("1")
@@ -328,6 +335,11 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             Block.install_befor_reports_item_master("")
             Block.install_befor_reports_material("")
             Block.install_reports("")
+        if self.checkBox_analysis_DB_instal_report_dataentry_records.isChecked():
+            MoldsQuality.install_tables_machine_loaded(self)
+        if self.checkBox_analysis_DB_instal_report_dataentry_views.isChecked():
+            MoldsQuality.install_views_machine_loaded(self)
+
     #_______________tables Operation_________________________
         old_column=str(self.analsyisDb_columnName.text())
         new_column=str(self.analsyisDb_columnNew.text())
@@ -361,16 +373,23 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         to_day=self.analysis_day_to.currentText()
         analysisInput=str(self.analsyisInputLineEdit.text())
         analysisOutput=str(self.analsyisIOutputLineEdit.text())
-        
+        data_uplaod_local_pc=str(self.analsyisLineEdit_analysisDb_server_address.text())
+        DATAFOLDER_ON_NETWORK=r"\\AHMED-RASHAD\Users\Public\database"
+
         #select date                
         dailyReportName=str(year)+"-"+str(month)+"QC_molds_daily_archive_v3.xlsx"
         monthlyReportName=str(year)+"-"+str(month)+"QC_molds_monthly_v2.xlsx"
-
-        upload_database=Block(r"\\AHMED-RASHAD\Users\Public\database","")
-        
         format_path = os.path.join(BASE_DIR, os.path.normpath(r".\y_data_assistant\apps\analysis\formats"))
-        #format_path = os.path.join(BASE_DIR, os.path.normpath(__file__))
+        #to cahnge folder uploading data
+        if str(self.comboBox_analysisDb_server_select.currentText())=="network" : #for select netowrk server in close site
+            data_store=DATAFOLDER_ON_NETWORK
+        elif str(self.comboBox_analysisDb_server_select.currentText())=="network test" : #for select netowrk server in close site
+            data_store=DATAFOLDER_ON_NETWORK
+        else :
+            data_store=data_uplaod_local_pc
         
+        #format_path = os.path.join(BASE_DIR, os.path.normpath(__file__))
+        upload_database=Block(data_store,"")
         print ("format path",format_path)
         #format_path = os.path.join(format_path2, )
         
@@ -378,23 +397,29 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         git_dashboard=Select(format_path,"formatQC_molds_daily.xlsx","output",year,month,'QC_dashboard_v1.xlsx',"Sheet1")
                     #import data
         #import database on share
-        quality1=Select(r"\\AHMED-RASHAD\Users\Public\database","QC_daily_v2 - Copy.xlsx","input",year,month,"","")
-        quality2=Select(r"\\AHMED-RASHAD\Users\Public\database","input_to_csv.xlsx","Sheet1",year,month,"input_to_database.csv","Sheet1")
+        quality1=Select(data_store,"QC_daily_v2 - Copy.xlsx","input",year,month,"","")
+        quality2=Select(data_store,"input_to_csv.xlsx","Sheet1",year,month,"input_to_database.csv","Sheet1")
         if self.checkBox_analysis_toCSV.isChecked()==True:
             if str(self.comboBox_analysisDb_convertCsv.currentText())=="quality_daily" : #for chose any type of files
                 quality1.select_data(year,month,day,day=True,masterData=False)   #true for select alst day , false for select all month
                 quality1.convert_csv(quality_records=True,masterData=False,material=False)
                 print("convert csv quality for day:",day," month:",month," year:",year)
             if str(self.comboBox_analysisDb_convertCsv.currentText())=="quality_monthly" : #for chose any type of files
-                quality1.select_data(year,month,day,day=False,masterData=False)
-                quality1.convert_csv(quality_records=True,masterData=False)
+                quality1.select_data(year,month,day,day=False,monthly=True,masterData=False)
+                quality1.convert_csv(quality_records=True,masterData=False,material=False)
                 print("convert csv quality for month:",month," year:",year)
-
+            if str(self.comboBox_analysisDb_convertCsv.currentText())=="quality_yearly" : #for chose any type of files
+                quality1.select_data(year,month,day,day=False,monthly=False,yearly=True,masterData=False)
+                quality1.convert_csv(quality_records=True,masterData=False,material=False)
+                print("convert csv quality for month:",month," year:",year)
+            if str(self.comboBox_analysisDb_convertCsv.currentText())=="quality_all" : #for chose any type of files
+                quality1.select_data(year,month,day,day=False,monthly=False,yearly=True,masterData=False)
+                quality1.convert_csv(quality_records=True,masterData=False,material=False)
             if str(self.comboBox_analysisDb_convertCsv.currentText())=="material":
                 quality1.convert_csv(material=True,masterData=False)
             if str(self.comboBox_analysisDb_convertCsv.currentText())=="masterData":
                 quality1.select_data(year,month,day,masterData=True,quality_records=False)   #true for select alst day , false for select all month
-                quality1.convert_csv(masterData=True,quality_records=False)
+                quality1.convert_csv(masterData=True,quality_records=False,material=False)
 
             self.comboBox_analysisDb_convertCsv#for swich on between monthly or day selection
         if self.checkBox_analysis_upload.isChecked():

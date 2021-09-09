@@ -135,9 +135,9 @@ class AutomatedFilling():
         LG65UP77set_low=[1577,152,345,450.7,1577,139,348,446.9]
         MFZ67207701=[LG65UP77set_high,LG65UP77set_low]
 
-        LG65UP81set="MFZ67207601"#lg65UP81set
-        LG65UP81set_high=[1585,213	,351,933.912,1585,199,356,662.949]
-        LG65UP81set_low=[1577,208,345,820.552,1577,195,350,582.479]
+        LG65UP81set="MFZ67207601"#lg65UP81set       #last modification in 9/6/2021
+        LG65UP81set_high=[1585,213,351,1001.3,1585,199,356,662.949]
+        LG65UP81set_low=[1577,208,345,879.8,1577,195,350,582.479]
         MFZ67207601=[LG65UP81set_high,LG65UP81set_low]
 
         LG65UP81Side="MFZ67207602"#lg65UP81sides

@@ -8,7 +8,7 @@ import os
 import numpy as np
 import glob
 
-from .database_postgrsql import Block,cursor,Material
+from .db_reports import Block,cursor,Material
 #import database_postgrsql as database
 
 
@@ -277,7 +277,7 @@ class Select():
         self.writefile=writefile
         self.writesheet=writesheet
 
-    def select_data(self,yearDb,monthDb,dayDb,day=True,masterData=True,quality_records=True):
+    def select_data(self,yearDb,monthDb,dayDb,day=True,monthly=True,yearly=True,masterData=True,quality_records=True):
         print("select data starts")  
         '''to convert excel file to csv for entering to database
         already day is true for select day by day
@@ -315,12 +315,19 @@ class Select():
         daily_data_material1=daily_data_material2[daily_data_material2["month"]==int(monthDb)]
         last_day=daily_data1["day"].max()
         
+        #to select periond of data
         if day:
             daily_analysis=daily_data1[daily_data1["day"]==int(dayDb)]
             daily_analysis_materia=daily_data_material1[daily_data_material1["day"]==int(dayDb)]
-        else:    
+        elif monthly:
             daily_analysis=daily_data1
             daily_analysis_materia=daily_data_material1
+        elif yearly:
+            daily_analysis=daily_data2
+            daily_analysis_materia=daily_data_material2
+        else:    
+            daily_analysis=daily_data3
+            daily_analysis_materia=material_data3
         #daily_analysis_materia=material_data3      #for get all rows
         #filter master data
             #filter weights and scrap table
@@ -438,7 +445,7 @@ class Select():
         #f.close()
 
     def export_report_mothly(self,writerFile,year,month,day,to_day,*args,monthly=True):
-        from .database_postgrsql import Block,cursor
+        from .db_reports import Block,cursor
 
         os.chdir(self.folder)
         inputPath=self.folder+r'\formats'

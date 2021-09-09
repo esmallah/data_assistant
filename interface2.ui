@@ -2345,6 +2345,16 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <property name="text">
+           <string>quality_yearly</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>quality_all</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>material</string>
           </property>
          </item>
@@ -2458,7 +2468,7 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>0</x>
            <y>30</y>
-           <width>141</width>
+           <width>121</width>
            <height>23</height>
           </rect>
          </property>
@@ -2476,7 +2486,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DB_uninstal_infrastructure">
          <property name="geometry">
           <rect>
-           <x>420</x>
+           <x>490</x>
            <y>80</y>
            <width>141</width>
            <height>20</height>
@@ -2495,7 +2505,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DBuninstallRecord">
          <property name="geometry">
           <rect>
-           <x>420</x>
+           <x>490</x>
            <y>40</y>
            <width>151</width>
            <height>20</height>
@@ -2514,7 +2524,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysisDB_unin_masterData">
          <property name="geometry">
           <rect>
-           <x>420</x>
+           <x>490</x>
            <y>20</y>
            <width>121</width>
            <height>20</height>
@@ -2533,7 +2543,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_db_uninstall_report">
          <property name="geometry">
           <rect>
-           <x>420</x>
+           <x>490</x>
            <y>0</y>
            <width>121</width>
            <height>20</height>
@@ -2552,7 +2562,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DB_instal_report">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>340</x>
            <y>0</y>
            <width>91</width>
            <height>16</height>
@@ -2571,7 +2581,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DB_instal_masterData">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>340</x>
            <y>20</y>
            <width>121</width>
            <height>16</height>
@@ -2590,7 +2600,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DB_instal_records">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>340</x>
            <y>40</y>
            <width>91</width>
            <height>16</height>
@@ -2609,7 +2619,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DB_instal_infrastrucure">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>340</x>
            <y>80</y>
            <width>131</width>
            <height>16</height>
@@ -2628,8 +2638,8 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DB_deleteRows">
          <property name="geometry">
           <rect>
-           <x>420</x>
-           <y>110</y>
+           <x>490</x>
+           <y>100</y>
            <width>131</width>
            <height>16</height>
           </rect>
@@ -2961,7 +2971,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DBuninstMaterial">
          <property name="geometry">
           <rect>
-           <x>420</x>
+           <x>490</x>
            <y>60</y>
            <width>151</width>
            <height>20</height>
@@ -2980,7 +2990,7 @@ color: rgb(255, 255, 255);</string>
         <widget class="QCheckBox" name="checkBox_analysis_DB_instalMateial">
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>340</x>
            <y>60</y>
            <width>91</width>
            <height>16</height>
@@ -2996,30 +3006,81 @@ color: rgb(255, 255, 255);</string>
           <string>install material</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_analysisDb_deleteType">
+        <widget class="QCheckBox" name="checkBox_analysis_db_uninstall_report_dataentry_views">
          <property name="geometry">
           <rect>
-           <x>270</x>
-           <y>120</y>
-           <width>101</width>
-           <height>22</height>
+           <x>140</x>
+           <y>60</y>
+           <width>181</width>
+           <height>20</height>
           </rect>
          </property>
-         <item>
-          <property name="text">
-           <string>day</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>month</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>year</string>
-          </property>
-         </item>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>uninstall data entry views</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="checkBox_analysis_DB_instal_report_dataentry_records">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>10</y>
+           <width>141</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>install data enrty views</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="checkBox_analysis_DB_instal_report_dataentry_views">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>30</y>
+           <width>151</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>install data enrty records</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="checkBox_analysis_db_uninstall_report_dataentry_records">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>80</y>
+           <width>181</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>uninstall data entry molds records</string>
+         </property>
         </widget>
        </widget>
        <widget class="QGroupBox" name="groupBox_3">
@@ -3248,6 +3309,69 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9pt; font-weight:72; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;new&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="textEdit_8">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>130</y>
+           <width>104</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9pt; font-weight:72; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;server&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="comboBox_analysisDb_server_select">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>130</y>
+           <width>101</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>network</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>network test</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>local pc</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>remote server</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QLineEdit" name="analsyisLineEdit_analysisDb_server_address">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>150</y>
+           <width>410</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>E:\ProgramData\assistantApplcation\qc_molds\upload_to_database</string>
          </property>
         </widget>
        </widget>
@@ -6111,7 +6235,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>V1.4 © 2021 All right reserved - Youssri Aboelseod estratigy@yahoo.com</string>
+     <string>V1.5 © 2021 All right reserved - Youssri Aboelseod estratigy@yahoo.com</string>
     </property>
    </widget>
    <zorder>label_meanBackground</zorder>
