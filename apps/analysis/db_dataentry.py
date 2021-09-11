@@ -34,18 +34,21 @@ class MoldsQuality():
 		conn.commit()
 		print("complete install machine loaded")
 	def install_views_machine_loaded(self):
-		create_table_quality='''
-				create table yv_load_machine (
-				id serial primary key,
-				date_day date,
-
-				machine_id int,
-				mold_id int,
-				factory  varchar(50)				
-				from yt_load_machine 
-					left join yv_item_specifications s
-					on q.mold_id=s.mold_id
+		create_view_quality='''
+				create view yv_load_machine as(select 
+				l.date_day ,
+				m.name,
+				mo.mold_name ,
+				l.factory		
+				from yt_load_machine l
+				left join Yt_molds_list s
+				on l.mold_id=s.mold_id
+				left join yt_machine_list m
+				on m.id = l.machine_id
+				left join Yt_molds_list mo
+				on mo.mold_id=l.mold_id
+					
 				);'''
-		cursor.execute(create_table_quality)
+		cursor.execute(create_view_quality)
 		conn.commit()
 		print("complete install machine loaded")

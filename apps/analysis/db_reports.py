@@ -348,7 +348,7 @@ class Block():
 			conn.commit()
 			
 	def install_infrastrucure(self):
-			create_table_machine_list='''create table yt_machine_list (id int primary key,scrabe_standard numeric , machine_type varchar(50),place varchar(50),low_size varchar(50) null,high_size varchar(50));'''
+			create_table_machine_list='''create table yt_machine_list (id int primary key,name varchar(50),scrabe_standard numeric , machine_type varchar(50),place varchar(50),low_size varchar(50) null,high_size varchar(50) ,machineStatus boolean);'''
 			cursor.execute(create_table_machine_list)
 			conn.commit()
 			print("complete inistall infrastructure data")
@@ -1196,7 +1196,7 @@ class Block():
 	def import_infrastructure(self):	
 		print("_______test_________")
 		print(self.folder)
-		import_yt_machine_list ='''copy yt_machine_list (id,scrabe_standard,machine_type,place ,low_size,high_size)
+		import_yt_machine_list ='''copy yt_machine_list (id,name,scrabe_standard,machine_type,place ,low_size,high_size,machineStatus)
 		FROM '%s\machines.csv' (FORMAT csv, HEADER, DELIMITER ',');'''%self.folder
 		
 		cursor.execute(import_yt_machine_list)

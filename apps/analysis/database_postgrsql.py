@@ -18,16 +18,16 @@ __version__ = '0.0.1'
 
 #!/usr/bin/python
 import psycopg2
+import sys
 
-#try:
-
-	#connect to share database_______________
+conn = None
+#connect to share database_______________
 #try:
 pc__server="host='localhost' dbname='Block' user='postgres' password='admin'"#connect to data base form my device
 network_server="host='AHMED-RASHAD' dbname='Block' user='youssri.ahmed' password='Aa1234567#'"
 network_server_test="host='AHMED-RASHAD' dbname='Block_test' user='youssri.ahmed' password='Aa1234567#'"
 remote_server="host='185.65.207.126'  dbname='aeraeg_insutech' user='aeraeg_postgres'	password='qhserp12345#' "
-conn_string = network_server
+conn_string = pc__server
 table="yt_quality"
 
 # print the connection string we will use to connect
@@ -41,8 +41,18 @@ conn = psycopg2.connect(conn_string)
 cursor = conn.cursor()
 
 #if (conn):
-#	psss
+	#psss
 #else:
-	#conn_string = pc__server
-	#	cursor.close()
-	#	conn.close
+#	conn_string = pc__server
+#		cursor.close()
+#		conn.close
+'''
+except psycopg2.DatabaseError, e:
+	print ('Error %s' % e)
+	sys.exit(1)
+finally:
+	if conn:
+		cursor.close()
+		conn.close()
+T
+'''

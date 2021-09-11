@@ -3041,7 +3041,7 @@ color: rgb(255, 255, 255);</string>
           <string notr="true">color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>install data enrty views</string>
+          <string>install data enrty records</string>
          </property>
         </widget>
         <widget class="QCheckBox" name="checkBox_analysis_DB_instal_report_dataentry_views">
@@ -3060,7 +3060,7 @@ color: rgb(255, 255, 255);</string>
           <string notr="true">color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>install data enrty records</string>
+          <string>install data enrty views</string>
          </property>
         </widget>
         <widget class="QCheckBox" name="checkBox_analysis_db_uninstall_report_dataentry_records">
