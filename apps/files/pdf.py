@@ -1,5 +1,6 @@
 import os
-import win32com.client   #pip install -U pypiwin32
+import win32com.client   #pip install -U pypiwin32 or conda install pywin32
+
 import re
 import shutil
 from time import strftime

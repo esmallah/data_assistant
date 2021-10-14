@@ -2126,7 +2126,7 @@ class Ui_MainWindow(object):
         self.mainToolBar.addAction(self.actionClose)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget_left.setCurrentIndex(2)
+        self.tabWidget_left.setCurrentIndex(3)
         self.tabSubLeader.setCurrentIndex(1)
         self.tabSPFilter.setCurrentIndex(10)
         self.gridTabWidget.setCurrentIndex(1)

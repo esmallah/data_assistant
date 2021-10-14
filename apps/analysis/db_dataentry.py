@@ -41,8 +41,6 @@ class MoldsQuality():
 				mo.mold_name ,
 				l.factory		
 				from yt_load_machine l
-				left join Yt_molds_list s
-				on l.mold_id=s.mold_id
 				left join yt_machine_list m
 				on m.id = l.machine_id
 				left join Yt_molds_list mo

@@ -9,8 +9,8 @@ batches sheet comprartibe by input_daily sheet
 '''
 import unittest
 
-from analysis import Block,cursor,DatabaseTables
-from analysis import Select
+from apps.analysis import Block,cursor,DatabaseTables
+from apps.analysis import Select
 import pandas as pd
 
 class TestAnalyss(unittest.TestCase):

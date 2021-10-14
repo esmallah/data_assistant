@@ -180,8 +180,8 @@ class AutomatedFilling():
         AGG76599801=[lg_kaeda_high,lg_kaeda_low]
 
         lg_base_VIV="AGG76599802"#LGwasher machine base VIVACHE
-        lg_base_VIV_h=[294,642.5,647.5,101.4]
-        lg_base_VIV_l=[266,637.5,642.5,98.6]
+        lg_base_VIV_h=[294,642.5,101.4,647.5]
+        lg_base_VIV_l=[266,637.5,98.6,642.5]
         AGG76599802=[lg_base_VIV_h,lg_base_VIV_l]
 
         #second version

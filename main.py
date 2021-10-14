@@ -142,9 +142,14 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             
             x=switcher.get(item.text(), "Invalid items")
             print("now is printing","item:",item.text(),"code:",x,"its type:",type(x))
-
+            direction=self.ButWebFilter_fillingDirection.currentText()
             self.ButWebFilterFIllNames.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=False,insert_name=True,vertically=False,))
-            self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,standard_spec=False,vertically=False,))
+            if direction=="vertically":
+                self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,standard_spec=False,vertically=False,))
+            elif direction=="horizontal":
+                self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,standard_spec=False,vertically=True,))
+            elif direction=="standards":
+                self.ButWebFilterFIllData.clicked.connect(lambda:AutomatedFilling.past_form(x,fill_data=True,standard_spec=True,vertically=True,))
             self.listWebFilterLGItems.clearSelection()
             #print(map(x,switcher))   
             #self.close()
@@ -253,7 +258,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def deepLearning(self):
         from leader import Ai_thinking
         
-        data_path=Ai_thinking(r'E:\ProgramData\assistantApplcation','trainData.xlsx',"train","names","id_inside_cagegory","defined_names.xlsx")
+        data_path=Ai_thinking(r'D:\ProgramData\assistantApplcation','trainData.xlsx',"train","names","id_inside_cagegory","defined_names.xlsx")
         if self.checkBox_Leader_adjust_input_data.isChecked():
             data_path.show_data()
 
@@ -548,7 +553,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             documentation.convert_word()
             #specification.move_pdf()
             #png.convert_pdf_to_png()
-
+        if self.checkBox_FileControl_deletFiles.isChecked():
+            documentation.delete_files()
         #_________warning________________
         #warning this order will be delet files , so you must be have a backup first( don't try without backup files)
         #
@@ -569,36 +575,30 @@ class AppWindow(Ui_MainWindow,QMainWindow):
 
         yearly2018=Merge(r"D:\2work\programing\data_analysis\files\master_data","product_name",'master_items.xlsx',"items_spec",'names_for_fix.xlsx',"sheet1",'molds_name_fixed.xlsx','Sheet1')
 
-        #for unity tow sheets by tow variable ( not work until now)
-        dryweight_scrab=Union(r"D:\programing\data_analysis\files\yearly_report","ID","day",'2018_dry_weight_connector.xls',"Sheet1",'2018_scrap_connector.xls',"Sheet1",'2018_input.xlsx','Sheet1')
-
-        dryweight_ct=Union(r"D:\programing\data_analysis\files\yearly_report","ID","day",'2018-1_scrap_connector.csv',"Sheet1",'2018-1_c_t_connector.csv',"Sheet1",'2018_input.xlsx','Sheet1')
-
-
         items_master=Merge(r"D:\work\contact_group\Contact records\QC quality control\Foam\returns","return_reason",'qc_return - daily2.xlsx',"sheet1",'QC_returns.xlsx',"sheet1",'qc_return2.xlsx','Sheet1')
         if self.checkBox_FileControl_getUniqe.isChecked():
-
+            
 
             #activate
-            molds_master.vlookup()
+            #molds_master.vlookup()
 
             #scrab.vlookup()
         #______________________for copy files
 
-        from apps import Direcories
-        image_reports=copy.Direcories(r"H:\DCIM\Camera",r"D:\2work\contact_group\Contact records\08-QC quality control\Foam\qc_molds\2019\4",4,14)
-        
-        if self.secheckBox_FileControl_copyFiles.isChecked():
+            from apps import Direcories
+            image_reports=copy.Direcories(r"H:\DCIM\Camera",r"D:\2work\contact_group\Contact records\08-QC quality control\Foam\qc_molds\2019\4",4,14)
+            
+            if self.secheckBox_FileControl_copyFiles.isChecked():
 
-            image_reports.copy_files()
+                image_reports.copy_files()
 
-        #__________________resize Images
-        if self.checkBox_FileControl_resizeImage.isChecked():       
-            audit=r"C:\Backup\5s_photos\2020-10-5"
-            audit.resize_image(audit)
+            #__________________resize Images
+            if self.checkBox_FileControl_resizeImage.isChecked():       
+                audit=r"C:\Backup\5s_photos\2020-10-5"
+                audit.resize_image(audit)
 
 
-universe_1 = [0 for i in range(512)]
+    universe_1 = [0 for i in range(512)]
 
 class Login(QtWidgets.QWidget):
     def __init__(self):

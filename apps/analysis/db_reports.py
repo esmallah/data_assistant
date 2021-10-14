@@ -102,7 +102,7 @@ sql_quality_reporty_yearly_item='''
 								,standard_dry_weight_to
 								,round(avg(average_wet_weight),1)as average_wet_weight
 								,round(avg(average_dry_weight),1)as average_dry_weight
-								,round(avg(average_wet_weight)-avg(standard_dry_weight)/avg(standard_dry_weight),1) as wet_average_percent
+								,round(avg(average_wet_weight)-standard_dry_weight/avg(standard_dry_weight),1) as wet_average_percent
 								,standard_rate_hour as standard_rate_hour
 								,c_t_standard_per_second c_t_standard_per_second
 								,round(avg(rat_actually),0)as rat_actually

@@ -394,10 +394,21 @@ class Group():
         ws['b14'] =c_t_nonconfomity.iloc[0][5]                #ct not acceptable
         
         ws['a25'] = weight_nonconfomity.iloc[0][5]             #weight pass 
-        ws['b25'] =weight_nonconfomity.iloc[0][4]            #weights not acceptable
+        ws['b25'] =weight_nonconfomity.iloc[0][4]
+        #if weight_nonconfomity_high>=1:  # for ignor impty index error        
+        #    ws['b25'] =weight_nonconfomity_low.iloc[0][4]            #weights low not acceptable
+        #else:
+        #    ws['b25'] =0
+        #ws['a35'] = weight_nonconfomity.iloc[0][5]             #weight pass 
+        #if weight_nonconfomity_high>=1:  # for ignor impty index error        
+        #    ws['b35'] =weight_nonconfomity_high.iloc[0][4]            #weights hig not acceptable
+        #else:
+        #    ws['b35'] =0           #weights hig not acceptable
         #_______
         
-        
+        ws['a35'] = weight_nonconfomity.iloc[0][5]             #weight pass 
+        ws['b25'] =weight_nonconfomity.iloc[0][4]
+
         #to select index of columns for scraps
         if scrap_nonconfomity_count>=1:
             rows = scrap_nonconfomity.index

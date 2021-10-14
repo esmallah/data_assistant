@@ -929,7 +929,7 @@ class Select():
         '''
         #for material
         ws1=wb["input_materials"]
-        Block.materialToPorduct_daily(self,year)
+        Material.materialToPorduct_daily(self,year)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
         

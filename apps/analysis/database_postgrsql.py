@@ -27,7 +27,7 @@ pc__server="host='localhost' dbname='Block' user='postgres' password='admin'"#co
 network_server="host='AHMED-RASHAD' dbname='Block' user='youssri.ahmed' password='Aa1234567#'"
 network_server_test="host='AHMED-RASHAD' dbname='Block_test' user='youssri.ahmed' password='Aa1234567#'"
 remote_server="host='185.65.207.126'  dbname='aeraeg_insutech' user='aeraeg_postgres'	password='qhserp12345#' "
-conn_string = pc__server
+conn_string = network_server
 table="yt_quality"
 
 # print the connection string we will use to connect
