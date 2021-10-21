@@ -10,9 +10,9 @@ from PyQt5.QtWidgets import (
     QLabel,QPushButton,QDialog,QStyle,QSizePolicy,
     QVBoxLayout,QHBoxLayout,QComboBox,QLabel
 )
-
+from memory import Select_lists
 from PyQt5.QtCore  import pyqtSlot,QSize
-from memory import conn
+from memory import conn,cursor
 class Window_qc(QDialog):
     def __init__(self, value, parent=None):
         super().__init__(parent)
@@ -46,10 +46,12 @@ class Window_qc(QDialog):
         #add combo box
         self.combo = QComboBox(self)
         self.combo = QComboBox(self)
-        self.combo.addItem("Apple")
+
         self.combo.move(50, 50)
         self.qlabel = QLabel(self)
         self.qlabel.move(50,16)
+        
+        self.combo.addItems(Select_lists.get_lest())
 
         self.combo.activated[str].connect(self.onChanged)
         layoutV.addWidget(self.combo)
@@ -59,8 +61,19 @@ class Window_qc(QDialog):
         layoutH.addWidget(self.button)
         layoutV.addLayout(layoutH)
         self.setLayout(layoutV)
-
         
+    def pm_Combo(self):
+        
+        #self.sql=cursor.fetchall()
+        #conn.commit()
+        print("_____________test",Select_lists.get_lest())
+
+         #=cursor.fetchall()
+        #self.names =[]
+        #for i in self.sql:
+        #    self.names.append(i[0])
+        #conn.close()
+
     def onChanged(self, text):
         self.qlabel.setText(text)
         self.qlabel.adjustSize()

@@ -445,7 +445,7 @@ class Select():
         #f.close()
 
     def export_report_mothly(self,writerFile,year,month,day,to_day,*args,monthly=True):
-        from memory.db_reports import Block,cursor
+        from memory import Block,cursor
 
         os.chdir(self.folder)
         inputPath=self.folder+r'\formats'
