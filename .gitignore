@@ -17,3 +17,4 @@ apps/pyqt_sqlite/ui/mainwindow.ui
 apps/pyqt_sqlite/pyqt-sqlite.py
 interface2.
 Lib
+memory/database.ini

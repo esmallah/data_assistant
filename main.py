@@ -13,7 +13,7 @@ import time
 import os
 import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-from ui import Window2
+
 
 class AppWindow(Ui_MainWindow,QMainWindow):  
     switch_window = QtCore.pyqtSignal(str)
@@ -280,7 +280,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         from Lib import ModifyTableDialog
 
     def database_management(self):
-        from apps import Block,PgAccess,MoldsQuality
+        from memory import Block,PgAccess,MoldsQuality
         
         year=str(self.analysis_DByear.currentText())
         month=str(self.analysis_DBmonth.currentText())
@@ -369,8 +369,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 PgAccess.alterName_columns(self,category,old_column,new_column)
 
     def connect_shareDb(self):
-        from apps import Unique,Select,Group,Block
-        
+        from apps import Unique,Select,Group
+        from memory import Block
         #connect to database
         year=self.analysis_year.currentText()
         month=self.analysis_month.currentText()
@@ -620,11 +620,17 @@ class Login(QtWidgets.QWidget):
         self.lineEdit1 = QLineEdit("admin page [Window1].", self)
         self.lineEdit1.setGeometry(250, 100, 400, 30)
 
-        self.buttonWindow2 = QPushButton('QC Screen', self)
+        self.buttonWindow2 = QPushButton('database Screen', self)
         self.buttonWindow2.move(100, 200)
         self.buttonWindow2.clicked.connect(self.buttonWindow2_onClick)        
-        self.lineEdit2 = QLineEdit("user page for data entry and get reports [Window2].", self)
+        self.lineEdit2 = QLineEdit("admin page for control the database [Window2].", self)
         self.lineEdit2.setGeometry(250, 200, 400, 30)
+
+        self.buttonWindow3 = QPushButton('QC Screen', self)
+        self.buttonWindow3.move(100, 200)
+        self.buttonWindow3.clicked.connect(self.buttonWindow3_onClick)        
+        self.lineEdit3 = QLineEdit("user page for data entry and get reports [Window3].", self)
+        self.lineEdit3.setGeometry(250, 200, 400, 30)
 
 
         self.combo = QtWidgets.QComboBox(self)
@@ -651,11 +657,18 @@ class Login(QtWidgets.QWidget):
         self.cams = AppWindow() 
         self.cams.show()
         self.close()
-
+        
     @pyqtSlot()
     def buttonWindow2_onClick(self):
+        from ui import SqliteWindow
+        self.cams = SqliteWindow(self.lineEdit2.text()) 
+        self.cams.show()
+        self.close()
         
-        self.cams = Window2(self.lineEdit2.text()) 
+    @pyqtSlot()
+    def buttonWindow3_onClick(self):
+        from ui import Window_qc
+        self.cams = Window_qc(self.lineEdit2.text()) 
         self.cams.show()
         self.close()
     #______________________translation

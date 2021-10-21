@@ -8,7 +8,7 @@ import os
 import numpy as np
 import glob
 
-from .db_reports import Block,cursor,Material
+from memory import Block,Material,cursor
 #import database_postgrsql as database
 
 
@@ -445,7 +445,7 @@ class Select():
         #f.close()
 
     def export_report_mothly(self,writerFile,year,month,day,to_day,*args,monthly=True):
-        from .db_reports import Block,cursor
+        from memory.db_reports import Block,cursor
 
         os.chdir(self.folder)
         inputPath=self.folder+r'\formats'
