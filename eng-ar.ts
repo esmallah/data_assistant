@@ -27,6 +27,23 @@
     <translation>شاشة المستخدمين لادخال البيانات للاسطمبات</translation>
 </message>
 
+<message>
+    <location filename="qc_molds.py" line="40"/>
+    <source>machine load.</source>
+    <translation>الاسطمبات المحملة</translation>
+</message>
+
+<message>
+    <location filename="qc_molds.py" line="41"/>
+    <source>daily report</source>
+    <translation>تسجيل التقرير اليومي</translation>
+</message>
+
+<message>
+    <location filename="qc_molds.py" line="42"/>
+    <source>reports</source>
+    <translation>التقارير</translation>
+</message>
 
 </context>
 

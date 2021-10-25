@@ -1,4 +1,4 @@
-from .database_postgrs import connect as conn
+from .database_postgrs import conn , cursor
 					
 class MoldsQuality():
 	'''
@@ -11,14 +11,14 @@ class MoldsQuality():
 	def uninstall_dataentry_reports(self):
 		#uninstall report first steps to uninistall database structures'''			
 		drop_yv_items_molds_report=	'drop view yv_load_machine'
-		conn.cursor.execute(drop_yv_items_molds_report)
+		cursor.execute(drop_yv_items_molds_report)
 		conn.commit()	
 		print("complete uninistall reports data entry")
 
 	def uninstall_dataentry_views(self):
 		#for uninstall records tables
 		drop_yt_quality=	'''drop table yt_load_machine''' 
-		conn.cursor.execute(drop_yt_quality)
+		cursor.execute(drop_yt_quality)
 		conn.commit()
 		print("complete uninistall quality records for data entry")
 
@@ -30,24 +30,23 @@ class MoldsQuality():
 			mold_id int,
 			factory  varchar(50),
 			date_day date);'''
-		conn.cursor.execute(create_table_quality)
+		cursor.execute(create_table_quality)
 		conn.commit()
 		print("complete install machine loaded")
 	def install_views_machine_loaded(self):
 		create_view_quality='''
 				create view yv_load_machine as(select 
 				l.date_day ,
-				m.name,
 				mo.mold_name ,
 				l.factory		
-				from yt_load_machine l
-				left join yt_machine_list m
-				on m.id = l.machine_id
-				left join Yt_molds_list mo
-				on mo.mold_id=l.mold_id
+					from yt_load_machine l
+					left join yt_machine_list m
+					on m.id = l.machine_id
+					left join Yt_molds_list mo
+					on mo.mold_id=l.mold_id
 					
 				);'''
-		conn.cursor.execute(create_view_quality)
+		cursor.execute(create_view_quality)
 		conn.commit()
 		print("complete install machine loaded")
 	def select_list_items(self):
@@ -56,14 +55,14 @@ class MoldsQuality():
 				l.date_day ,
 				m.name,
 				mo.mold_name ,
-				l.factory		
-				from yt_load_machine l
-				left join yt_machine_list m
-				on m.id = l.machine_id
-				left join Yt_molds_list mo
+				l.factory		,
+				from yt_load_machine l,
+				left join yt_machine_list m,
+				on m.id = l.machine_id,
+				left join Yt_molds_list mo,
 				on mo.mold_id=l.mold_id
 					
 				);'''
-		conn.cursor.execute(select_items)
+		cursor.execute(select_items)
 		conn.commit()
 		print("complete install machine loaded")

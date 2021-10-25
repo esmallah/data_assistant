@@ -1,25 +1,14 @@
+from setting import *
+from .qc import *
 
-from PyQt5 import QtGui, QtCore,QtWidgets
-#from main import Ui_MainWindow,Login
-from PyQt5.QtWidgets import (
-    QFileDialog,
-    QFrame,
-    QTabWidget,
-    QVBoxLayout,
-    QMessageBox,
-    QLabel,QPushButton,QDialog,QStyle,QSizePolicy,
-    QVBoxLayout,QHBoxLayout,QComboBox,QLabel
-)
-from memory import Select_lists
-from PyQt5.QtCore  import pyqtSlot,QSize
-from memory import conn,cursor
+from memory import conn,cursor,Select_lists,Show_tables
 class Window_qc(QDialog):
     def __init__(self, value, parent=None):
         super().__init__(parent)
         self.setWindowTitle('QC Molds')
         self.setWindowIcon(self.style().standardIcon(QStyle.SP_FileDialogInfoView))
         self.label1 = QLabel(value)
-
+        
         #dimention
         self.top = 50
         self.left = 100
@@ -28,52 +17,30 @@ class Window_qc(QDialog):
         self.InitUI()
     def InitUI(self):
         self.setGeometry(self.top, self.left, self.width, self.height)
-        
-        self.button = QPushButton()
-        self.button.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self.button.setIcon(self.style().standardIcon(QStyle.SP_ArrowLeft))
-        self.button.setIconSize(QSize(200, 200))
-        
-        layoutV = QVBoxLayout()
-        
-        #push buttons for enter data
-        self.pushButton = QPushButton(self)
-        self.pushButton.setStyleSheet('background-color: rgb(0,0,255); color: #fff')
-        self.pushButton.setText('Click me!')
-        self.pushButton.clicked.connect(self.goMainWindow)
-        layoutV.addWidget(self.pushButton)
 
-        #add combo box
-        self.combo = QComboBox(self)
-        self.combo = QComboBox(self)
-
-        self.combo.move(50, 50)
-        self.qlabel = QLabel(self)
-        self.qlabel.move(50,16)
+        self.layout = QVBoxLayout(self)               
+        #self.layout = QVBoxLayout(self)
+        #layoutV = QVBoxLayout()
+               
+        #____________tabs
+        self.reports=QC_reports(self)
+        self.Load_machines=Load_machines(self)
+        self.PartsDataEntry=PartsDataEntry()        
+        self.tabs = QTabWidget()
         
-        self.combo.addItems(Select_lists.get_lest())
+        self.tabs.addTab(self.Load_machines,'machine load')
+        self.tabs.addTab(self.PartsDataEntry,'daily report')
+        self.tabs.addTab(self.reports,'reports')
+        self.tabs.setCurrentWidget(self.Load_machines)
 
-        self.combo.activated[str].connect(self.onChanged)
-        layoutV.addWidget(self.combo)
+        self.tabs.setTabPosition(QTabWidget.South)
+        self.layout.addWidget(self.tabs)
+        #self.setLayout(self.layout)
 
-        layoutH = QHBoxLayout()
-        layoutH.addWidget(self.label1 )
-        layoutH.addWidget(self.button)
-        layoutV.addLayout(layoutH)
-        self.setLayout(layoutV)
+        #____________add combo box
         
-    def pm_Combo(self):
+        #self.setLayout(layoutV)
         
-        #self.sql=cursor.fetchall()
-        #conn.commit()
-        print("_____________test",Select_lists.get_lest())
-
-         #=cursor.fetchall()
-        #self.names =[]
-        #for i in self.sql:
-        #    self.names.append(i[0])
-        #conn.close()
-
     def onChanged(self, text):
         self.qlabel.setText(text)
         self.qlabel.adjustSize()
@@ -81,4 +48,22 @@ class Window_qc(QDialog):
     def goMainWindow(self):
         self.cams = Login()
         self.cams.show()
-        self.close()    
+        self.close()  
+    #______________________translation
+    @QtCore.pyqtSlot(int)
+    def change_func(self, index):
+        data = self.combo.itemData(index)
+        if data:
+            self.trans.load(data)
+            QtWidgets.QApplication.instance().installTranslator(self.trans)
+        else:
+            QtWidgets.QApplication.instance().removeTranslator(self.trans)
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.LanguageChange:
+            self.retranslateUi()
+        super(Window_qc, self).changeEvent(event)
+
+    def retranslateUi(self):
+        self.Load_machines.setText(QtWidgets.QApplication.translate('machine load', 'user page for data entry and get reports [Window2].'))
+        self.PartsDataEntry.setText(QtWidgets.QApplication.translate('daily report', 'user page for data entry and get reports [Window2].'))
+        self.reports.setText(QtWidgets.QApplication.translate('reports', 'user page for data entry and get reports [Window2].'))

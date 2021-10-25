@@ -20,7 +20,7 @@ pyrcc5 maps.qrc -o maps_rc.py
 
 for activate virusal environment
 source ../env/Scripts/activate
-source activate a1leader_pyqt 
+source activate a1leader_pyqt
 python main.py
 
 conda init
@@ -35,7 +35,6 @@ then
 pyinstaller -w main.py
 or if there problems
 pyinstaller main.py
-
 
 for translation
 translate what do you want in xls then thype this command
@@ -52,5 +51,5 @@ application building start in 21 may 2019
 deep learning modue applying in 3/3/2021
 
 its free and updated as we can
-
 for 
+don't change the name of folder

@@ -20,12 +20,11 @@ __version__ = '0.0.1'
 import psycopg2
 import sys
 from .config import config
-import os
+from setting import BASE_DIR
 
 #connect to share database_______________
 #try:
 table="yt_quality"
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # print the connection string we will use to connect
 
@@ -35,7 +34,7 @@ conn = None
 #try:
     # read connection parameters
 
-params = config(filename=BASE_DIR+'\memory\database.ini', section='postgresql_pc__server')
+params = config(filename=BASE_DIR+'\y_data_assistant\memory\database.ini', section='postgresql_network_server')
 
 # get a connection, if a connect cannot be made an exception will be raised here
 print ("Connecting to database\n	->%s" % params)
