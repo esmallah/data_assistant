@@ -268,15 +268,15 @@ class Select():
     """this class provide  work books and sheet names as input """
     def __init__(self,folder,readfile1,sheet1,year,month,writefile,writesheet):
         self.folder=folder
-        
         self.readfile1=readfile1
         self.sheet1=sheet1
-
         self.year=year
         self.month=month
         self.writefile=writefile
         self.writesheet=writesheet
-
+    def load_data():
+        
+        pass
     def select_data(self,yearDb,monthDb,dayDb,day=True,monthly=True,yearly=True,masterData=True,quality_records=True):
         print("select data starts")  
         '''to convert excel file to csv for entering to database

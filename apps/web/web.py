@@ -165,6 +165,18 @@ class AutomatedFilling():
         LG43UP81_low=[1057,171,241,281.36,1057,171,176,174.09]
         MFZ67209701=[LG43UP81_high,LG43UP81_low]
 
+        LGNano80set="MFZ67212201"#LGNano80set
+
+        LGNano80set_high=[1585,157,351,650,1585,143,354,520.51	]
+        LGNano80set_low=[1577,152,345,492,1577,139,348,457.33]
+        MFZ67212201=[LGNano80set_high,LGNano80set_low]
+
+        LGNano80side="MFZ67212202"#LGNano80side
+        LGNano80side_high=[251.8,151,133,111.38]
+        LGNano80side_low=[246.8,147,129,97.86]
+        MFZ67212202=[LGNano80side_high,LGNano80side_low]
+
+
             # "mmf" classification
         LG_cover="3920EZ2058A"# LGwasher machine cover
         LG_cover_high=[106,71.4,643.5,261.7]
@@ -195,7 +207,8 @@ class AutomatedFilling():
             items=[MFZ65333701,MFZ65333801,MFZ65914801,MFZ66333001,mfz66236501,MFZ65262201,
                 MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
                 MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67207202,MFZ67209701,
-                LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801,AGG76599801]
+                MFZ67212201,MFZ67212202,
+                LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801,AGG76599802]
             
             item=items[itemSelection]
             lg_item=item
@@ -240,7 +253,9 @@ class AutomatedFilling():
         if insert_name:
             items=[LG43UJ63,LG49UJ63,LG55UK630,LGLG32LM55,LGLG43LM63,lg_43LM63FRONT,lg_43LM55FRONT,
                     LG65UM73up,LG65UM73LR,LG43UP77,LG65UP775Front,LG65UP77set,LG65UP81set,
-                    LG65UP81Side,LG75UP77FRONT,LG75UP77Set,LG75UP77Side,LG43UP81,LG_cover,lG_angels,lg_kaeda,lg_base_VIV]
+                    LG65UP81Side,LG75UP77FRONT,LG75UP77Set,LG75UP77Side,LG43UP81,
+                    LGNano80set,LGNano80side
+                    ,LG_cover,lG_angels,lg_kaeda,lg_base_VIV]
             
             item=items[itemSelection]
             print(item)

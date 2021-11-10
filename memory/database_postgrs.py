@@ -34,7 +34,7 @@ conn = None
 #try:
     # read connection parameters
 
-params = config(filename=BASE_DIR+'\y_data_assistant\memory\database.ini', section='postgresql_network_server')
+params = config(filename=BASE_DIR+'\y_data_assistant\memory\database.ini', section='postgresql_pc__server')
 
 # get a connection, if a connect cannot be made an exception will be raised here
 print ("Connecting to database\n	->%s" % params)

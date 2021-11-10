@@ -53,7 +53,7 @@ gridline-color: rgb(255, 255, 255,0%);
 </string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="tab_AI_leader">
      <property name="accessibleName">
@@ -4190,6 +4190,16 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <property name="text">
+             <string>LGNano80set</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LGNano80side</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>LgWasherAngels</string>
             </property>
            </item>
@@ -5860,6 +5870,16 @@ border-color: rgb(255, 255, 255,0%) ;
          <string>21</string>
         </property>
        </row>
+       <row>
+        <property name="text">
+         <string>22</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>23</string>
+        </property>
+       </row>
        <column>
         <property name="text">
          <string>items_name</string>
@@ -6163,37 +6183,37 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="18" column="0">
         <property name="text">
-         <string>LgWasherCover</string>
+         <string>LGNano80set</string>
         </property>
        </item>
        <item row="18" column="1">
         <property name="text">
-         <string>mmf</string>
+         <string>mma </string>
         </property>
        </item>
        <item row="18" column="2">
         <property name="text">
-         <string>3920EZ2058A</string>
+         <string>MFZ67212201</string>
         </property>
        </item>
        <item row="19" column="0">
         <property name="text">
-         <string>LgWasherAngels</string>
+         <string>LGNano80side</string>
         </property>
        </item>
        <item row="19" column="1">
         <property name="text">
-         <string>mmf</string>
+         <string>mma </string>
         </property>
        </item>
        <item row="19" column="2">
         <property name="text">
-         <string>3920FZ3114C</string>
+         <string>MFZ67212202</string>
         </property>
        </item>
        <item row="20" column="0">
         <property name="text">
-         <string>LgWasherBase</string>
+         <string>LgWasherCover</string>
         </property>
        </item>
        <item row="20" column="1">
@@ -6203,12 +6223,12 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="20" column="2">
         <property name="text">
-         <string>AGG76599801</string>
+         <string>3920EZ2058A</string>
         </property>
        </item>
        <item row="21" column="0">
         <property name="text">
-         <string>LgWasherBase_VIVACHE</string>
+         <string>LgWasherAngels</string>
         </property>
        </item>
        <item row="21" column="1">
@@ -6217,6 +6237,36 @@ border-color: rgb(255, 255, 255,0%) ;
         </property>
        </item>
        <item row="21" column="2">
+        <property name="text">
+         <string>3920FZ3114C</string>
+        </property>
+       </item>
+       <item row="22" column="0">
+        <property name="text">
+         <string>LgWasherBase</string>
+        </property>
+       </item>
+       <item row="22" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="22" column="2">
+        <property name="text">
+         <string>AGG76599801</string>
+        </property>
+       </item>
+       <item row="23" column="0">
+        <property name="text">
+         <string>LgWasherBase_VIVACHE</string>
+        </property>
+       </item>
+       <item row="23" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="23" column="2">
         <property name="text">
          <string>AGG76599802</string>
         </property>
