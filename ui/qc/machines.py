@@ -30,6 +30,12 @@ class Load_machines (QFrame):
         windowLayout.addWidget(self.horizontalGroupBox)
         self.layout.addLayout(windowLayout)
 
+        button_daily_save = QPushButton('submit', self)
+        button_daily_save.setToolTip('for save data')
+        button_daily_save.move(100,70)
+        button_daily_save.clicked.connect(self.insert_item)
+
+        self.layout.addWidget(button_daily_save)
         self.setLayout(self.layout)
         
         self.show()
@@ -47,9 +53,7 @@ class Load_machines (QFrame):
 #        for i in range(20):
         for b in range(15):
             for l in range(15):
-                layout.addWidget(QLineEdit(),b,l)
-
-        
+                layout.addWidget(QLineEdit(),b,l)        
         self.horizontalGroupBox.setLayout(layout)
     def insert_item(self):
         item=Select_lists.get_lest_items()

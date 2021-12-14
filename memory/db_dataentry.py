@@ -1,5 +1,5 @@
 from .database_postgrs import conn , cursor
-					
+#from .database_sqlite import conn , cursor					
 class MoldsQuality():
 	'''
 		this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries

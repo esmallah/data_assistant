@@ -376,7 +376,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         analysisInput=str(self.analsyisInputLineEdit.text())
         analysisOutput=str(self.analsyisIOutputLineEdit.text())
         data_uplaod_local_pc=str(self.analsyisLineEdit_analysisDb_server_address.text())
-        DATAFOLDER_ON_NETWORK=r"\\AHMED-RASHAD\Users\Public\database"
+        DATAFOLDER_ON_NETWORK=r"\\AHMED-ALY\Users\Public\database"
 
         #select date                
         dailyReportName=str(year)+"-"+str(month)+"QC_molds_daily_archive_v3.xlsx"

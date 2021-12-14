@@ -1,5 +1,5 @@
 from .database_postgrs import cursor,conn
-
+#from .database_sqlite import conn , cursor
 SQL_quality_records="""
 				year,
 				month,
@@ -83,9 +83,9 @@ SQL_quality_records="""
 				scrap_percent_by_item,
 				part_id,
 				factory,
-				scrab_ncr_reason,
-				ct_ncr_reason,
-				weight_ncr_reason,
+				tall_mm,
+				width_mm,
+				deepth_mm,
 				id_DayPartUnique,
 				parts_patchsNumbers,
 				Items_patchsNumbers,
@@ -566,9 +566,9 @@ class Block():
 				scrap_percent_by_item numeric ,
 				part_id  varchar(50),
 				factory  varchar(50),
-				scrab_ncr_reason varchar(100),
-				ct_ncr_reason varchar(100),
-				weight_ncr_reason varchar(100),
+				tall_mm numeric,
+				width_mm numeric,
+				deepth_mm numeric,
 				id_DayPartUnique varchar(50) UNIQUE /*for validate not upload any duplicate rows*/,
 				parts_patchsNumbers varchar(50),
 				Items_patchsNumbers varchar(50),

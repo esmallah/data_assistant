@@ -69,14 +69,14 @@ columns_quality=['year',
     ,'sum_scrabe_shortage_bySet','sum_scrabe_roll_bySet','sum_scrabe_broken_bySet'
     ,'sum_scrabe_curve_bySet','sum_scrabe_shrinkage_bySet','sum_scrabe_dimentions_bySet','sum_scrabe_weight_bySet','sum_scrabe_dirty_bySet',
     'sum_scrabe_cloration_bySet','sum_scrabe_no_parts','number_scrab_by_item',
-    'gross_production','scrap_percent_by_item','part_id','factory','scrab_ncr_reason'
-    ,'ct_ncr_reason','weight_ncr_reason','id_DayPartUnique','parts_patchsNumbers','Items_patchsNumbers','bachStartDate',
+    'gross_production','scrap_percent_by_item','part_id','factory','tall_mm'
+    ,'width_mm','deepth_mm','id_DayPartUnique','parts_patchsNumbers','Items_patchsNumbers','bachStartDate',
     'date_day','bachEndDate']
     
     #the previous columns separate to 
         #1 cycle time table
 columns_cycle_time=['year','month','day','machine_id','rat_actually','rat_validation','c_t_deviation','shift1_c_t1','shift1_c_t2'
-                ,'shift2_c_t1','shift2_c_t2','c_t_actually','mold_id','part_id','item_id','number_day_use','factory','ct_ncr_reason','id_DayPartUnique'
+                ,'shift2_c_t1','shift2_c_t2','c_t_actually','mold_id','part_id','item_id','number_day_use','factory','width_mm','id_DayPartUnique'
                 ,'parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
         #2 quality inspections scrap and weights
@@ -106,8 +106,8 @@ columns_QCinspection=['year','month','day','machine_id','item_id','number_day_us
     'sum_scrabe_shortage_bySet','sum_scrabe_roll','sum_scrabe_broken'
     ,'sum_scrabe_curve','sum_scrabe_shrinkage','sum_scrabe_dimentions','sum_scrabe_weight','sum_scrabe_dirty_bySet',
     'sum_scrabe_cloration','sum_scrabe_no_parts','number_scrab_by_item',
-    'gross_production','scrap_percent_by_item','scrap_weight_kg','production_weight_kg','id_DayPartUnique','factory','scrab_ncr_reason'
-    ,'weight_ncr_reason','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
+    'gross_production','scrap_percent_by_item','scrap_weight_kg','production_weight_kg','id_DayPartUnique','factory','tall_mm'
+    ,'deepth_mm','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
             #the previeuse table separate to
                     #1weights table
@@ -115,7 +115,7 @@ columns_weight=['year','month','day','machine_id','item_id','number_day_use','mo
 'shift1_dry_weight1','shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4'
 ,'shift1_dry_weight5','shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4',
 'shift2_dry_weight5','average_wet_weight','average_dry_weight','dryweight_deviation_validation','part_id','id_DayPartUnique','factory'
-,'weight_ncr_reason','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
+,'deepth_mm','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
                     #2scrab table
 columns_scrap=['year','month','day','machine_id','item_id','mold_id','product_parts','part_id','shift1_production_cards'
@@ -128,7 +128,7 @@ columns_scrap=['year','month','day','machine_id','item_id','mold_id','product_pa
 ,'shift2_all_production','sum_scrabe_shortage_bySet','sum_scrabe_roll_bySet','sum_scrabe_broken_bySet'
 ,'sum_scrabe_curve_bySet','sum_scrabe_shrinkage_bySet','sum_scrabe_dimentions_bySet','sum_scrabe_weight_bySet','sum_scrabe_dirty_bySet',
 'sum_scrabe_cloration_bySet','sum_scrabe_no_parts','number_scrab_by_item',
-'gross_production','scrap_percent_by_item','factory','scrab_ncr_reason','id_DayPartUnique','Items_patchsNumbers'
+'gross_production','scrap_percent_by_item','factory','tall_mm','id_DayPartUnique','Items_patchsNumbers'
 ,'parts_patchsNumbers','bachStartDate','bachEndDate']
 
 #error __________________
@@ -328,7 +328,8 @@ class Select():
         else:    
             daily_analysis=daily_data3
             daily_analysis_materia=material_data3
-        #daily_analysis_materia=material_data3      #for get all rows
+        #daily_analysis_materia=material_data3      #for get all rows###__________
+        #daily_analysis=daily_data3                 #for get all rows###__________
         #filter master data
             #filter weights and scrap table
         productions_isnpection=daily_analysis[columns_quality]

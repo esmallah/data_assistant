@@ -50,7 +50,7 @@ class QC_reports(QFrame):
 
     def select_list(self):
         self.tableWidget.clear()
-        if self.db:
+        if cursor:
             self.setData()
             self.tableWidget.resizeColumnsToContents()
             self.tableWidget.resizeRowsToContents()
@@ -61,8 +61,8 @@ class QC_reports(QFrame):
         cursor.execute(view_query)
         view=cursor.fetchall()
 
-        col_name_query = """select name FROM pragma_table_info('{}')""".format(self.current_table)
-         
+        col_name_query = """select name FROM PRAGMA table_info('{}')""".format(self.current_table)
+
         cursor.execute(col_name_query)
         col_name=cursor.fetchall()
         self.current_data = {}
@@ -86,5 +86,5 @@ class QC_reports(QFrame):
         self.tableWidget.setHorizontalHeaderLabels(header)
 
     def connectDB(self, db):
-        self.db = db
+        cursor = db
         self.select_list()

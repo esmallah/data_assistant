@@ -15,7 +15,6 @@ __author__ = 'youssri Ahmed Hamdy <estratigy@yahoo.com>'
 __copyright__ = 'Copyright (c) 2021'
 __version__ = '0.0.1'
 
-
 #!/usr/bin/python
 import psycopg2
 import sys

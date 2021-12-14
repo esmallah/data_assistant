@@ -36,14 +36,14 @@ col_rename={"product_name": "اسم المنتج","product_name_by_parts":"اس�
 columns_weight=["day","year","month","machine_id","product_name_by_parts","product_name","product_code","standard_dry_weight",
 "standard_dry_weight_from","standard_dry_weight_to",'shift1_dry_weight1','shift1_dry_weight2','shift1_dry_weight3',
         'shift1_dry_weight4','shift1_dry_weight5','shift2_dry_weight1','shift2_dry_weight2',
-        'shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',"average_dry_weight","part_id",'factory','weight_ncr_reason','id_DayPartUnique']
+        'shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',"average_dry_weight","part_id",'factory','deepth_mm','id_DayPartUnique']
 
 columns_machine=["day","year","month","machine_id","product_name","product_code","scrabe_standard","sum_scrabe_no_parts"
 ,"number_scrab_by_item","gross_production",'gross_production_by_set','parts_patchsNumbers','scrap_percent_by_item'
-,"number_day_use",'Items_patchsNumbers',"item_id","machine_type",'factory','scrab_ncr_reason','id_DayPartUnique']
+,"number_day_use",'Items_patchsNumbers',"item_id","machine_type",'factory','tall_mm','id_DayPartUnique']
 
 columns_cycle_time=["day","year","month","machine_id","mold_name","product_name","product_code","set","standard_rate_hour"
-,"c_t_standard_per_second",'shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2',"rat_actually","c_t_actually","number_day_use",'rat_validation',"mold_id",'factory','ct_ncr_reason','id_DayPartUnique']
+,"c_t_standard_per_second",'shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2',"rat_actually","c_t_actually","number_day_use",'rat_validation',"mold_id",'factory','width_mm','id_DayPartUnique']
         
 class Group():
     def __init__(self,folder,readfile,readsheet,column1,column2,writefile,writesheet):
@@ -753,7 +753,7 @@ class Group():
             'sum_scrabe_broken_bySet','sum_scrabe_curve_bySet','sum_scrabe_shrinkage_bySet','sum_scrabe_dimentions_bySet','sum_scrabe_weight_bySet','sum_scrabe_dirty_bySet',
             'sum_scrabe_cloration_bySet','sum_scrabe_no_parts','number_scrab_by_item',
             'parts_patchsNumbers','gross_production','scrap_percent_by_item','Items_patchsNumbers','product_by_set_or_no',
-            'parts_symbole','part_id','id_DayPartUnique','machine_type','factory','scrab_ncr_reason','ct_ncr_reason','weight_ncr_reason','customer_name']
+            'parts_symbole','part_id','id_DayPartUnique','machine_type','factory','tall_mm','width_mm','deepth_mm','customer_name']
 
             daily_input= pd.read_excel(self.readfile,"input")
             #Block.show_yearly_report_itemsByMonths(self,year,month)
