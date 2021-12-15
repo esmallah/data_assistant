@@ -69,8 +69,10 @@ columns_quality=['year',
     ,'sum_scrabe_shortage_bySet','sum_scrabe_roll_bySet','sum_scrabe_broken_bySet'
     ,'sum_scrabe_curve_bySet','sum_scrabe_shrinkage_bySet','sum_scrabe_dimentions_bySet','sum_scrabe_weight_bySet','sum_scrabe_dirty_bySet',
     'sum_scrabe_cloration_bySet','sum_scrabe_no_parts','number_scrab_by_item',
-    'gross_production','scrap_percent_by_item','part_id','factory','tall_mm'
-    ,'width_mm','deepth_mm','id_DayPartUnique','parts_patchsNumbers','Items_patchsNumbers','bachStartDate',
+    'gross_production','scrap_percent_by_item','part_id','factory',
+    'shift1_tall_mm','shift1_width_mm','shift1_deepth_mm','shift2_tall_mm','shift2_width_mm'
+    ,'shift2_deepth_mm'
+    ,'id_DayPartUnique','parts_patchsNumbers','Items_patchsNumbers','bachStartDate',
     'date_day','bachEndDate']
     
     #the previous columns separate to 
