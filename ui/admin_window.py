@@ -332,11 +332,15 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             Block.install_records_material("1")
         
         if self.checkBox_analysis_DB_instal_report.isChecked():
+            Block.install_calculation_viws("")
             Block.install_befor_reports_molds("")
             Block.install_befor_reports_parts("")
             Block.install_befor_reports_item_master("")
+            
             Block.install_befor_reports_material("")
+            
             Block.install_reports("")
+            
         if self.checkBox_analysis_DB_instal_report_dataentry_records.isChecked():
             MoldsQuality.install_tables_machine_loaded(self)
         if self.checkBox_analysis_DB_instal_report_dataentry_views.isChecked():
