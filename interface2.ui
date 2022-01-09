@@ -53,7 +53,7 @@ gridline-color: rgb(255, 255, 255,0%);
 </string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_AI_leader">
      <property name="accessibleName">
@@ -1351,12 +1351,12 @@ color: rgb(255, 255, 255);</string>
           </property>
           <item>
            <property name="text">
-            <string>2018</string>
+            <string>2022</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>2019</string>
+            <string>2021</string>
            </property>
           </item>
           <item>
@@ -1366,7 +1366,12 @@ color: rgb(255, 255, 255);</string>
           </item>
           <item>
            <property name="text">
-            <string>2021</string>
+            <string>2019</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>2018</string>
            </property>
           </item>
          </widget>
@@ -1940,12 +1945,12 @@ color: rgb(255, 255, 255);</string>
           </property>
           <item>
            <property name="text">
-            <string>2018</string>
+            <string>2022</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>2019</string>
+            <string>2021</string>
            </property>
           </item>
           <item>
@@ -1955,7 +1960,12 @@ color: rgb(255, 255, 255);</string>
           </item>
           <item>
            <property name="text">
-            <string>2021</string>
+            <string>2019</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>2018</string>
            </property>
           </item>
          </widget>
