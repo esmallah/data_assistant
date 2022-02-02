@@ -33,7 +33,7 @@ import psycopg2
 
 
 conn = None
-params = config(filename=BASE_DIR+'\y_data_assistant\memory\database.ini', section='postgresql_network_server')
+params = config(filename=BASE_DIR+'\y_data_assistant\memory\database.ini', section='postgresql_pc__server')
 print ("Connecting to database\n	->%s" % params)
 conn = psycopg2.connect(**params)
 cursor = conn.cursor()

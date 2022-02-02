@@ -911,7 +911,7 @@ class Block():
 	def install_befor_reports_parts(self):		
 			create_view_v107quality_inspection_parts='''/* for collect quality_inspection as parts  */
 				create view v107quality_inspection_parts as (select 
-									q.year, q.month ,q.date_day as day,q.mold_id,q.part_id,q.machine_id,Items_patchsNumbers,
+									q.year, q.month ,q.date_day as day,q.mold_id,q.part_id,q.machine_id,
 		
 									round(sum(q.shift1_wet_weight1),1)as shift1_wet_weight1,
 									round(sum(q.shift1_wet_weight2),1)as shift1_wet_weight2,
@@ -1005,7 +1005,7 @@ class Block():
 									left join v96item_specifications s
 									on q.part_id=s.id_part
 								
-									group by q.year, q.month ,Items_patchsNumbers,q.date_day,q.mold_id,q.part_id,q.machine_id,s.density
+									group by q.year, q.month ,q.date_day,q.mold_id,q.part_id,q.machine_id,s.density
 									
 									order by q.year, q.month ,q.date_day ,q.machine_id)
 			'''
@@ -1016,7 +1016,7 @@ class Block():
 
 			create_view_qulaity_inspection_as_items_master='''/* for collect quality_inspection as v108items_master  */
 								create view v105quality_inspection_items as (select 
-								q.year, q.month ,q.date_day as day,q.mold_id,s.No_on_Set,q.item_id,q.machine_id,q.factory,Items_patchsNumbers,
+								q.year, q.month ,q.date_day as day,q.mold_id,s.No_on_Set,q.item_id,q.machine_id,q.factory,
 	
 								round(sum(q.shift1_wet_weight1),1)as shift1_wet_weight1,
 								round(sum(q.shift1_wet_weight2),1)as shift1_wet_weight2,
@@ -1110,7 +1110,7 @@ class Block():
 								left join v108items_master s
 								on q.item_id=s.item_id
 						
-								group by q.factory,q.year, q.month ,Items_patchsNumbers,q.date_day ,q.mold_id,s.No_on_Set,q.item_id,q.machine_id,s.density
+								group by q.factory,q.year, q.month ,q.date_day ,q.mold_id,s.No_on_Set,q.item_id,q.machine_id,s.density
 								
 								order by q.year, q.month ,q.machine_id
 										
@@ -1366,7 +1366,7 @@ class Block():
 							
 							round(sum(q.gross_production),0)as gross_production,
 							m.scrabe_standard,
-							round(count(Items_patchsNumbers),1)as BachesTimesForItem,
+						
 							
 				 			q.density
 							
@@ -2195,7 +2195,7 @@ class Block():
 	def show_monthly_Baches(self,year,month):#report depend of mold structure
 			#report depend of mold structure
 		SQL1='''with monthly_baches_report as (select
-							q.year, q.month ,q.Items_patchsNumbers,q.item_id,p.Product_name,p.product_code
+							q.year, q.month ,q.item_id,p.Product_name,p.product_code
 							,p.standard_dry_weight_from,p.standard_dry_weight_to
 							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
 							p.c_t_standard_per_second,
@@ -2217,10 +2217,10 @@ class Block():
 							
 							round(sum(q.gross_production),0)as gross_production,
 							m.scrabe_standard,
-							round(count(Items_patchsNumbers),1)as BachesTimesForItem,
+	
 							bachStartDate
 							
-							bachStartDate
+	
 							from t10quality_inpsection q
 							left join v108items_master p
 							on q.item_id=p.item_id
@@ -2228,17 +2228,17 @@ class Block():
 						on m.id=q.machine_id
 						
 							group by q.year, q.month,m.scrabe_standard,q.item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,p.standard_rate_hour,p.c_t_standard_per_second,q.Items_patchsNumbers,bachStartDate		
+							,p.standard_rate_hour,p.c_t_standard_per_second,bachStartDate		
 							)
 							select distinct t1.* ,t2.bachEndDate
 							from monthly_baches_report t1
 							left join 
-								(select year, month ,Items_patchsNumbers ,bachEndDate
+								(select year, month ,bachStartDate ,bachEndDate
 									from
 									t10quality_inpsection q 
 									where bachEndDate is not null
-									group by year, month ,Items_patchsNumbers,bachEndDate)t2
-							on t1.Items_patchsNumbers=t2.Items_patchsNumbers
+									group by year, month ,q.bachstartdate,bachEndDate)t2
+							on t1.bachStartDate=t2.bachStartDate
 							
 							
 						where t1.year = (%s) 
