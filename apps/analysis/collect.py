@@ -394,61 +394,30 @@ class Select():
 #_________________ to copy rang to another
     #File to be copied
         print("data is ready for upload to data base")
-        #print(sheetname)
-        
+        #print(sheetname)        
 #_________________ to copy rang to another
     #File to be copied
-    
-        
     def import_database(self):
-        os.chdir(self.folder)
-        #from last funciton get csv files and upload to data base#_______#####        
-        #filter inspection data
-        daily_analysis=pd.read_csv("quality_records.csv")
-        #filter the time
-                     
-        #filter master data
-        
-            #filter weights and scrap table
-        productions_isnpection=daily_analysis[columns_quality]
-        cur=database.cursor
-        table="yt_quality"
+    #    os.chdir(self.folder)
+    
+     #   daily_analysis=pd.read_csv("quality_records.csv")
+      #  productions_isnpection=daily_analysis[columns_quality]
+       # cur=database.cursor
+        #table="yt_quality"
         
 
-        #not upload any duplicates database
-        #1show data in yt_qulity
         database.Block.get_daily_dataentry_items(self)
         rows=database.cursor.fetchall()
         print(rows["month"])
-        #2show data in csv file
-        #3if comparison between 1 and 2
-        #release
-
-        #or
-        # record importing and avoid second uploading
-
-
         f = open('D:\work\contact_group\Contact records\QC quality control\Foam\qc_molds\database\quality_records.csv')
         cur.copy_from(f, table, sep=',')
         f.close()
-        #cur.copy_from(productions_isnpection,table, null='', sep=',', columns=(columns_molds))
-        #sqlstr = "COPY yt_quality FROM STDIN DELIMITER ',' CSV"
-        #with open('D:\work\contact_group\Contact records\QC quality control\Foam\qc_molds\database\quality_records.csv') as f:
-        #    cur.copy_expert(sqlstr, f)
+    
         conn.commit()
 
-        #sorce code1
-        #csv_file_name = '/home/user/some_file.csv'
-        #sql = "COPY table_name FROM STDIN DELIMITER '|' CSV HEADER"
-        #cursor.copy_expert(sql, open(csv_file_name, "r"))
-        
-        #source code2
-        #f = open(r'C:\Users\n\Desktop\data.csv', 'r')
-        #cur.copy_from(f, temp_unicommerce_status, sep=',')
-        #f.close()
-
+    
     def export_report_mothly(self,writerFile,year,month,day,to_day,*args,monthly=True):
-        from memory import Block,cursor
+        from memory import Block,cursor,conn
 
         os.chdir(self.folder)
         inputPath=self.folder+r'\formats'
@@ -457,14 +426,22 @@ class Select():
         #year=
         
         #daily input
-    
         ws1=wb["input_daily"]
+        #Block.get_daily_dataentry_items(self,year,month,args)
+
         Block.get_daily_dataentry_items(self,year,month,args)
-        get_data=cursor.fetchall()
-        #get_data.set_index("serial", inplace=True) #put index
         
-        #get_data=pd.DataFrame(get_data["id"])
-        rows=get_data
+        get_data2=cursor.fetchall()
+        #__________________________________________________________________        
+        column_names = [desc[0] for desc in cursor.description]
+        get_data = pd.DataFrame(get_data2,columns=column_names)
+        #get_data.shift1_all_production=get_data.shift1_scrabe_shortage+get_data.shift1_scrabe_roll+get_data.shift1_scrabe_broken+ get_data.shift1_scrabe_curve+  get_data.shift1_scrabe_shrinkage+get_data.shift1_scrabe_dimentions+get_data.shift1_scrabe_weight+get_data.shift1_scrabe_dirty
+#        print('______________get data________________________',get_data.shift1_all_production[:1])
+
+
+        #__________________________________________________________________
+        
+        rows = get_data2
         #rows = get_data[columns_quality]
         
         r = 4  # start at fourd row
@@ -475,18 +452,14 @@ class Select():
                 ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'b'
             c = 1
-            r += 1
+            r += 1           
+                    
         #material by silo
         
         ws_bach=wb["material_daily"]
         Material.material_bySilo_daily(self,year,month,day,to_day)
         get_data=cursor.fetchall()
-        #get_data.set_index("serial", inplace=True) #put index
-        
-        #get_data=pd.DataFrame(get_data["id"])
-        rows=get_data
-        #rows = get_data[columns_quality]
-        
+        rows=get_data      
         r = 4  # start at fourd row
         c = 1 # column 'a'
         for row in rows:
@@ -949,8 +922,6 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1
-
-        
 
         wb.save(year+"-QC_molds_daily_yearly_v3.xlsx")
     

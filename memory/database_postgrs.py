@@ -28,36 +28,19 @@ table="yt_quality"
 # print the connection string we will use to connect
 
 import psycopg2
-#class Database(): 
+#import sqlalchemy
+#from sqlalchemy import create_engine
+
+
 conn = None
-#try:
-    # read connection parameters
-
 params = config(filename=BASE_DIR+'\y_data_assistant\memory\database.ini', section='postgresql_network_server')
-
-# get a connection, if a connect cannot be made an exception will be raised here
 print ("Connecting to database\n	->%s" % params)
 conn = psycopg2.connect(**params)
-
-
-# conn.cursor will return a cursor object, you can use this cursor to perform queries
 cursor = conn.cursor()
-    #print('PostgreSQL database version:')
-    #cursor.execute('SELECT version()')
 
-    # display the PostgreSQL database server version
-    #db_version = cursor.fetchone()
-    #print(db_version)
-    
-# close the communication with the PostgreSQL
-#    cursor.close()
-
-#except (Exception, psycopg2.DatabaseError) as error:
-#        print(error)
-#finally:
-#    if conn is not None:
-#        conn.close()
-#        print('Database connection closed.')
+#conntect by sqlalchemy
+#cn_sqlalchemy = create_engine(**params).connect()
+#con=cn_sqlalchemy
 
 '''
 except psycopg2.DatabaseError, e:

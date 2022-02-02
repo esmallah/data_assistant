@@ -805,7 +805,7 @@ class Block():
 			on part_id=s.id_part
 				)'''%veiw_quality_daily
 		cursor.execute(calculate_quality_daily)
-
+		conn.commit()
 	def install_befor_reports_molds(self):	#for prepair data to get reports as mold list
 			create_view_qulaity_inspection_as_molds_list='''/* for collect quality_inspection as yv_parts_items  */
 				create view v106quality_inspection_molds as (select 
@@ -1175,6 +1175,39 @@ class Block():
 								round(avg(q.c_t_actually),0)as c_t_actually,
 								/*scrap record*/									
 								
+								round(sum(q.shift1_production_cards),0)as shift1_production_cards,
+								round(sum(q.shift1_prod_page),0)as shift1_prod_page,
+								round(sum(q.shift1_proper_production),0)as shift1_proper_production,
+								round(sum(q.shift1_scrabe_shortage),0)as shift1_scrabe_shortage,
+								round(sum(q.shift1_scrabe_roll),0)as shift1_scrabe_roll,
+								round(sum(q.shift1_scrabe_broken),0)as shift1_scrabe_broken,
+								round(sum(q.shift1_scrabe_curve),0)as shift1_scrabe_curve,
+								round(sum(q.shift1_scrabe_shrinkage),0)as shift1_scrabe_shrinkage,
+								round(sum(q.shift1_scrabe_dimentions),0)as shift1_scrabe_dimentions,
+								round(sum(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
+								round(sum(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
+								round(sum(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
+								round(sum(q.shift1_scrabe_No_parts),0)as shift1_scrabe_No_parts,
+								
+								round(sum(q.shift1_scrabe_no_item),0)as shift1_scrabe_no_item,
+								round(sum(shift1_all_production),0)as shift1_all_production,
+								
+								round(sum(q.shift2_production_cards),0)as shift2_production_cards,
+								round(sum(q.shift2_prod_page),0)as shift2_prod_page,
+								round(sum(q.shift2_proper_production),0)as shift2_proper_production,
+								round(sum(q.shift2_scrabe_shortage),0)as shift2_scrabe_shortage,
+								round(sum(q.shift2_scrabe_roll),0)as shift2_scrabe_roll,
+								round(sum(q.shift2_scrabe_broken),0)as shift2_scrabe_broken,
+								round(sum(q.shift2_scrabe_curve),0)as shift2_scrabe_curve,
+								round(sum(q.shift2_scrabe_shrinkage),0)as shift2_scrabe_shrinkage,
+								round(sum(q.shift2_scrabe_dimentions),0)as shift2_scrabe_dimentions,
+								round(sum(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
+								round(sum(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
+								round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
+								round(sum(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
+								
+								round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
+		
 								round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
 								round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
 								round(sum(q.sum_scrabe_broken_bySet),0)as sum_scrabe_broken_bySet,

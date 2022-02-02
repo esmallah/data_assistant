@@ -9,7 +9,7 @@ batches sheet comprartibe by input_daily sheet
 '''
 import unittest
 
-from apps.analysis import Block,cursor,DatabaseTables
+from memory import Block,cursor,DatabaseTables
 from apps.analysis import Select
 import pandas as pd
 
