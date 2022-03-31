@@ -44,10 +44,11 @@ columns_quality=['year',
     'day',
     'machine_id',
     'item_id',
-    'number_day_use',
+    
     'mold_id',
-    'product_parts'
-    ,'shift1_wet_weight1',
+    
+    
+    'shift1_wet_weight1',
     'shift1_wet_weight2',
     'shift1_wet_weight3',
     'shift1_wet_weight4',
@@ -58,22 +59,17 @@ columns_quality=['year',
     'shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',
     'shift2_c_t1','shift2_c_t2'
 
-    ,'average_dry_weight','average_wet_weight','rat_actually','rat_validation','c_t_actually','shift1_production_cards'
+    ,'average_dry_weight','average_wet_weight','rat_actually','c_t_actually','shift1_production_cards'
     ,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
     'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
     ,'shift1_scrabe_cloration','shift1_scrabe_no_parts','shift1_scrabe_no_item','shift1_all_production'
     ,'shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
     'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
-    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item'
-    ,'shift2_all_production'
-    ,'sum_scrabe_shortage_bySet','sum_scrabe_roll_bySet','sum_scrabe_broken_bySet'
-    ,'sum_scrabe_curve_bySet','sum_scrabe_shrinkage_bySet','sum_scrabe_dimentions_bySet','sum_scrabe_weight_bySet','sum_scrabe_dirty_bySet',
-    'sum_scrabe_cloration_bySet','sum_scrabe_no_parts','number_scrab_by_item',
-    'gross_production','scrap_percent_by_item','part_id','factory',
-    'shift1_tall_mm','shift1_width_mm','shift1_deepth_mm','shift2_tall_mm','shift2_width_mm'
-    ,'shift2_deepth_mm'
-    ,'id_DayPartUnique','parts_patchsNumbers','Items_patchsNumbers','bachStartDate',
-    'date_day','bachEndDate']
+    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item',
+    
+    'number_scrab_by_item',
+    'gross_production','scrap_percent_by_item',
+    ]
     
     #the previous columns separate to 
         #1 cycle time table
@@ -429,33 +425,46 @@ class Select():
         ws1=wb["input_daily"]
         #Block.get_daily_dataentry_items(self,year,month,args)
 
-        Block.get_daily_dataentry_items(self,year,month,args)
-        
+        Block.get_daily_dataentry_items(self,year,month,args)    
         get_data2=cursor.fetchall()
         #__________________________________________________________________        
         column_names = [desc[0] for desc in cursor.description]
         get_data = pd.DataFrame(get_data2,columns=column_names)
-        #get_data.shift1_all_production=get_data.shift1_scrabe_shortage+get_data.shift1_scrabe_roll+get_data.shift1_scrabe_broken+ get_data.shift1_scrabe_curve+  get_data.shift1_scrabe_shrinkage+get_data.shift1_scrabe_dimentions+get_data.shift1_scrabe_weight+get_data.shift1_scrabe_dirty
-#        print('______________get data________________________',get_data.shift1_all_production[:1])
-
-
+        list_item_size=get_data.shape[0]
+        #get_data.shift1_all_production=sum(get_data.shift1_scrabe_shortage,get_data.shift1_scrabe_roll,get_data.shift1_scrabe_broken, get_data.shift1_scrabe_curve,  get_data.shift1_scrabe_shrinkage,get_data.shift1_scrabe_dimentions,get_data.shift1_scrabe_weight,get_data.shift1_scrabe_dirty)
+        
+        print('______________get data________________________',get_data.shift1_scrabe_shortage)
         #__________________________________________________________________
         
-        rows = get_data2
-        #rows = get_data[columns_quality]
+
         
+
+        #writer = pd.ExcelWriter("QC_daily_v2.xlsx")
+        #rows.to_excel(writer,"inut")
+        #writer.save()
+        #create  the index sheet:
+        r = 4  # start at 4th row
+        c = 1 # column 'a'
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = get_data.iloc[row]
+            for item in rows:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
+        '''
+        rows = get_data2
         r = 4  # start at fourd row
         c = 1 # column 'a'
         for row in rows:
-            #print(row)
+            print(row)
             for item in row:
-                ws1.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
+               ws1.cell(row=r, column=c).value = item
+               c += 1 # Column 'b'
             c = 1
             r += 1           
-                    
+        '''
         #material by silo
-        
         ws_bach=wb["material_daily"]
         Material.material_bySilo_daily(self,year,month,day,to_day)
         get_data=cursor.fetchall()

@@ -491,8 +491,6 @@ class Group():
         
         wb_formats.save("QC_molds_daily_archive.xlsx")    
     
-
-
     def copy_between_workbooks(self):        
         print("________starting copy last sheet____")
         import win32com

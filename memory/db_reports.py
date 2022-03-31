@@ -84,11 +84,15 @@ SQL_quality_records="""
 				part_id,
 				factory,
 				shift1_tall_mm,
-				shift1_width_mm,
-				shift1_deepth_mm,
 				shift2_tall_mm,
+				shift1_width_mm,
 				shift2_width_mm,
+				shift1_deepth_mm,
 				shift2_deepth_mm,
+				shift2_deepth_mm,
+				shift1_denisty,
+				shift2_denisty,
+
 				id_DayPartUnique,
 				parts_patchsNumbers,
 				Items_patchsNumbers,
@@ -399,11 +403,11 @@ class Block():
 			cursor.execute(drop_v105quality_inspection_items)
 			
 			
-			drop_v106quality_inspection_molds=		'''drop view v106quality_inspection_molds'''
-			cursor.execute(drop_v106quality_inspection_molds)
-
 			drop_v107quality_inspection_parts='''drop view v107quality_inspection_parts '''
 			cursor.execute(drop_v107quality_inspection_parts)
+
+			drop_v106quality_inspection_molds=		'''drop view v106quality_inspection_molds'''
+			cursor.execute(drop_v106quality_inspection_molds)
 
 			drop_quality_daily_calculator='''drop view v10quality_inpsection'''
 			cursor.execute(drop_quality_daily_calculator)
@@ -413,14 +417,14 @@ class Block():
 	def uninstall_records(self):
 			#for uninstall records tables
 			drop_yt_quality=	'''drop table t10quality_inpsection''' 
-			cursor.execute(drop_yt_quality)
-			conn.commit()
+#			cursor.execute(drop_yt_quality)
+#			conn.commit()
 			print("complete uninistall quality records")
 	def uninstall_maretial(self):
 			#for uninstall records tables
 			drop_t13material_mixed=	'''drop table t13material_mixed''' 
-			cursor.execute(drop_t13material_mixed)
-			conn.commit()
+#			cursor.execute(drop_t13material_mixed)
+#			conn.commit()
 			print("complete uninistall material record")
 					
 
@@ -469,6 +473,7 @@ class Block():
 			cursor.execute(create_table_machine_list)
 			conn.commit()
 			print("complete inistall infrastructure data")
+	
 	def install_master_data(self):
 			create_table_molds_list='''create table t12molds_list (
 				mold_id int primary key,
@@ -507,67 +512,94 @@ class Block():
 				'''
 #			cursor.execute(create_table_molds_list)
 			
-			create_table_parts_list='''CREATE TABLE public.t11parts_list
-					(
-					id_part varchar(50) primary key,
-					product_code character varying(100) COLLATE pg_catalog."default",
-					product_name_by_parts character varying(300) COLLATE pg_catalog."default",
-					weight_kg numeric,
-				standard_rate_hour int,
-				highlite varchar(50) null,
-				standard_dry_weight numeric,
-				standard_dry_weight_from numeric,
-				standard_dry_weight_to numeric,
-				positive_weight numeric,
-				negative_weight numeric,
-				
-				sub_category varchar(50),
-				mold_id integer,
-				product_parts varchar(50),
-				item_id integer,
-				product_name character varying(300) COLLATE pg_catalog."default",
-				item_name_customers varchar(100) null,
-				item_code_customers varchar(50) null,
-				item_classification_customers varchar(120) null,
-				view_items boolean,
-				view_parts boolean,
-				view_molds boolean,
-				density numeric,
-				row_material_typea character varying(50) COLLATE pg_catalog."default",
-				row_material_typeb character varying(50) COLLATE pg_catalog."default",
-				tall_mm numeric,
-				tall_positive_tolerance numeric,
-				tall_negative_tolerance numeric,
-				width_mm numeric,
-				width_positive_tolerance numeric,
-				width_negative_tolerance numeric,
-				sicness_mm numeric,
-				sicness_positive_tolerance numeric,
-				sicness_negative_tolerance numeric,
-				id_printed_specification integer null,
-				spec_folder_no integer null,
-				page_volum_x numeric null,
-				page_volum_y numeric null,
-				page_volum_z numeric null,
-				volume numeric null,
-				sitotb_color character varying(50) COLLATE pg_catalog."default",
-				sitotb_set character varying(50) COLLATE pg_catalog."default",
-				silotib_meter_reels character varying(50) COLLATE pg_catalog."default",
-				silotib_outside_meter numeric,
-				package_page character varying(50) COLLATE pg_catalog."default",
-				number_bacage character varying(50) COLLATE pg_catalog."default",
-				page_size_x numeric,
-				page_size_y numeric,
-				page_colore character varying(50) COLLATE pg_catalog."default",
-				pages_kgm_set numeric,
-				pages_kgm numeric,
-				kg_after_add12percent numeric,
-				kg_after_add8_5percent numeric(50,0),
-				id_modification int null,
-				notes varchar(300) null,
-				silotib_inside_meter numeric
-				)
-'''
+			create_table_parts_list='''
+			CREATE TABLE IF NOT EXISTS public.t11parts_list
+			(
+			id_part character varying(50) COLLATE pg_catalog."default" NOT NULL,
+			product_code character varying(100) COLLATE pg_catalog."default",
+			product_name_by_parts character varying(300) COLLATE pg_catalog."default",
+			weight_kg numeric,
+			standard_rate_hour integer,
+			highlite character varying(50) COLLATE pg_catalog."default",
+			standard_dry_weight numeric,
+			standard_dry_weight_from numeric,
+			standard_dry_weight_to numeric,
+			positive_weight numeric,
+			negative_weight numeric,
+			sub_category character varying(50) COLLATE pg_catalog."default",
+			mold_id integer,
+			product_parts character varying(50) COLLATE pg_catalog."default",
+			item_id integer,
+			product_name character varying(300) COLLATE pg_catalog."default",
+			item_name_customers character varying(100) COLLATE pg_catalog."default",
+			item_code_customers character varying(50) COLLATE pg_catalog."default",
+			item_classification_customers character varying(120) COLLATE pg_catalog."default",
+			view_items boolean,
+			view_parts boolean,
+			view_molds boolean,
+			density numeric,
+			row_material_typea character varying(50) COLLATE pg_catalog."default",
+			row_material_typeb character varying(50) COLLATE pg_catalog."default",
+			tall_mm numeric,
+			tall_positive_tolerance numeric,
+			tall_negative_tolerance numeric,
+			width_mm numeric,
+			width_positive_tolerance numeric,
+			width_negative_tolerance numeric,
+			sicness_mm numeric,
+			sicness_positive_tolerance numeric,
+			sicness_negative_tolerance numeric,
+			id_printed_specification integer,
+			spec_folder_no integer,
+			page_volum_x numeric,
+			page_volum_y numeric,
+			page_volum_z numeric,
+			volume numeric,
+			sitotb_color character varying(50) COLLATE pg_catalog."default",
+			sitotb_set character varying(50) COLLATE pg_catalog."default",
+			silotib_meter_reels character varying(50) COLLATE pg_catalog."default",
+			silotib_outside_meter numeric,
+			package_page character varying(50) COLLATE pg_catalog."default",
+			number_bacage character varying(50) COLLATE pg_catalog."default",
+			page_size_x numeric,
+			page_size_y numeric,
+			page_colore character varying(50) COLLATE pg_catalog."default",
+			pages_kgm_set numeric,
+			pages_kgm numeric,
+			kg_after_add12percent numeric,
+			kg_after_add8_5percent numeric(50,0),
+			id_modification integer,
+			notes character varying(300) COLLATE pg_catalog."default",
+			silotib_inside_meter numeric,
+			mother_id integer,
+			standard_wet_weight_from numeric,
+			standard_wet_weight numeric,
+			standard_wet_weight_to numeric,
+			mold_numbers_to_same_item integer,
+			no_duplication integer,
+			dublication character varying COLLATE pg_catalog."default",
+			note character varying COLLATE pg_catalog."default",
+			weight_net_gm numeric,
+			unit character varying COLLATE pg_catalog."default",
+			id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+			describtion character varying(1024) COLLATE pg_catalog."default",
+			category character varying(255) COLLATE pg_catalog."default",
+			uom character varying(255) COLLATE pg_catalog."default",
+			CONSTRAINT yt_parts_list_pkey PRIMARY KEY (id_part)
+		)
+		WITH (
+			OIDS = FALSE
+		)
+		TABLESPACE pg_default;
+
+		ALTER TABLE public.t11parts_list
+			OWNER to postgres;
+
+		GRANT ALL ON TABLE public.t11parts_list TO postgres;
+
+		GRANT SELECT ON TABLE public.t11parts_list TO quality;
+
+		'''
 #			cursor.execute(create_table_parts_list)
 
 			create_view_molds_list='''/* list molds by all informatio for molds only (not any parts) */create view v12molds_list as (select M.*,p.standard_rate_hour
@@ -588,117 +620,181 @@ class Block():
 			cursor.execute(create_view_item_specification)
 			
 			create_view_item_master='''create view v108items_master as (select p.* ,M.machie_size 
-									,No_on_Set  ,M.set  ,M.mold_name ,M.UOM ,
+									,No_on_Set  ,M.set  ,M.mold_name ,
 									M.customer_id  ,M.c_t_standard_per_second ,	M.c_t_standard_per_second_from ,
 								M.c_t_standard_per_second_to ,customer_name,company_of_customer
 								from t11parts_list p
 							left join t12molds_list M
 							on p.mold_id=M.mold_id
-							where p.view_items=true  )'''
+							where p.view_items=1)'''
 			cursor.execute(create_view_item_master)
 			conn.commit()
 			print("complete install master data")
+			
 	def install_records(self):
 			create_table_quality='''
-				create table t10quality_inpsection (
-				id serial primary key,
-				year int,
-				month int,
-				day int,
-				machine_id int,
-				item_id int,
-				number_day_use int null,
-				mold_id int,
-				product_parts varchar(50),
-				shift1_wet_weight1 numeric null,
-				shift1_wet_weight2 numeric null ,
-				shift1_wet_weight3 numeric null ,
-				shift1_wet_weight4 numeric null ,
-				shift1_wet_weight5 numeric null ,
-				shift1_dry_weight1 numeric null,
-				shift1_dry_weight2 numeric null,
-				shift1_dry_weight3 numeric null,
-				shift1_dry_weight4 numeric null,
-				shift1_dry_weight5 numeric null,
-				shift1_c_t1 int null,
-				shift1_c_t2 int null,
-				shift2_wet_weight1 numeric null,
-				shift2_wet_weight2 numeric null,
-				shift2_wet_weight3 numeric null,
-				shift2_wet_weight4 numeric null,
-				shift2_wet_weight5 numeric null,
-				shift2_dry_weight1 numeric null,
-				shift2_dry_weight2 numeric null,
-				shift2_dry_weight3 numeric null,
-				shift2_dry_weight4 numeric null,
-				shift2_dry_weight5 numeric null,
-				shift2_c_t1 int null,
-				shift2_c_t2 int null,
-				average_wet_weight numeric,
-				average_dry_weight numeric,
-				rat_actually int,
-				rat_validation int,
-				c_t_actually int null,
-				shift1_production_cards int null,
-				shift1_prod_page numeric null,
-				shift1_proper_production int null,
-				shift1_scrabe_shortage int null,
-				shift1_scrabe_roll int null,
-				shift1_scrabe_broken int null,
-				shift1_scrabe_curve int null,
-				shift1_scrabe_shrinkage int null,
-				shift1_scrabe_dimentions int null,
-				shift1_scrabe_weight int null,
-				shift1_scrabe_dirty int null,
-				shift1_scrabe_cloration int null,
-				
-				shift1_scrabe_no_parts integer ,
-				shift1_scrabe_no_item int null,
-				
-				shift1_all_production integer ,
-				
-				shift2_production_cards int null,
-				shift2_prod_page int null,
-				shift2_proper_production int null,
-				shift2_scrabe_shortage int null,
-				shift2_scrabe_roll int null,
-				shift2_scrabe_broken int null,
-				shift2_scrabe_curve int null,
-				shift2_scrabe_shrinkage int null,
-				shift2_scrabe_dimentions int null,
-				shift2_scrabe_weight int null,
-				shift2_scrabe_dirty int null,
-				shift2_scrabe_cloration int null,
-				shift2_scrabe_no_parts int ,
-				shift2_scrabe_no_item int null,
-				shift2_all_production integer ,
-				sum_scrabe_shortage_bySet integer ,
-				sum_scrabe_roll_bySet integer ,
-				sum_scrabe_broken_bySet integer ,
-				sum_scrabe_curve_bySet integer ,
-				sum_scrabe_shrinkage_bySet integer ,
-				sum_scrabe_dimentions_bySet integer ,
-				sum_scrabe_weight_bySet integer ,
-				sum_scrabe_dirty_bySet integer ,
-				sum_scrabe_cloration_bySet integer ,
-				sum_scrabe_No_parts integer ,
-				number_scrab_by_item int null,			
-				gross_production int,
-				scrap_percent_by_item numeric ,
-				part_id  varchar(50),
-				factory  varchar(50),
-				shift1_tall_mm numeric,
-				shift1_width_mm numeric,
-				shift1_deepth_mm numeric,
-				shift2_tall_mm numeric,
-				shift2_width_mm numeric,
-				shift2_deepth_mm numeric,
-				id_DayPartUnique varchar(50) UNIQUE /*for validate not upload any duplicate rows*/,
-				parts_patchsNumbers varchar(50),
-				Items_patchsNumbers varchar(50),
-				bachStartDate date null,
-				bachEndDate date null,
-				date_day date);'''
+		
+		CREATE TABLE IF NOT EXISTS public.t10quality_inpsection
+		(
+			year integer NOT NULL,
+			month integer NOT NULL,
+			day integer NOT NULL,
+			machine_id integer,
+			item_id integer NOT NULL,
+			number_day_use integer,
+			mold_id integer,
+			product_parts character varying(50) COLLATE pg_catalog."default",
+			shift1_wet_weight1 numeric,
+			shift1_wet_weight2 numeric,
+			shift1_wet_weight3 numeric,
+			shift1_wet_weight4 numeric,
+			shift1_wet_weight5 numeric,
+			shift1_dry_weight1 numeric,
+			shift1_dry_weight2 numeric,
+			shift1_dry_weight3 numeric,
+			shift1_dry_weight4 numeric,
+			shift1_dry_weight5 numeric,
+			shift1_c_t1 integer,
+			shift1_c_t2 integer,
+			shift2_wet_weight1 numeric,
+			shift2_wet_weight2 numeric,
+			shift2_wet_weight3 numeric,
+			shift2_wet_weight4 numeric,
+			shift2_wet_weight5 numeric,
+			shift2_dry_weight1 numeric,
+			shift2_dry_weight2 numeric,
+			shift2_dry_weight3 numeric,
+			shift2_dry_weight4 numeric,
+			shift2_dry_weight5 numeric,
+			shift2_c_t1 integer,
+			shift2_c_t2 integer,
+			average_wet_weight numeric,
+			average_dry_weight numeric,
+			rat_actually integer,
+			rat_validation integer,
+			c_t_actually integer,
+			shift1_production_cards integer,
+			shift1_prod_page numeric,
+			shift1_proper_production integer,
+			shift1_scrabe_shortage integer,
+			shift1_scrabe_roll integer,
+			shift1_scrabe_broken integer,
+			shift1_scrabe_curve integer,
+			shift1_scrabe_shrinkage integer,
+			shift1_scrabe_dimentions integer,
+			shift1_scrabe_weight integer,
+			shift1_scrabe_dirty integer,
+			shift1_scrabe_cloration integer,
+			shift1_scrabe_no_parts integer,
+			shift1_scrabe_no_item integer,
+			shift1_all_production integer,
+			shift2_production_cards integer,
+			shift2_prod_page integer,
+			shift2_proper_production integer,
+			shift2_scrabe_shortage integer,
+			shift2_scrabe_roll integer,
+			shift2_scrabe_broken integer,
+			shift2_scrabe_curve integer,
+			shift2_scrabe_shrinkage integer,
+			shift2_scrabe_dimentions integer,
+			shift2_scrabe_weight integer,
+			shift2_scrabe_dirty integer,
+			shift2_scrabe_cloration integer,
+			shift2_scrabe_no_parts integer,
+			shift2_scrabe_no_item integer,
+			shift2_all_production integer,
+			sum_scrabe_shortage_byset integer,
+			sum_scrabe_roll_byset integer,
+			sum_scrabe_broken_byset integer,
+			sum_scrabe_curve_byset integer,
+			sum_scrabe_shrinkage_byset integer,
+			sum_scrabe_dimentions_byset integer,
+			sum_scrabe_weight_byset integer,
+			sum_scrabe_dirty_byset integer,
+			sum_scrabe_cloration_byset integer,
+			sum_scrabe_no_parts integer,
+			number_scrab_by_item integer,
+			gross_production integer,
+			scrap_percent_by_item numeric,
+			part_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+			factory character varying(50) COLLATE pg_catalog."default",
+			shift1_tall_mm character varying(100) COLLATE pg_catalog."default",
+			shift2_tall_mm character varying(100) COLLATE pg_catalog."default",
+			shift1_width_mm character varying(100) COLLATE pg_catalog."default",
+			id_daypartunique character varying(50) COLLATE pg_catalog."default",
+			parts_patchsnumbers character varying(50) COLLATE pg_catalog."default",
+			items_patchsnumbers character varying(50) COLLATE pg_catalog."default",
+			bachstartdate date,
+			bachenddate date,
+			date_day date,
+			shift2_width_mm numeric,
+			shift1_deepth_mm numeric,
+			shift2_deepth_mm numeric,
+			shift1_denisty numeric,
+			shift2_denisty numeric,
+			actuall_destiny_average numeric,
+			actuall_tall_mm_average numeric,
+			actuall_width_mm_average numeric,
+			actuall_deep_mm_average numeric,
+			product_code character varying COLLATE pg_catalog."default",
+			weigh_net_gm numeric,
+			visual_defect1 boolean,
+			visual_defect2 boolean,
+			visual_defect3 boolean,
+			visual_defect4 boolean,
+			visual_defect5 boolean,
+			visual_defect6 boolean,
+			visual_defect7 boolean,
+			visual_defect8 boolean,
+			visual_defect9 boolean,
+			mother_id integer NOT NULL,
+			attachment_id integer,
+			"select" boolean,
+			disable boolean,
+			change_id integer,
+			ncr_id integer,
+			level_id integer,
+			user_create character varying COLLATE pg_catalog."default",
+			user_update character varying COLLATE pg_catalog."default",
+			datecreate date,
+			dateupdate date,
+			shif1_tall2_mm numeric,
+			shif1_width2_mm numeric,
+			shift2_deepth2_mm numeric,
+			shift1_deepth2_mm numeric,
+			shif2_tall2_mm numeric,
+			shif2_width2_mm numeric,
+			id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 110419 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+			weight_kg1 numeric,
+			weight_kg2 numeric,
+			weight_kg3 numeric,
+			weight_kg4 numeric,
+			weight_kg5 numeric,
+			weight_kg6 numeric,
+			weight_kg7 numeric,
+			weight_kg8 numeric,
+			weight_kg9 numeric,
+			weight_kg10 numeric,
+			average_weight_kg numeric,
+			weight_deviation_kg numeric,
+			CONSTRAINT t10quality_inpsection_pkey PRIMARY KEY (id),
+			CONSTRAINT yt_quality_id_daypartunique_key UNIQUE (id_daypartunique)
+				)
+				WITH (
+					OIDS = FALSE
+				)
+				TABLESPACE pg_default;
+
+				ALTER TABLE public.t10quality_inpsection
+					OWNER to postgres;
+
+				GRANT ALL ON TABLE public.t10quality_inpsection TO quality;
+
+				GRANT ALL ON TABLE public.t10quality_inpsection TO postgres;
+
+				COMMENT ON COLUMN public.t10quality_inpsection.weigh_net_gm
+				IS 'between weight net weight and dry weight';
+			'''
 			cursor.execute(create_table_quality)
 			conn.commit()
 			print("complete install quality records")
@@ -855,7 +951,6 @@ class Block():
 									round(min(q.shift1_scrabe_No_parts),0)as shift1_scrabe_No_parts,
 									
 									round(sum(q.shift1_scrabe_no_item),0)as shift1_scrabe_no_item,
-
 									round(sum(shift1_all_production),0)as shift1_all_production,
 									round(min(q.shift2_production_cards),0)as shift2_production_cards,
 									round(min(q.shift2_prod_page),0)as shift2_prod_page,
@@ -872,7 +967,6 @@ class Block():
 									round(min(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
 									
 									round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
-
 									round(sum(shift2_all_production),0)as shift2_all_production,
 									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
 									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
@@ -1234,8 +1328,6 @@ class Block():
 								round((sum(q.gross_production))*(avg(q.average_dry_weight))/1000,1) as production_weight_kg,
 								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
 								date_part('week', q.day::date) AS weeksNumbers
-								
-								
 								
 				from v105quality_inspection_items q
 							
@@ -2048,8 +2140,7 @@ class Block():
 		
 		cursor.execute(SQL1)
 	def get_daily_dataentry_items(self,year,month,*args):
-		SQL1='''with quary_molds_report as (select * from v101molds_report_daily
-								
+		SQL1='''with quary_molds_report as (select * from v101molds_report_daily 	
 									)
 							select * from quary_molds_report where year=(%s)'''%year
 		
@@ -2463,11 +2554,10 @@ class PgAccess():
 	def add_columns(self,table,column_name,dataType,*args):
 		SQL_table=' alter table %s '%table
 		SQL2=SQL_table+'add COLUMN %s'%column_name
-		SQL3=SQL2+' %s '%dataType
-							
+		SQL3=SQL2+' %s '%dataType		
 		cursor.execute(SQL3)	
-		
 		conn.commit()
+
 		print("add column "+str(column_name) ,"in table name "+str(table),"table tybe "+str(dataType))
 	def drop_columns(self,table,column_name):
 		SQL_table=' alter table %s '%table
