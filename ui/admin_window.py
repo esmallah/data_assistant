@@ -501,7 +501,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         yearly_molds18=Group(r'E:\work\contact_group\QHSE_activation\QC quality control\qc_molds2018','2018QC_molds_daily.xls',"input",2019,12,"qc_analysis_yearly2018_custom.xlsx","Sheet1")
         mothly_molds=Group(analysisInput,"QC_daily_v2.xlsx","input",2020,2,31,31)
         mold_data=Group(analysisInput,"drywtmonthly_sorce.xlsm","input",2019,1,"drywtmonthly_v2.xlsx","input")
-        qc_daily=Group(analysisInput,"QC_daily_v2.xlsx","input","253","254",1,31)
+        qc_daily=Select(analysisInput,"QC_daily_v2.xlsx","input","253","254",1,31)
         #if self.checkBox_analsys_monthlyreport.isChecked():
         if self.checkBox_analysis_summaryReport.isChecked():
             print ("checkBox_analysis_summaryReport start",analysisInput)
