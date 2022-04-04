@@ -1,5 +1,6 @@
 '''this module for the data was emported from database analysis'''
 import csv
+from statistics import mean
 import pandas as pd
 import openpyxl as xl
 from openpyxl import load_workbook
@@ -47,7 +48,6 @@ columns_quality=['year',
     
     'mold_id',
     
-    
     'shift1_wet_weight1',
     'shift1_wet_weight2',
     'shift1_wet_weight3',
@@ -59,16 +59,14 @@ columns_quality=['year',
     'shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',
     'shift2_c_t1','shift2_c_t2'
 
-    ,'average_dry_weight','average_wet_weight','rat_actually','c_t_actually','shift1_production_cards'
+    ,'shift1_production_cards'
     ,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
     'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
     ,'shift1_scrabe_cloration','shift1_scrabe_no_parts','shift1_scrabe_no_item','shift1_all_production'
     ,'shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
     'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
-    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item',
-    
-    'number_scrab_by_item',
-    'gross_production','scrap_percent_by_item',
+    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item'
+    ,'scrap_percent_by_item',
     ]
     
     #the previous columns separate to 
@@ -89,22 +87,15 @@ columns_QCinspection=['year','month','day','machine_id','item_id','number_day_us
     ,'average_wet_weight','average_dry_weight','rat_actually','rat_validation','dryweight_deviation_validation','part_id','shift1_production_cards'
     ,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
     'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
-    ,'shift1_scrabe_cloration','shift1_scrabe_no_parts','shift1_scrabe_no_item'
-    ,'shift1_all_production'
+    ,'shift1_scrabe_cloration','shift1_scrabe_no_parts'
+    
 
     ,'shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
     'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
-    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item'
-    ,'shift2_all_production'
-
+    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts'
     
-    ,'bachStartDate'
-
-
-    'sum_scrabe_shortage_bySet','sum_scrabe_roll','sum_scrabe_broken'
-    ,'sum_scrabe_curve','sum_scrabe_shrinkage','sum_scrabe_dimentions','sum_scrabe_weight','sum_scrabe_dirty_bySet',
-    'sum_scrabe_cloration','sum_scrabe_no_parts','number_scrab_by_item',
-    'gross_production','scrap_percent_by_item','scrap_weight_kg','production_weight_kg','id_DayPartUnique','factory'
+    ,'bachStartDate',
+'id_DayPartUnique','factory'
     ,'deepth_mm','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
             #the previeuse table separate to
@@ -416,32 +407,76 @@ class Select():
         from memory import Block,cursor,conn
 
         os.chdir(self.folder)
-        inputPath=self.folder+r'\formats'
-        outputPath=self.folder+r'\data\qc_molds'
         wb = xl.load_workbook(self.readfile1)
-        #year=
-        
-        #daily input
-        ws1=wb["input_daily"]
-        #Block.get_daily_dataentry_items(self,year,month,args)
 
         Block.get_daily_dataentry_items(self,year,month,args)    
         get_data2=cursor.fetchall()
         #__________________________________________________________________        
         column_names = [desc[0] for desc in cursor.description]
         get_data = pd.DataFrame(get_data2,columns=column_names)
+
+        
+        mold_inspection=get_data
+        dry_weight_cl=[
+        'shift1_dry_weight1','shift1_dry_weight2',
+        'shift1_dry_weight3','shift1_dry_weight4','shift1_dry_weight5',
+        'shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3',
+        'shift2_dry_weight4','shift2_dry_weight5',
+        ]
+        mold_inspection['average_dry_weight']=mold_inspection[dry_weight_cl].mean()
+        wet_weight_cl=[
+        'shift1_wet_weight1',
+        'shift1_wet_weight2',
+        'shift1_wet_weight3',
+        'shift1_wet_weight4',
+        'shift1_wet_weight5',
+        'shift2_wet_weight1',
+        'shift2_wet_weight2',
+        'shift2_wet_weight3',
+        'shift2_wet_weight4',
+        'shift2_wet_weight5']
+        mold_inspection['average_wet_weight']=mold_inspection[wet_weight_cl].mean()
+        
+        mold_inspection['c_t_actually']=mold_inspection[['shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2']].mean()
+        #mold_inspection['number_scrab_by_item']=mold_inspection.shift1_dry_weight1+
+        #mold_inspection['rat_actually']=
+        #mold_inspection['number_scrab_by_item']=mold_inspection[]
+        
+        mold_inspection['sum_scrabe_no_parts']=mold_inspection[['shift1_scrabe_no_parts','shift2_scrabe_no_parts',]].sum()
+        #mold_inspection['shift1_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts']/ mold_inspection['set']
+        #mold_inspection['shift2_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts']/ mold_inspection['set']
+        #mold_inspection['sum_scrabe_shortage_bySet']=
+        #mold_inspection['sum_scrabe_roll']=
+        #mold_inspection['sum_scrabe_broken']=
+        #mold_inspection['sum_scrabe_curve']=
+        #mold_inspection['sum_scrabe_shrinkage']=
+        #mold_inspection['sum_scrabe_dimentions']=
+        #mold_inspection['sum_scrabe_weight']=
+        #mold_inspection['sum_scrabe_dirty_bySet']=
+        #mold_inspection['sum_scrabe_cloration']=
+        
+        #mold_inspection['number_scrab_by_item']=mold_inspection['shift1_scrabe_no_item']+mold_inspection['shift1_scrabe_no_item']
+        #mold_inspection['shift1_all_production']=mold_inspection['shift1_proper_production']+mold_inspection['shift1_scrabe_no_item']
+        #mold_inspection['shift2_all_production']=mold_inspection['shift2_proper_production']+mold_inspection['shift2_scrabe_no_item']
+        #mold_inspection['gross_production']=mold_inspection['shift1_all_production']+mold_inspection['shift2_all_production']
+        #mold_inspection['scrap_percent_by_item']=
+        #mold_inspection['scrap_weight_kg']=
+        #mold_inspection['production_weight_kg']=
+        #mold_inspection['gross_production']=
+        
+        
         list_item_size=get_data.shape[0]
         #get_data.shift1_all_production=sum(get_data.shift1_scrabe_shortage,get_data.shift1_scrabe_roll,get_data.shift1_scrabe_broken, get_data.shift1_scrabe_curve,  get_data.shift1_scrabe_shrinkage,get_data.shift1_scrabe_dimentions,get_data.shift1_scrabe_weight,get_data.shift1_scrabe_dirty)
         
-        print('______________get data________________________',get_data.shift1_scrabe_shortage)
+        print('______________get data________________________',mold_inspection['average_dry_weight'])
         #__________________________________________________________________
-        
+        #daily input
+        get_data['c_t_actually']=mold_inspection['c_t_actually']
+        get_data['average_dry_weight']=mold_inspection['average_dry_weight']
+        get_data['sum_scrabe_no_parts']=mold_inspection['sum_scrabe_no_parts']
+        get_data['average_wet_weight']=mold_inspection['average_wet_weight']
 
-        
-
-        #writer = pd.ExcelWriter("QC_daily_v2.xlsx")
-        #rows.to_excel(writer,"inut")
-        #writer.save()
+        ws1=wb["input_daily"]
         #create  the index sheet:
         r = 4  # start at 4th row
         c = 1 # column 'a'
@@ -872,6 +907,8 @@ class Select():
         
         wb = xl.load_workbook(self.readfile1)
         #daily input
+        
+    
         ws1=wb["input_daily"]
         Block.get_daily_dataentry_items_yearly(self,year,month,day,to_day)
         get_data=cursor.fetchall()
