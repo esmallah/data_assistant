@@ -280,7 +280,7 @@ class Select():
         'shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3',
         'shift2_dry_weight4','shift2_dry_weight5',
         ]
-        mold_inspection['average_dry_weight']=mold_inspection[dry_weight_cl].mean()
+        mold_inspection['average_dry_weight']=mold_inspection[dry_weight_cl].mean(axis=1)
         wet_weight_cl=[
         'shift1_wet_weight1',
         'shift1_wet_weight2',
@@ -292,34 +292,55 @@ class Select():
         'shift2_wet_weight3',
         'shift2_wet_weight4',
         'shift2_wet_weight5']
-        mold_inspection['average_wet_weight']=mold_inspection[wet_weight_cl].mean()
+        mold_inspection['average_wet_weight']=mold_inspection[wet_weight_cl].mean(axis=1)
+        cycletime_cl=['shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2']
+        mold_inspection['c_t_actually']=mold_inspection[cycletime_cl].mean(axis=1)
         
-        mold_inspection['c_t_actually']=mold_inspection[['shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2']].mean()
-        #mold_inspection['number_scrab_by_item']=mold_inspection.shift1_dry_weight1+
-        #mold_inspection['rat_actually']=
-        #mold_inspection['number_scrab_by_item']=mold_inspection[]
+        mold_inspection['rat_actually']=3600 / (mold_inspection['c_t_actually'].fillna(0).astype(int)* mold_inspection['set'].astype(int))
+
+        print('test_________average_wet_weight',mold_inspection['average_wet_weight'])
         
-        mold_inspection['sum_scrabe_no_parts']=mold_inspection[['shift1_scrabe_no_parts','shift2_scrabe_no_parts',]].sum()
-        #mold_inspection['shift1_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts']/ mold_inspection['set']
-        #mold_inspection['shift2_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts']/ mold_inspection['set']
-        #mold_inspection['sum_scrabe_shortage_bySet']=
-        #mold_inspection['sum_scrabe_roll']=
-        #mold_inspection['sum_scrabe_broken']=
-        #mold_inspection['sum_scrabe_curve']=
-        #mold_inspection['sum_scrabe_shrinkage']=
-        #mold_inspection['sum_scrabe_dimentions']=
-        #mold_inspection['sum_scrabe_weight']=
-        #mold_inspection['sum_scrabe_dirty_bySet']=
-        #mold_inspection['sum_scrabe_cloration']=
+        mold_inspection['sum_scrabe_no_parts']=mold_inspection[['shift1_scrabe_no_parts','shift2_scrabe_no_parts',]].sum(axis=1)
+        mold_inspection['shift1_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts'].fillna(0).astype(int)/ mold_inspection['set']
+        mold_inspection['shift2_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts'].fillna(0).astype(int)/ mold_inspection['set']
+        mold_inspection['number_scrab_by_item']=sum(mold_inspection['shift1_scrabe_no_item'],mold_inspection['shift2_scrabe_no_item'])
         
-        #mold_inspection['number_scrab_by_item']=mold_inspection['shift1_scrabe_no_item']+mold_inspection['shift1_scrabe_no_item']
-        #mold_inspection['shift1_all_production']=mold_inspection['shift1_proper_production']+mold_inspection['shift1_scrabe_no_item']
-        #mold_inspection['shift2_all_production']=mold_inspection['shift2_proper_production']+mold_inspection['shift2_scrabe_no_item']
-        #mold_inspection['gross_production']=mold_inspection['shift1_all_production']+mold_inspection['shift2_all_production']
+        
+        
+        mold_inspection['sum_scrabe_shortage_bySet']=mold_inspection[['shift1_scrabe_shortage','shift2_scrabe_shortage']].sum(axis=1)
+        mold_inspection['sum_scrabe_roll']=mold_inspection[['shift1_scrabe_roll','shift2_scrabe_roll']].sum(axis=1)
+        mold_inspection['sum_scrabe_broken']=mold_inspection[['shift2_scrabe_broken','shift1_scrabe_broken']].sum(axis=1)
+        mold_inspection['sum_scrabe_curve']=mold_inspection[['shift1_scrabe_curve','shift2_scrabe_curve']].sum(axis=1)
+        mold_inspection['sum_scrabe_shrinkage']=mold_inspection[['shift2_scrabe_shrinkage','shift1_scrabe_shrinkage']].sum(axis=1)
+        mold_inspection['sum_scrabe_dimentions']=mold_inspection[['shift2_scrabe_dimentions','shift1_scrabe_dimentions']].sum(axis=1)
+        mold_inspection['sum_scrabe_weight']=mold_inspection[['shift1_scrabe_weight','shift2_scrabe_weight']].sum(axis=1)
+        mold_inspection['sum_scrabe_dirty_bySet']=mold_inspection[['shift1_scrabe_dirty','shift2_scrabe_dirty']].sum(axis=1)
+        mold_inspection['sum_scrabe_cloration']=mold_inspection[['shift1_scrabe_cloration','shift2_scrabe_cloration']].sum(axis=1)
+        
+        mold_inspection['number_scrab_by_item']=mold_inspection['shift1_scrabe_no_item']+mold_inspection['shift1_scrabe_no_item']
+        mold_inspection['shift1_all_production']=mold_inspection['shift1_proper_production']+mold_inspection['shift1_scrabe_no_item']
+        mold_inspection['shift2_all_production']=mold_inspection['shift2_proper_production']+mold_inspection['shift2_scrabe_no_item']
+        mold_inspection['gross_production']=mold_inspection['shift1_all_production']+mold_inspection['shift2_all_production']
         #mold_inspection['scrap_percent_by_item']=
         #mold_inspection['scrap_weight_kg']=
         #mold_inspection['production_weight_kg']=
         #mold_inspection['gross_production']=
+        get_data['c_t_actually']=mold_inspection['c_t_actually']
+        get_data['c_t_actually']=mold_inspection['rat_actually']
+        get_data['average_dry_weight']=mold_inspection['average_dry_weight']
+        get_data['sum_scrabe_no_parts']=mold_inspection['sum_scrabe_no_parts']
+        get_data['average_wet_weight']=mold_inspection['average_wet_weight']
+        get_data['number_scrab_by_item']=mold_inspection['number_scrab_by_item']
+        get_data['sum_scrabe_shortage_bySet']=mold_inspection['sum_scrabe_shortage_bySet']
+        get_data['sum_scrabe_roll']=mold_inspection['sum_scrabe_roll']
+        get_data['sum_scrabe_broken']=mold_inspection['sum_scrabe_broken']
+        get_data['sum_scrabe_curve']=mold_inspection['sum_scrabe_curve']
+        get_data['sum_scrabe_shrinkage']=mold_inspection['sum_scrabe_shrinkage']
+        get_data['sum_scrabe_dimentions']=mold_inspection['sum_scrabe_dimentions']
+        get_data['sum_scrabe_weight']=mold_inspection['sum_scrabe_weight']
+        get_data['sum_scrabe_dirty_bySet']=mold_inspection['sum_scrabe_dirty_bySet']
+        get_data['sum_scrabe_cloration']=mold_inspection['sum_scrabe_cloration']
+        
         return get_data
 
     def select_data(self,year,month,day,isday=True,monthly=True,yearly=True,masterData=True,quality_records=True):
@@ -474,10 +495,7 @@ class Select():
         print('______________get data________________________',get_data['average_dry_weight'])
         #__________________________________________________________________
         #daily input
-        #get_data['c_t_actually']=self.load_data.get_data['c_t_actually']
-        #get_data['average_dry_weight']=self.load_data.get_data['average_dry_weight']
-        #get_data['sum_scrabe_no_parts']=self.load_data.get_data['sum_scrabe_no_parts']
-        #get_data['average_wet_weight']=self.load_data.get_data['average_wet_weight']
+        
 
         ws1=wb["input_daily"]
         #create  the index sheet:
@@ -987,21 +1005,15 @@ class Select():
         
         #dateDay3=mold_analysis2['date_day'].tail(1)
         print("_________daily report___________for month________",last_month,type(last_month))       
-        #convert selecting to value
-        #dateDay2=dateDay3.values
-        #convert numpy ndarray to list
-        #dateDay1 = dateDay2.tolist()
-        #convert list  to string
-        #dateDay = ' '.join([str(elem) for elem in dateDay1]) 
-        #day=int(dateDay.split("/",2)[1])
-
+        
         mold_days=mold_analysis2["day"].count()
         day=int(day)
+        print("_________daily report___________for day________",day,type(day))       
+
         daily_analysis1_bool=mold_analysis2["day"]==day
         daily_analysis1=mold_analysis2[daily_analysis1_bool]
         #validate input 
         
-
 
         #for fix nan error in ct
         daily_analysis = daily_analysis1.dropna(subset=['c_t_actually'])#remove all numric data
@@ -1019,7 +1031,7 @@ class Select():
         mold_count=report_forCt["rat_actually"].count()
         #cycle timpe report
         
-        c_t=report_forCt[["c_t_standard_per_second","standard_rate_hour","rat_actually","rat_validation","c_t_actually"]]
+        c_t=report_forCt[["c_t_standard_per_second","standard_rate_hour","rat_actually","c_t_actually"]]
         
         c_t_nonconfomity=c_t[c_t['rat_actually']*1.05<c_t['standard_rate_hour']]
         c_t_nonconfomity_count=c_t_nonconfomity["rat_actually"].count()
@@ -1041,17 +1053,18 @@ class Select():
        
         
         wieght2=report
-        wieght=wieght2[wieght2["dryweight_deviation_validation"]<1]#filter nonconformity data
-        print("___________weight   data",wieght)
+        print ("eror_____________wieght2[standard_dry_weight_from",wieght2["standard_dry_weight_from"])
         #filter low weithrs
-        weight_nonconfomity_low=wieght[wieght['average_dry_weight']<wieght["standard_dry_weight_from"]] #add column tocount number of non conformity product
+        weight_nonconfomity_low=wieght2[wieght2['average_dry_weight']<wieght2["standard_dry_weight_from"]] #add column tocount number of non conformity product
         
         #add rows for filter high weight
             #fix error for zero ncr
         #if daily_analysis1["dryweight_deviation_validation"]==0 
-        weight_nonconfomity_high=wieght[wieght['average_dry_weight']>wieght["standard_dry_weight_to"]]
-        #weight_nonconfomity=pd.DataFrame(index=[["machine_id","mold_name"],0])
-        #weight_nonconfomity=pd.DataFrame(index=[wieght["machine_id","mold_name"]])
+        weight_nonconfomity_high=wieght2[wieght2['average_dry_weight']>wieght2["standard_dry_weight_to"]]
+
+        wieght=weight_nonconfomity_high
+        wieght=wieght.append(weight_nonconfomity_low)
+
         weight_nonconfomity=weight_nonconfomity_high
         weight_nonconfomity_count=weight_nonconfomity["average_dry_weight"].count()
         if weight_nonconfomity_count==0:  # for ignor impty index error        

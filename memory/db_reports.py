@@ -1327,8 +1327,8 @@ class Block():
 								round((sum(q.number_scrab_by_item))*(avg(q.average_dry_weight))/1000,1) as scrap_weight_kg,
 								round((sum(q.gross_production))*(avg(q.average_dry_weight))/1000,1) as production_weight_kg,
 								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
-								date_part('week', q.day::date) AS weeksNumbers
-								
+								date_part('week', q.day::date) AS weeksNumbers,
+								p.mold_name								
 				from v105quality_inspection_items q
 							
 							left join v108items_master p
