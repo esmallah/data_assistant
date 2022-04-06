@@ -53,7 +53,7 @@ gridline-color: rgb(255, 255, 255,0%);
 </string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="tab_AI_leader">
      <property name="accessibleName">
@@ -4210,6 +4210,26 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <property name="text">
+             <string>LGOLED65A26LA_set</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>OLED65A26LAside</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>lg70UQ980updown</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>lg70UQ980sides</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>LgWasherAngels</string>
             </property>
            </item>
@@ -5877,6 +5897,11 @@ border-color: rgb(255, 255, 255,0%) ;
        </row>
        <row>
         <property name="text">
+         <string>New Row</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
          <string>21</string>
         </property>
        </row>
@@ -5887,7 +5912,22 @@ border-color: rgb(255, 255, 255,0%) ;
        </row>
        <row>
         <property name="text">
-         <string>23</string>
+         <string>24</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>25</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>26</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>27</string>
         </property>
        </row>
        <column>
@@ -6238,7 +6278,7 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="21" column="0">
         <property name="text">
-         <string>LgWasherAngels</string>
+         <string>LGOLED65A26LA_set</string>
         </property>
        </item>
        <item row="21" column="1">
@@ -6248,12 +6288,12 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="21" column="2">
         <property name="text">
-         <string>3920FZ3114C</string>
+         <string>MFZ67319401</string>
         </property>
        </item>
        <item row="22" column="0">
         <property name="text">
-         <string>LgWasherBase</string>
+         <string>OLED65A26LAside</string>
         </property>
        </item>
        <item row="22" column="1">
@@ -6263,12 +6303,12 @@ border-color: rgb(255, 255, 255,0%) ;
        </item>
        <item row="22" column="2">
         <property name="text">
-         <string>AGG76599801</string>
+         <string>MFZ67319402</string>
         </property>
        </item>
        <item row="23" column="0">
         <property name="text">
-         <string>LgWasherBase_VIVACHE</string>
+         <string>lg70UQ980updown</string>
         </property>
        </item>
        <item row="23" column="1">
@@ -6277,6 +6317,66 @@ border-color: rgb(255, 255, 255,0%) ;
         </property>
        </item>
        <item row="23" column="2">
+        <property name="text">
+         <string>MFZ67207501</string>
+        </property>
+       </item>
+       <item row="24" column="0">
+        <property name="text">
+         <string>lg70UQ980sides</string>
+        </property>
+       </item>
+       <item row="24" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="24" column="2">
+        <property name="text">
+         <string>MFZ67207502</string>
+        </property>
+       </item>
+       <item row="25" column="0">
+        <property name="text">
+         <string>LgWasherAngels</string>
+        </property>
+       </item>
+       <item row="25" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="25" column="2">
+        <property name="text">
+         <string>3920FZ3114C</string>
+        </property>
+       </item>
+       <item row="26" column="0">
+        <property name="text">
+         <string>LgWasherBase</string>
+        </property>
+       </item>
+       <item row="26" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="26" column="2">
+        <property name="text">
+         <string>AGG76599801</string>
+        </property>
+       </item>
+       <item row="27" column="0">
+        <property name="text">
+         <string>LgWasherBase_VIVACHE</string>
+        </property>
+       </item>
+       <item row="27" column="1">
+        <property name="text">
+         <string>mmf</string>
+        </property>
+       </item>
+       <item row="27" column="2">
         <property name="text">
          <string>AGG76599802</string>
         </property>

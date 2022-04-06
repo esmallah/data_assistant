@@ -293,6 +293,7 @@ class Select():
         'shift2_wet_weight4',
         'shift2_wet_weight5']
         mold_inspection['average_wet_weight']=mold_inspection[wet_weight_cl].mean(axis=1)
+        
         cycletime_cl=['shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2']
         mold_inspection['c_t_actually']=mold_inspection[cycletime_cl].mean(axis=1)
         
@@ -1020,8 +1021,8 @@ class Select():
         daily_analysis = daily_analysis.dropna(subset=['c_t_actually'])#drop And for remove all rows with NaNs in column x use dropna: 
         daily_analysis["c_t_actually"]=daily_analysis["c_t_actually"].astype(int)#Last convert values to ints:
 
-        report_forCt=daily_analysis.groupby(["machine_id","mold_id"])["standard_dry_weight_from","standard_dry_weight_to","c_t_standard_per_second","standard_rate_hour","average_dry_weight","rat_actually","c_t_actually"].mean()
-        report=daily_analysis1.groupby(["machine_id","mold_id"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
+        report_forCt=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","c_t_standard_per_second","standard_rate_hour","average_dry_weight","rat_actually","c_t_actually"].mean()
+        report=daily_analysis1.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
         
 
         print("___________report   data",report)
@@ -1039,7 +1040,7 @@ class Select():
         
         if c_t_nonconfomity_count==0:  # for ignor impty index error
             c_t_nonconfomity=pd.DataFrame(index=[0])
-            c_t_nonconfomity["mold_id"]=0
+            c_t_nonconfomity["mold_name"]=0
             c_t_nonconfomity["c_t_standard_per_second"]=0
             c_t_nonconfomity["standard_rate_hour"]=0
             c_t_nonconfomity["rat_actually"]=0
@@ -1082,7 +1083,7 @@ class Select():
         ##screap report by parts##_________
                 #scap by parts
         #report=pd.DataFrame()
-        scrap5=daily_analysis1[["machine_type","machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"number_day_use","mold_id","scrap_weight_kg","production_weight_kg","product_name","scrabe_standard"]]
+        scrap5=daily_analysis1[["machine_type","machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"number_day_use","mold_name","scrap_weight_kg","production_weight_kg","product_name","scrabe_standard"]]
         
         #scrap5=report.append(scrap5)#we need fix rong calucate sacrap percent for 
         
@@ -1118,11 +1119,11 @@ class Select():
         
         ##scrap for molds___________________
         '''must be in excel sheet (input) not showing null value for not mistacks in average result'''
-        scrap_molds=scrap5.groupby(["machine_type","machine_id","mold_id","scrabe_standard"])['number_scrab_by_item'].sum()
-        scrap_molds["gross_production"]=scrap5.groupby(["machine_type","machine_id","mold_id","scrabe_standard"])['gross_production'].sum()
-        scrap_molds["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_id","scrabe_standard"])['scrap_weight_kg'].sum()
-        scrap_molds["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_id","scrabe_standard"])['production_weight_kg'].sum()
-        scrap_molds["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","mold_id","scrabe_standard"])['number_scrab_by_item'].sum()
+        scrap_molds=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
+        scrap_molds["gross_production"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['gross_production'].sum()
+        scrap_molds["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['scrap_weight_kg'].sum()
+        scrap_molds["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['production_weight_kg'].sum()
+        scrap_molds["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
         production_set_molds=scrap_molds["gross_production"].sum()
         scrap_set_molds=scrap_molds["number_scrab_by_item"].sum()
         scrap_percent_molds=scrap_set_molds/production_set_molds*100
@@ -1146,7 +1147,7 @@ class Select():
         
         if scrap_nonconfomity_count>0:  # for ignor impty index error
         #    scrap=pd.DataFrame(index=[0])
-            scrap_nonconfomity=scrap2.groupby(["machine_id","mold_id"])['number_scrab_by_item'].sum()
+            scrap_nonconfomity=scrap2.groupby(["machine_id","mold_name"])['number_scrab_by_item'].sum()
             #for ignor error when srcap is 0
             
             

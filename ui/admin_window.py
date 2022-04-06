@@ -122,10 +122,14 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         "LG43UP81":17,
         "LGNano80set":18,
         "LGNano80side":19,
-        "LgWasherCover":20,
-        "LgWasherAngels":21,
-        "LgWasherBase":22,
-        "LgWasherBase_VIVACHE":23
+        "LGOLED65A26LA_set":20,
+        "OLED65A26LAside":21,
+        "lg70UQ980updown":22,
+        "lg70UQ980sides":23,
+        "LgWasherCover":24,
+        "LgWasherAngels":25,
+        "LgWasherBase":26,
+        "LgWasherBase_VIVACHE":27
         }
 
         #self.ButWebFilterFIllNames.clicked.disconnect()
