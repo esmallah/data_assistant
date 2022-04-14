@@ -12,6 +12,7 @@ road map:
 - automated fill data                                       ok
 - download reports in formating excel sheets                ok
 - convert multi item to pdf                                 ok
+
 for create ui and design it
 pip3 install PyQt5-tools
 for convert xml to ptyhon 
@@ -40,14 +41,14 @@ pyinstaller main.py
 
 for translation
 translate what do you want in xls then thype this command
-lrelease eng-ar.ts eng-ar.qm
+release eng-ar.ts eng-ar.qm
 
 but you must be add the formating excel sheet here
 E:\programing\python\a1leader\y_data_assistant\dist\y_data_assistant\apps\analysis\formats
 
- youssri
- estratigy@yahoo.com 
- 00201009578537
+youssri
+estratigy@yahoo.com 
+00201009578537
 
 application building start in 21 may 2019
 deep learning modue applying in 3/3/2021

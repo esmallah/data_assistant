@@ -1328,7 +1328,7 @@ class Block():
 								round((sum(q.gross_production))*(avg(q.average_dry_weight))/1000,1) as production_weight_kg,
 								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
 								date_part('week', q.day::date) AS weeksNumbers,
-								p.mold_name								
+								p.mold_name,m.machine_type
 				from v105quality_inspection_items q
 							
 							left join v108items_master p

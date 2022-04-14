@@ -1,4 +1,5 @@
 '''this module for the data was emported from database analysis'''
+from calendar import month
 import csv
 from statistics import mean
 import pandas as pd
@@ -297,14 +298,15 @@ class Select():
         cycletime_cl=['shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2']
         mold_inspection['c_t_actually']=mold_inspection[cycletime_cl].mean(axis=1)
         
-        mold_inspection['rat_actually']=3600 / (mold_inspection['c_t_actually'].fillna(0).astype(int)* mold_inspection['set'].astype(int))
+        #mold_inspection['rat_actually']=3600 / (mold_inspection['c_t_actually'].fillna(0).astype(int)* mold_inspection['set'].astype(int))
+        mold_inspection['rat_actually']=3600 / (mold_inspection['c_t_actually'].fillna(0).astype(int)* mold_inspection['set'].fillna(0).astype(int))
 
         print('test_________average_wet_weight',mold_inspection['average_wet_weight'])
         
         mold_inspection['sum_scrabe_no_parts']=mold_inspection[['shift1_scrabe_no_parts','shift2_scrabe_no_parts',]].sum(axis=1)
         mold_inspection['shift1_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts'].fillna(0).astype(int)/ mold_inspection['set']
         mold_inspection['shift2_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts'].fillna(0).astype(int)/ mold_inspection['set']
-        mold_inspection['number_scrab_by_item']=sum(mold_inspection['shift1_scrabe_no_item'],mold_inspection['shift2_scrabe_no_item'])
+        mold_inspection['number_scrab_by_item']=sum(mold_inspection['shift1_scrabe_no_item'].fillna(0).astype(int),mold_inspection['shift2_scrabe_no_item'].fillna(0).astype(int))
         
         
         
@@ -1006,26 +1008,32 @@ class Select():
         
         #dateDay3=mold_analysis2['date_day'].tail(1)
         print("_________daily report___________for month________",last_month,type(last_month))       
-        
         mold_days=mold_analysis2["day"].count()
-        day=int(day)
-        print("_________daily report___________for day________",day,type(day))       
 
-        daily_analysis1_bool=mold_analysis2["day"]==day
+        import datetime
+
+        d = datetime.datetime(int(year), int(month), int(day))
+
+        date_day=d.date()
+      
+
+        daily_analysis1_bool=mold_analysis2["day"]==date_day
+
         daily_analysis1=mold_analysis2[daily_analysis1_bool]
         #validate input 
-        
 
+        print("_________daily report___________for daily_analysis1",daily_analysis1,type(daily_analysis1))       
         #for fix nan error in ct
         daily_analysis = daily_analysis1.dropna(subset=['c_t_actually'])#remove all numric data
         daily_analysis = daily_analysis.dropna(subset=['c_t_actually'])#drop And for remove all rows with NaNs in column x use dropna: 
-        daily_analysis["c_t_actually"]=daily_analysis["c_t_actually"].astype(int)#Last convert values to ints:
+        daily_analysis["c_t_actually"]=daily_analysis["c_t_actually"]#Last convert values to ints:
 
         report_forCt=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","c_t_standard_per_second","standard_rate_hour","average_dry_weight","rat_actually","c_t_actually"].mean()
-        report=daily_analysis1.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
         
+        
+        print("___________daily_analysis   daycolums",mold_analysis2["day"])
 
-        print("___________report   data",report)
+        print("___________report_forCt   data",report_forCt)
         #report=pd.DataFrame()
         
         
@@ -1052,9 +1060,9 @@ class Select():
         c_t_nonconfomity["ct_ok"]=ct_ok
         #weight report
        
+        wieght2=daily_analysis1.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
         
-        wieght2=report
-        print ("eror_____________wieght2[standard_dry_weight_from",wieght2["standard_dry_weight_from"])
+        print ("eror_____________wieght2[standard_dry_weight_from",wieght2["mold_name"])
         #filter low weithrs
         weight_nonconfomity_low=wieght2[wieght2['average_dry_weight']<wieght2["standard_dry_weight_from"]] #add column tocount number of non conformity product
         
@@ -1083,7 +1091,7 @@ class Select():
         ##screap report by parts##_________
                 #scap by parts
         #report=pd.DataFrame()
-        scrap5=daily_analysis1[["machine_type","machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"number_day_use","mold_name","scrap_weight_kg","production_weight_kg","product_name","scrabe_standard"]]
+        scrap5=daily_analysis1[["machine_type","machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"mold_name","scrap_weight_kg","production_weight_kg","product_name","scrabe_standard","average_dry_weight"]]
         
         #scrap5=report.append(scrap5)#we need fix rong calucate sacrap percent for 
         
@@ -1099,7 +1107,7 @@ class Select():
         scrap_part=scrap5["number_scrab_by_item"].sum()
         production_set=scrap5["gross_production"].sum()
         scrap_percent=scrap_part/production_set * 100
-        scrap4=scrap5[scrap5["number_day_use"]==1]      #for filter the using machines only
+        scrap4=scrap5[scrap5["average_dry_weight"]>1]      #for filter the using machines only
         
     
         scrap3=scrap4[scrap4["scrap_percent_by_item"]>scrap4["scrabe_standard"]]
@@ -1126,8 +1134,8 @@ class Select():
         scrap_molds["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
         production_set_molds=scrap_molds["gross_production"].sum()
         scrap_set_molds=scrap_molds["number_scrab_by_item"].sum()
-        scrap_percent_molds=scrap_set_molds/production_set_molds*100
-        scrap_molds["percent"]=(scrap_molds["number_scrab_by_item"]/scrap_molds["gross_production"])*100
+        scrap_percent_molds=(scrap_set_molds.astype(int)/production_set_molds.astype(int))*100
+        scrap_molds["percent"]=(scrap_molds["number_scrab_by_item"]/scrap_molds["gross_production"].astype(int))*100
         ##scrap for items(as item master)___
         scrap_items=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
         
@@ -1136,7 +1144,7 @@ class Select():
         scrap_items["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['scrap_weight_kg'].sum()
         scrap_items["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['production_weight_kg'].sum()
         scrap_items["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
-        scrap_items["percent"]=((scrap_items["number_scrab_by_item"])/(scrap_items["gross_production"]))*100
+        scrap_items["percent"]=((scrap_items["number_scrab_by_item"].astype(int))/(scrap_items["gross_production"].astype(int)))*100
 #        molds_newmachines=scrap_molds.filter(lambda x: x['machine_type']=="new_machine")
         
         
@@ -1171,7 +1179,7 @@ class Select():
         scrap_nonconfomity.to_excel(writer,"scrap_ncr")
         scrap_items.to_excel(writer,"scrap_items",merge_cells=False)
     
-        report.to_excel(writer,merge_cells=False)
+        wieght2.to_excel(writer,merge_cells=False)
         daily_analysis1.to_excel(writer,"input_molds", index=False)
         
         writer.save()

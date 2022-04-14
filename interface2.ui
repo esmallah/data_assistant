@@ -4195,11 +4195,6 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <property name="text">
-             <string>LgWasherCover</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
              <string>LGNano80set</string>
             </property>
            </item>
@@ -4226,6 +4221,11 @@ color: rgb(255, 255, 255);</string>
            <item>
             <property name="text">
              <string>lg70UQ980sides</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LgWasherCover</string>
             </property>
            </item>
            <item>
