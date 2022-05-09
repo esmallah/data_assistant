@@ -389,7 +389,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         #select date                
         dailyReportName=str(year)+"-"+str(month)+"QC_molds_daily_archive_v3.xlsx"
         monthlyReportName=str(year)+"-"+str(month)+"QC_molds_monthly_v2.xlsx"
-        format_path = os.path.join(BASE_DIR, os.path.normpath(r".\y_data_assistant\apps\analysis\formats"))
+        format_path = os.path.join(BASE_DIR, os.path.normpath(r".\data_assistant\apps\analysis\formats"))
         #to cahnge folder uploading data
         if str(self.comboBox_analysisDb_server_select.currentText())=="network" : #for select netowrk server in close site
             data_store=DATAFOLDER_ON_NETWORK
