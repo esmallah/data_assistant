@@ -1284,7 +1284,7 @@ class Block():
 								round(sum(q.shift1_scrabe_No_parts),0)as shift1_scrabe_No_parts,
 								
 								round(sum(q.shift1_scrabe_no_item),0)as shift1_scrabe_no_item,
-								round(sum(shift1_all_production),0)as shift1_all_production,
+								round(sum(q.shift1_all_production),0)as shift1_all_production,
 								
 								round(sum(q.shift2_production_cards),0)as shift2_production_cards,
 								round(sum(q.shift2_prod_page),0)as shift2_prod_page,
@@ -1301,7 +1301,7 @@ class Block():
 								round(sum(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
 								
 								round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
-		
+								round(sum(q.shift2_all_production),0)as shift2_all_production,
 								round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
 								round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
 								round(sum(q.sum_scrabe_broken_bySet),0)as sum_scrabe_broken_bySet,

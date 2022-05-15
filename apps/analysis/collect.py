@@ -934,12 +934,21 @@ class Select():
         ws1=wb["input_daily"]
         
         get_data= self.load_data(year,month,day)
-
-        #get_data.set_index("serial", inplace=True) #put index
-        
-        #get_data=pd.DataFrame(get_data["id"])
+        list_item_size=get_data.shape[0]
+        ws1=wb["input_daily"]
+        #create  the index sheet:
+        r = 4  # start at 4th row
+        c = 1 # column 'a'
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = get_data.iloc[row]
+            for item in rows:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
+        """
         rows=get_data
-        #rows = get_data[columns_quality]
+
         
         r = 4  # start at fourd row
         c = 1 # column 'a'
@@ -950,6 +959,7 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1
+        """
         #for week
         ws1=wb["input-week"]
         '''
