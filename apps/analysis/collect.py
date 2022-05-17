@@ -264,11 +264,11 @@ class Select():
         self.month=month
         self.writefile=writefile
         self.writesheet=writesheet
-    def load_data(self,year,month,day):
+    def load_data(self,sql_query):
         
         from memory import Block,cursor,conn
-
-        Block.get_daily_dataentry_items(self,year,month,day)    
+        sql_query
+        
         get_data2=cursor.fetchall()
         #__________________________________________________________________        
         column_names = [desc[0] for desc in cursor.description]
@@ -490,7 +490,10 @@ class Select():
         wb = xl.load_workbook(self.readfile1)
         #__________________________________________________________________        
 
-        get_data = self.load_data(year,month,day)        
+        sql_query=Block.get_daily_dataentry_items(self,year,month,day)
+        get_data = self.load_data(sql_query)        
+
+        
 
         list_item_size=get_data.shape[0]
         #get_data.shift1_all_production=sum(get_data.shift1_scrabe_shortage,get_data.shift1_scrabe_roll,get_data.shift1_scrabe_broken, get_data.shift1_scrabe_curve,  get_data.shift1_scrabe_shrinkage,get_data.shift1_scrabe_dimentions,get_data.shift1_scrabe_weight,get_data.shift1_scrabe_dirty)
@@ -933,7 +936,10 @@ class Select():
         
         ws1=wb["input_daily"]
         
-        get_data= self.load_data(year,month,day)
+        sql_query=Block.get_daily_dataentry_items_yearly(self,year,month,day,to_day)
+        get_data = self.load_data(sql_query)        
+
+        
         list_item_size=get_data.shape[0]
         ws1=wb["input_daily"]
         #create  the index sheet:
@@ -1004,8 +1010,8 @@ class Select():
 
         wb.save(year+"-QC_molds_daily_yearly_v3.xlsx")
     def daily_molds(self,year,month,day):
-                
-        mold_analysis4 = self.load_data(year,month,day)
+        sql_query=Block.show_yearly_report_itemsByMonths(self,year)
+        mold_analysis4 = self.load_data(sql_query)        
 
         last_year=int(mold_analysis4["year"].max())
         print("_________daily report___________for yearr________",last_year,type(last_year))       

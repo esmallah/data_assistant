@@ -1311,7 +1311,7 @@ class Block():
 								round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
 								round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
 								round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-						
+								round(sum(q.sum_scrabe_no_parts),0)as sum_scrabe_no_parts,
 								round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
 								round(sum(q.gross_production),0)as gross_production,
 								m.scrabe_standard,
