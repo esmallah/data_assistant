@@ -140,7 +140,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             print("kindly select the item form the items list")
         #if item is not None:
         else:
-            
+        
             x=switcher.get(item.text(), "Invalid items")
             print("now is printing","item:",item.text(),"code:",x,"its type:",type(x))
             direction=self.ButWebFilter_fillingDirection.currentText()

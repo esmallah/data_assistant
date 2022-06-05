@@ -473,8 +473,8 @@ class Select():
         #table="yt_quality"
         
 
-        database.Block.get_daily_dataentry_items(self)
-        rows=database.cursor.fetchall()
+        Block.get_daily_dataentry_items(self)
+        rows=cursor.fetchall()
         print(rows["month"])
         f = open('D:\work\contact_group\Contact records\QC quality control\Foam\qc_molds\database\quality_records.csv')
         cur.copy_from(f, table, sep=',')
@@ -484,6 +484,9 @@ class Select():
 
     
     def export_report_mothly(self,writerFile,year,month,day,to_day,*args,monthly=True):
+        '''
+        to get daily report and monthly repots ended by QC_molds_daily_archive_v3
+        '''
         from memory import Block,cursor,conn
 
         os.chdir(self.folder)
@@ -1010,11 +1013,13 @@ class Select():
 
         wb.save(year+"-QC_molds_daily_yearly_v3.xlsx")
     def daily_molds(self,year,month,day):
-        sql_query=Block.show_yearly_report_itemsByMonths(self,year)
+        '''to get summary report'''
+        sql_query=Block.get_daily_dataentry_items(self,year,month,day)
+
         mold_analysis4 = self.load_data(sql_query)        
 
         last_year=int(mold_analysis4["year"].max())
-        print("_________daily report___________for yearr________",last_year,type(last_year))       
+        print("_________daily report___________for year________",last_year,type(last_year))       
         mold_analysis_bool4=mold_analysis4["year"]==last_year
         mold_analysis3=mold_analysis4[mold_analysis_bool4]
         
