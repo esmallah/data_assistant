@@ -296,10 +296,10 @@ class Select():
         mold_inspection['average_wet_weight']=mold_inspection[wet_weight_cl].mean(axis=1)
         
         cycletime_cl=['shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2']
+    
         mold_inspection['c_t_actually']=mold_inspection[cycletime_cl].mean(axis=1)
         
-        #mold_inspection['rat_actually']=3600 / (mold_inspection['c_t_actually'].fillna(0).astype(int)* mold_inspection['set'].astype(int))
-        mold_inspection['rat_actually']=3600 / (mold_inspection['c_t_actually'].fillna(0).astype(int)* mold_inspection['set'].fillna(0).astype(int))
+        mold_inspection['rat_actually']=(3600 / mold_inspection['c_t_actually']) * mold_inspection['set'].fillna(0).astype(int)
 
         print('test_________average_wet_weight',mold_inspection['average_wet_weight'])
         
@@ -329,7 +329,7 @@ class Select():
         #mold_inspection['production_weight_kg']=
         #mold_inspection['gross_production']=
         get_data['c_t_actually']=mold_inspection['c_t_actually']
-        get_data['c_t_actually']=mold_inspection['rat_actually']
+        get_data['rat_actually']=mold_inspection['rat_actually']
         get_data['average_dry_weight']=mold_inspection['average_dry_weight']
         get_data['sum_scrabe_no_parts']=mold_inspection['sum_scrabe_no_parts']
         get_data['average_wet_weight']=mold_inspection['average_wet_weight']
@@ -517,18 +517,7 @@ class Select():
                 c += 1 # Column 'd'
             c = 1
             r += 1   
-        '''
-        rows = get_data2
-        r = 4  # start at fourd row
-        c = 1 # column 'a'
-        for row in rows:
-            print(row)
-            for item in row:
-               ws1.cell(row=r, column=c).value = item
-               c += 1 # Column 'b'
-            c = 1
-            r += 1           
-        '''
+        
         #material by silo
         ws_bach=wb["material_daily"]
         Material.material_bySilo_daily(self,year,month,day,to_day)
@@ -546,10 +535,11 @@ class Select():
         #Bache input
         ws_bach=wb["batches"]
         Block.show_monthly_Baches(self,year,month)
-        get_data=cursor.fetchall()
-        #get_data.set_index("serial", inplace=True) #put index
         
-        #get_data=pd.DataFrame(get_data["id"])
+#        sql_query=Block.show_monthly_Baches(self,year,month)
+ #       get_data = self.load_data(sql_query)        
+
+        get_data=cursor.fetchall()
         rows=get_data
         #rows = get_data[columns_quality]
         
@@ -565,6 +555,9 @@ class Select():
         #monthly scrap report by day
         ws8=wb["scrap_type_machines"]
         Block.show_scrap_monthly_report_type_machines(self,year,month)
+        #sql_query=Block.show_scrap_monthly_report_type_machines(self,year,month)
+        #get_data = self.load_data(sql_query)        
+
         rows = cursor.fetchall()
         r = 3  # start at 33th row
         c = 1 # column 'a'
@@ -579,6 +572,8 @@ class Select():
             #monthly machine report
         ws8=wb["scrap_days"]
         Block.show_scrap_monthly_report_by_days(self,year,month)
+        #sql_query=Block.show_scrap_monthly_report_by_days(self,year,month)
+        #get_data = self.load_data(sql_query)        
         rows = cursor.fetchall()
         r = 3  # start at 33th row
         c = 1 # column 'a'
@@ -592,7 +587,10 @@ class Select():
             r += 1    
         #water content report
         ws1=wb["moisture_daily"]
+
         Block.show_water_content_daily(self,year,month,day,to_day)
+        #sql_query=Block.show_water_content_daily(self,year,month,day,to_day)
+        #get_data = self.load_data(sql_query)        
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
         
@@ -612,7 +610,9 @@ class Select():
         #monthly output
         if monthly:
             ws2=wb["output"]
-            Block.show_monthly_report_ar(self,year,month,day,to_day)
+            
+            sql_query=Block.show_monthly_report_ar(self,year,month,day,to_day)
+            get_data = self.load_data(sql_query)
             rows = cursor.fetchall()
             r = 3  # start at third row
             c = 1 # column 'a'
@@ -1073,19 +1073,20 @@ class Select():
             c_t_nonconfomity["c_t_standard_per_second"]=0
             c_t_nonconfomity["standard_rate_hour"]=0
             c_t_nonconfomity["rat_actually"]=0
-            c_t_nonconfomity["rat_validation"]=0
-            c_t_nonconfomity["rat_validation"]=0
             
         ct_ok=mold_count-c_t_nonconfomity_count
         c_t_nonconfomity["c_t_nonconfomity_count"]=c_t_nonconfomity_count
         c_t_nonconfomity["ct_ok"]=ct_ok
         #weight report
        
-        wieght2=daily_analysis1.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
+
+        wieght3=mold_analysis2[daily_analysis1_bool]
+        print('weight3',wieght3)
+        wieght2=wieght3.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
         
-        print ("eror_____________wieght2[standard_dry_weight_from",wieght2["mold_name"])
+        print ("eror_____________wieght2[standard_dry_weight_from",wieght2.mold_name,type(wieght2.mold_name))
         #filter low weithrs
-        weight_nonconfomity_low=wieght2[wieght2['average_dry_weight']<wieght2["standard_dry_weight_from"]] #add column tocount number of non conformity product
+        weight_nonconfomity_low=wieght2[wieght2["average_dry_weight"]<wieght2["standard_dry_weight_from"]] #add column tocount number of non conformity product
         
         #add rows for filter high weight
             #fix error for zero ncr

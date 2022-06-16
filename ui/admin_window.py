@@ -77,7 +77,6 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.but_web_filler.clicked.connect(self.connSubWeb_filler)
         self.but_web_mail.clicked.connect(self.connSubWeb_mail)
         self.but_web_next.clicked.connect(self.connSubWeb_next)
-
         self.ButWebMailSend.clicked.connect(self.mailControl)
     #__________________________control panel
     def restart(self):        

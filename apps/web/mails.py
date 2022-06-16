@@ -22,23 +22,28 @@ class Mails_management():
         #reader=pd.read_excel(self.readfile,self.readsheet)
         #return_day_bool=reader["month"]==self.column1
         #return_day=reader[return_day_bool]
+        personal_mail='mario.sameh@lge.com'
+        name='mario'
+        subject_mail='<h2>dear Eng. $<br>good day<br> you can find your interested report in attached  <br></h2>'
+        '''
         mafdy_mail='mafdy.khalil@cg-eg.com'
         ihab='ehab.adel@cg-eg.com'
         xps_maintenace='mohamed.abdelmajed@cg-eg.com'
         spare_parts_insutec='SP.Insutech@cg-eg.com'
         ahmed_nagdy='ahmed.nagdy@insutech-eg.com'
         ahmed_elsayde='ahmed.elsayed@insutech-eg.com'
+        
         mafdy_report='<h2>dear Eng. mafdy<br>good day<br> kindly send your montly report as following  <br> صرف قطع الغيار  -summary-تقرير الاعطال-تقرير قطع الغيار</h2>'
         finance_mail='<h2>dear mr. ihab<br>good day<br> kindly send your montly report as following  <br>sales report'
         mafdy_report='<h2>dear Eng. mafdy<br>good day<br> kindly send your montly report as following  <br> صرف قطع الغيار -تقرير قطع الغيار</h2>'
         hmedNgdy_report='<h2>dear Mr. ahmed <br>good day<br> kindly send your montly report as following  <br>   -summary-تقرير الاعطال- <br> OEE , <br></h2>'
         ahmed_elsayed_report='<h2>dear Mr. Ahmed<br>good day<br> kindly send your montly report as following  <br>   -تسوية الخامة والكسر - <br> متابعه  خطه مبيعات وانتاج مصانع الفوم , <br></h2>'
-
+        '''
         mail = outlook.CreateItem(0)
-        mail.To = mafdy_mail
-        mail.Subject = 'kinldy send your report'
+        mail.To = personal_mail
+        mail.Subject = 'weekly report for shout count'
         mail.Body = 'Message body'
-        mail.HTMLBody = mafdy_report
+        mail.HTMLBody = subject_mail
 
         # To attach a file to the email (optional):
         #attachment  = "Path to the attachment"
