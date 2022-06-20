@@ -1299,19 +1299,9 @@ class Block():
 								round(sum(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
 								round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
 								round(sum(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
-								
 								round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
 								round(sum(q.shift2_all_production),0)as shift2_all_production,
-								round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-								round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-								round(sum(q.sum_scrabe_broken_bySet),0)as sum_scrabe_broken_bySet,
-								round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-								round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-								round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-								round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-								round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-								round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-								round(sum(q.sum_scrabe_no_parts),0)as sum_scrabe_no_parts,
+								
 								round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
 								round(sum(q.gross_production),0)as gross_production,
 								m.scrabe_standard,
@@ -2309,7 +2299,7 @@ class Block():
 							round(sum(q.gross_production),0)as gross_production,
 							m.scrabe_standard,
 	
-							bachStartDate
+							q.bachStartDate
 							
 	
 							from insutech.t10quality_inpsection q
@@ -2319,7 +2309,7 @@ class Block():
 						on m.id=q.machine_id
 						
 							group by q.year, q.month,m.scrabe_standard,q.item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,p.standard_rate_hour,p.c_t_standard_per_second,bachStartDate		
+							,p.standard_rate_hour,p.c_t_standard_per_second,q.bachStartDate		
 							)
 							select distinct t1.* ,t2.bachEndDate
 							from monthly_baches_report t1

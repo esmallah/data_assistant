@@ -90,7 +90,6 @@ class Group():
         scrap["scrap_percent_by_item"]=scrap['number_scrab_by_item']/scrap['gross_production']
         #scrap= pd.DataFrame()
         
-
         scrap_product_machine=scrap2.groupby(["product_name","product_code","machine_id","scrabe_standard"])['number_scrab_by_item',
         "gross_production_by_set","sum_scrabe_no_parts","gross_production","number_day_use"].sum()
         scrap_product_machine["scrap_percent_by_item"]=scrap_product_machine['number_scrab_by_item']/scrap_product_machine['gross_production']
@@ -100,7 +99,6 @@ class Group():
         "gross_production_by_set","sum_scrabe_no_parts","gross_production","number_day_use"].sum()
         scrap_machine_product["scrap_percent_by_item"]=scrap_machine_product['number_scrab_by_item']/scrap_machine_product['gross_production']
         
-
         machines=scrap2.groupby(["machine_id","scrabe_standard","machine_type"])['number_scrab_by_item',"gross_production_by_set",
         'sum_scrabe_no_parts',"gross_production","number_day_use"].sum()
         machines["scrap_percent_by_item"]=machines['number_scrab_by_item']/machines['gross_production']
@@ -121,11 +119,9 @@ class Group():
         #dry_weight_ncr_high=dry_weigh[dry_weight_bool_high]
         # export
         
-
         #validation data
         #scap validation
         product_parts_input=daily_analysis["gross_production"].sum
-        
         
         scrab_set_input=daily_analysis["number_scrab_by_item"].sum
         #scrab_input=product_parts_input + product_set_input + scrab_parts_input + scrab_set_input

@@ -21,7 +21,7 @@ from random import randint,seed
 columns_machines=['id','scrabe_standard','machine_type','place' ,'low_size','high_size']
 
 columns_molds=['mold_id','ORG_CODE','ORG_NAME','Ctegory','UOM','machie_size','No_on_Set',
-'set',"sub_category",'mold_name','status','c_t_standard_per_second','c_t_standard_per_second_from',
+'set','No_on_Set',"sub_category",'mold_name','status','c_t_standard_per_second','c_t_standard_per_second_from',
 'c_t_standard_per_second_to',"view_molds",
 'gap_mm','injekors_numbers','drummers_number','customer_id','playback','gap_tolerance',
 'gap_mm_from','gap_mm_to','machine_parameter_id','mold_start_date','mold_expire_date',"customer_name","company_of_customer",
@@ -41,14 +41,15 @@ columns_parts=['part_id','product_code','product_name_by_parts','Weight_kg','sta
 
 #prepare data entering tables
     #3collecting tables ct,weight and scrap(yt_quality)
+#columns for data entry only
 columns_quality=['year',
     'month',
     'day',
     'machine_id',
     'item_id',
-    
     'mold_id',
-    
+    'set',
+    'no_on_set',
     'shift1_wet_weight1',
     'shift1_wet_weight2',
     'shift1_wet_weight3',
@@ -63,11 +64,10 @@ columns_quality=['year',
     ,'shift1_production_cards'
     ,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
     'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
-    ,'shift1_scrabe_cloration','shift1_scrabe_no_parts','shift1_scrabe_no_item','shift1_all_production'
-    ,'shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
+    ,'shift1_scrabe_cloration','shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
     'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
-    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts','shift2_scrabe_no_item'
-    ,'scrap_percent_by_item',
+    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration'
+    
     ]
     
     #the previous columns separate to 
@@ -93,11 +93,9 @@ columns_QCinspection=['year','month','day','machine_id','item_id','number_day_us
 
     ,'shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
     'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
-    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration','shift2_scrabe_no_parts'
-    
+    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration'    
     ,'bachStartDate',
-'id_DayPartUnique','factory'
-    ,'deepth_mm','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
+'id_DayPartUnique','factory','deepth_mm','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
             #the previeuse table separate to
                     #1weights table
@@ -266,7 +264,7 @@ class Select():
         self.writesheet=writesheet
     def load_data(self,sql_query):
         
-        from memory import Block,cursor,conn
+        from memory import cursor
         sql_query
         
         get_data2=cursor.fetchall()
@@ -274,14 +272,18 @@ class Select():
         column_names = [desc[0] for desc in cursor.description]
         get_data = pd.DataFrame(get_data2,columns=column_names)
         
-        mold_inspection=get_data
+        data=get_data[columns_quality]
+
+        #brebare data
+        
         dry_weight_cl=[
         'shift1_dry_weight1','shift1_dry_weight2',
         'shift1_dry_weight3','shift1_dry_weight4','shift1_dry_weight5',
         'shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3',
         'shift2_dry_weight4','shift2_dry_weight5',
         ]
-        mold_inspection['average_dry_weight']=mold_inspection[dry_weight_cl].mean(axis=1)
+        
+        get_data['average_dry_weight']=data[dry_weight_cl].mean(axis=1)
         wet_weight_cl=[
         'shift1_wet_weight1',
         'shift1_wet_weight2',
@@ -293,56 +295,69 @@ class Select():
         'shift2_wet_weight3',
         'shift2_wet_weight4',
         'shift2_wet_weight5']
-        mold_inspection['average_wet_weight']=mold_inspection[wet_weight_cl].mean(axis=1)
+        get_data['average_wet_weight']=data[wet_weight_cl].mean(axis=1)
         
         cycletime_cl=['shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2']
     
-        mold_inspection['c_t_actually']=mold_inspection[cycletime_cl].mean(axis=1)
+        data['c_t_actually']=data[cycletime_cl].mean(axis=1)
         
-        mold_inspection['rat_actually']=(3600 / mold_inspection['c_t_actually']) * mold_inspection['set'].fillna(0).astype(int)
+        get_data['rat_actually']=(3600 / data['c_t_actually']) * data['set'].fillna(0).astype(int)
+        
+        get_data['c_t_actually']=data['c_t_actually']
+        
+        scrab_shift1_cl=[
+        'shift1_scrabe_shortage',
+        'shift1_scrabe_roll','shift1_scrabe_broken','shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions'
+        ,'shift1_scrabe_weight','shift1_scrabe_dirty','shift1_scrabe_cloration',   ]
+        scrab_shift2_cl=[
+        'shift2_scrabe_shortage',
+        'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
+        ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration', ]
 
-        print('test_________average_wet_weight',mold_inspection['average_wet_weight'])
+        data['shift1_scrabe_no_parts']=data[scrab_shift1_cl].fillna(0).astype(int).sum(axis=1)
+        data['shift2_scrabe_no_parts']=data[scrab_shift2_cl].fillna(0).astype(int).sum(axis=1)
+        data['sum_scrabe_no_parts']=data[['shift1_scrabe_no_parts','shift2_scrabe_no_parts',]].sum(axis=1)
+        data['shift1_scrabe_no_item']=data['shift1_scrabe_no_parts'].fillna(0).astype(int)/ data['no_on_set']
+        data['shift2_scrabe_no_item']=data['shift2_scrabe_no_parts'].fillna(0).astype(int)/ data['no_on_set']
+        data['shift1_all_production']=data[['shift1_proper_production','shift1_scrabe_no_item']].sum(axis=1)
+        data['shift2_all_production']=data[['shift2_proper_production','shift2_scrabe_no_item']].sum(axis=1)
+        data['number_scrab_by_item']=data[['shift1_scrabe_no_item','shift2_scrabe_no_item']].sum(axis=1)
+        data['gross_production']=data[['shift1_all_production','shift2_all_production']].sum(axis=1)
         
-        mold_inspection['sum_scrabe_no_parts']=mold_inspection[['shift1_scrabe_no_parts','shift2_scrabe_no_parts',]].sum(axis=1)
-        mold_inspection['shift1_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts'].fillna(0).astype(int)/ mold_inspection['set']
-        mold_inspection['shift2_scrabe_no_item']=mold_inspection['sum_scrabe_no_parts'].fillna(0).astype(int)/ mold_inspection['set']
-        mold_inspection['number_scrab_by_item']=sum(mold_inspection['shift1_scrabe_no_item'].fillna(0).astype(int),mold_inspection['shift2_scrabe_no_item'].fillna(0).astype(int))
         
+        data['sum_scrabe_shortage_bySet']=data[['shift1_scrabe_shortage','shift2_scrabe_shortage']].sum(axis=1)
+        data['sum_scrabe_roll']=data[['shift1_scrabe_roll','shift2_scrabe_roll']].sum(axis=1)
+        data['sum_scrabe_broken']=data[['shift1_scrabe_broken','shift2_scrabe_broken']].sum(axis=1)
+        data['sum_scrabe_curve']=data[['shift1_scrabe_curve','shift2_scrabe_curve']].sum(axis=1)
+        data['sum_scrabe_shrinkage']=data[['shift1_scrabe_shrinkage','shift2_scrabe_shrinkage']].sum(axis=1)
+        data['sum_scrabe_dimentions']=data[['shift1_scrabe_dimentions','shift2_scrabe_dimentions']].sum(axis=1)
+        data['sum_scrabe_weight']=data[['shift1_scrabe_weight','shift2_scrabe_weight']].sum(axis=1)
+        data['sum_scrabe_dirty_bySet']=data[['shift1_scrabe_dirty','shift2_scrabe_dirty']].sum(axis=1)
+        data['sum_scrabe_cloration']=data[['shift1_scrabe_cloration','shift2_scrabe_cloration']].sum(axis=1)
+
+        get_data['sum_scrabe_shortage_bySet']=(data['sum_scrabe_shortage_bySet'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+        get_data['sum_scrabe_roll']=(data['sum_scrabe_roll'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+        get_data['sum_scrabe_broken']=(data['sum_scrabe_broken'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+        get_data['sum_scrabe_curve']=(data['sum_scrabe_curve'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+        get_data['sum_scrabe_shrinkage']=(data['sum_scrabe_shrinkage'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+        get_data['sum_scrabe_dimentions']=(data['sum_scrabe_dimentions'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+        get_data['sum_scrabe_weight']=(data['sum_scrabe_weight'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+        get_data['sum_scrabe_dirty_bySet']=(data['sum_scrabe_dirty_bySet'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+        get_data['sum_scrabe_cloration']=(data['sum_scrabe_cloration'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
+
+        get_data['shift1_scrabe_no_parts']=data['shift1_scrabe_no_parts']
+        get_data['shift2_scrabe_no_parts']=data['shift2_scrabe_no_parts']
+    
+        get_data['shift1_scrabe_no_item']=data['shift1_scrabe_no_item']
+        get_data['shift2_scrabe_no_item']=data['shift2_scrabe_no_item']
+    
+        get_data['shift1_all_production']=data['shift1_all_production']    
+        get_data['shift2_all_production']=data['shift2_all_production']    
+        get_data['number_scrab_by_item']=data['number_scrab_by_item']    
+        get_data['gross_production']=data['gross_production']    
+
+        #notece that
         
-        
-        mold_inspection['sum_scrabe_shortage_bySet']=mold_inspection[['shift1_scrabe_shortage','shift2_scrabe_shortage']].sum(axis=1)
-        mold_inspection['sum_scrabe_roll']=mold_inspection[['shift1_scrabe_roll','shift2_scrabe_roll']].sum(axis=1)
-        mold_inspection['sum_scrabe_broken']=mold_inspection[['shift2_scrabe_broken','shift1_scrabe_broken']].sum(axis=1)
-        mold_inspection['sum_scrabe_curve']=mold_inspection[['shift1_scrabe_curve','shift2_scrabe_curve']].sum(axis=1)
-        mold_inspection['sum_scrabe_shrinkage']=mold_inspection[['shift2_scrabe_shrinkage','shift1_scrabe_shrinkage']].sum(axis=1)
-        mold_inspection['sum_scrabe_dimentions']=mold_inspection[['shift2_scrabe_dimentions','shift1_scrabe_dimentions']].sum(axis=1)
-        mold_inspection['sum_scrabe_weight']=mold_inspection[['shift1_scrabe_weight','shift2_scrabe_weight']].sum(axis=1)
-        mold_inspection['sum_scrabe_dirty_bySet']=mold_inspection[['shift1_scrabe_dirty','shift2_scrabe_dirty']].sum(axis=1)
-        mold_inspection['sum_scrabe_cloration']=mold_inspection[['shift1_scrabe_cloration','shift2_scrabe_cloration']].sum(axis=1)
-        
-        mold_inspection['number_scrab_by_item']=mold_inspection['shift1_scrabe_no_item']+mold_inspection['shift1_scrabe_no_item']
-        mold_inspection['shift1_all_production']=mold_inspection['shift1_proper_production']+mold_inspection['shift1_scrabe_no_item']
-        mold_inspection['shift2_all_production']=mold_inspection['shift2_proper_production']+mold_inspection['shift2_scrabe_no_item']
-        mold_inspection['gross_production']=mold_inspection['shift1_all_production']+mold_inspection['shift2_all_production']
-        #mold_inspection['scrap_percent_by_item']=
-        #mold_inspection['scrap_weight_kg']=
-        #mold_inspection['production_weight_kg']=
-        #mold_inspection['gross_production']=
-        get_data['c_t_actually']=mold_inspection['c_t_actually']
-        get_data['rat_actually']=mold_inspection['rat_actually']
-        get_data['average_dry_weight']=mold_inspection['average_dry_weight']
-        get_data['sum_scrabe_no_parts']=mold_inspection['sum_scrabe_no_parts']
-        get_data['average_wet_weight']=mold_inspection['average_wet_weight']
-        get_data['number_scrab_by_item']=mold_inspection['number_scrab_by_item']
-        get_data['sum_scrabe_shortage_bySet']=mold_inspection['sum_scrabe_shortage_bySet']
-        get_data['sum_scrabe_roll']=mold_inspection['sum_scrabe_roll']
-        get_data['sum_scrabe_broken']=mold_inspection['sum_scrabe_broken']
-        get_data['sum_scrabe_curve']=mold_inspection['sum_scrabe_curve']
-        get_data['sum_scrabe_shrinkage']=mold_inspection['sum_scrabe_shrinkage']
-        get_data['sum_scrabe_dimentions']=mold_inspection['sum_scrabe_dimentions']
-        get_data['sum_scrabe_weight']=mold_inspection['sum_scrabe_weight']
-        get_data['sum_scrabe_dirty_bySet']=mold_inspection['sum_scrabe_dirty_bySet']
-        get_data['sum_scrabe_cloration']=mold_inspection['sum_scrabe_cloration']
         
         return get_data
 
@@ -1043,16 +1058,15 @@ class Select():
         daily_analysis1=mold_analysis2[daily_analysis1_bool]
         #validate input 
 
-        print("_________daily report___________for daily_analysis1",daily_analysis1,type(daily_analysis1))       
         #for fix nan error in ct
         daily_analysis = daily_analysis1.dropna(subset=['c_t_actually'])#remove all numric data
         daily_analysis = daily_analysis.dropna(subset=['c_t_actually'])#drop And for remove all rows with NaNs in column x use dropna: 
         daily_analysis["c_t_actually"]=daily_analysis["c_t_actually"]#Last convert values to ints:
 
-        report_forCt=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","c_t_standard_per_second","standard_rate_hour","average_dry_weight","rat_actually","c_t_actually"].mean()
+        report_forCt=daily_analysis.groupby(["machine_id","mold_name"])["c_t_standard_per_second","standard_rate_hour","rat_actually","c_t_actually"].mean()
         
         
-        print("___________daily_analysis   daycolums",mold_analysis2["day"])
+        print("___________daily_analysis   standard_dry_weight_from",mold_analysis2[["standard_dry_weight_from"]])
 
         print("___________report_forCt   data",report_forCt)
         #report=pd.DataFrame()
@@ -1078,13 +1092,17 @@ class Select():
         c_t_nonconfomity["c_t_nonconfomity_count"]=c_t_nonconfomity_count
         c_t_nonconfomity["ct_ok"]=ct_ok
         #weight report
-       
-
-        wieght3=mold_analysis2[daily_analysis1_bool]
+       #fix whistespaces in column names
+        weight_cl=["machine_id","mold_name","standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"]
+        wieght3=daily_analysis1[weight_cl]
+        #new_data = pd.DataFrame()
+        #new_data['tsneY'] = df['tsneY'].values.tolist()
         print('weight3',wieght3)
-        wieght2=wieght3.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
+        wieght2=wieght3.groupby(["machine_id","mold_name"])[["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"]].mean()
+        wieght2["machine_id"]=wieght2[["machine_id"]].values.tolist()
         
-        print ("eror_____________wieght2[standard_dry_weight_from",wieght2.mold_name,type(wieght2.mold_name))
+        #wieght2.values.tolist() #to solve unrichiable columns name
+        print ("test_____________wieght2[standard_dry_weight_from",wieght2["machine_id"],type(wieght2))
         #filter low weithrs
         weight_nonconfomity_low=wieght2[wieght2["average_dry_weight"]<wieght2["standard_dry_weight_from"]] #add column tocount number of non conformity product
         
