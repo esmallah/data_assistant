@@ -46,7 +46,7 @@ class Mails_management():
         mail.HTMLBody = subject_mail
 
         # To attach a file to the email (optional):
-        #attachment  = "Path to the attachment"
+        attachment  = "D:\programing\python\a1leader\data_assistant\apps\analysis\formats\v129molds_shoutcount.xlsx"
         #mail.Attachments.Add(attachment)
         mail.Send()
 

@@ -163,18 +163,12 @@ class Group():
         #weight_ncr_low=weight_ncr_low.rename(index=str, columns=col_rename)
         #weight_ncr_low.to_excel(writer,'weight_ncr_low')
         #weight_ncr_high=weight_ncr_high.rename(index=str, columns=col_rename)
-
-        
-        
         print ("analysis for ")
         print(self.column1)
         print(self.column2)
         print("for the days")
         print(daily_analysis["day"].unique())
-        writer.save()
-                    
-    
-    
+        writer.save()    
     def copy_between_workbooks(self):        
         print("________starting copy last sheet____")
         import win32com

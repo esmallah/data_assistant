@@ -1,4 +1,4 @@
-from .database_postgrs import cursor,conn
+from memory.database_postgrs import cursor,conn
 #from .database_sqlite import conn , cursor
 SQL_quality_records="""
 				year,
@@ -50,9 +50,8 @@ SQL_quality_records="""
 				shift1_scrabe_weight,
 				shift1_scrabe_dirty,
 				shift1_scrabe_cloration,
-				shift1_scrabe_No_parts,
-				shift1_scrabe_no_item,
-				shift1_all_production,
+				
+				
 				shift2_production_cards,
 				shift2_prod_page,
 				shift2_proper_production,
@@ -65,22 +64,7 @@ SQL_quality_records="""
 				shift2_scrabe_weight,
 				shift2_scrabe_dirty,
 				shift2_scrabe_cloration,
-				shift2_scrabe_No_parts,
-				shift2_scrabe_no_item,
-				shift2_all_production,
-				sum_scrabe_shortage_bySet,
-				sum_scrabe_roll_bySet,
-				sum_scrabe_broken_bySet,
-				sum_scrabe_curve_bySet,
-				sum_scrabe_shrinkage_bySet,
-				sum_scrabe_dimentions_bySet,
-				sum_scrabe_weight_bySet,
-				sum_scrabe_dirty_bySet,
-				sum_scrabe_cloration_bySet,
-				sum_scrabe_No_parts,
-				number_scrab_by_item,
-				gross_production,
-				scrap_percent_by_item,
+				
 				part_id,
 				factory,
 				shift1_tall_mm,
@@ -155,28 +139,8 @@ sql_quality_reporty_yearly_item='''
 								,standard_rate_hour as standard_rate_hour
 								,c_t_standard_per_second c_t_standard_per_second
 								,round(avg(rat_actually),0)as rat_actually
-								,round(avg(c_t_actually),0)as c_t_actually
-								,round(sum(sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-								round(sum(sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-								round(sum(sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet,
-								round(sum(sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-								round(sum(sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-								round(sum(sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-								round(sum(sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-								round(sum(sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-								round(sum(sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-								scrabe_standard as scrabe_standard,
+								,round(avg(c_t_actually),0)as c_t_actually,
 								
-								round(sum(number_scrab_by_item),0)as number_scrab_by_item,
-								
-								round(sum(gross_production),0)as gross_production,
-								round(sum(standard_scrap_weight_kg),1)as standard_scrap_weight_kg,
-								round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-								round(sum(scrap_weight_kg),1)as scrap_weight_kg,
-								round(sum(production_weight_kg),1)as production_weight_kg,
-								round(count(number_day_use),0)as number_day_use,
-								round(sum(number_scrab_by_item)/avg(rat_actually),1) as HoursScrap,
-								round(avg(mold_avalibility),2)as "mold_avalibility",
 								customer_name,
 								item_name_customers,
 								item_code_customers
@@ -185,29 +149,7 @@ sql_quality_reporty_yearly_item='''
 sql_quality_reporty_yearly_mold='''year, mold_id,mold_name
 					,c_t_standard_per_second,
 							round(avg(rat_actually),0)as rat_actually,
-							round(avg(c_t_actually),0)as c_t_actually,
-							
-							round(sum(sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-							round(sum(sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-							round(sum(sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-							round(sum(sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-							round(sum(sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-							round(sum(sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-							round(sum(sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-							round(sum(sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-							round(sum(sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-							scrabe_standard,
-							
-							round(sum(number_scrab_by_item),0)as number_scrab_by_item,
-							
-							round(sum(gross_production),0)as gross_production,
-							round(sum(standard_scrap_weight_kg),1)as standard_scrap_weight_kg,
-							round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-							round(sum(scrap_weight_kg),1) as scrap_weight_kg,
-							round(sum(production_weight_kg),1)as production_weight_kg,
-							round(count(number_day_use),0)as number_day_use,
-							round(sum(number_scrab_by_item)/avg(rat_actually),1) as HoursScrap,
-							round(avg(mold_avalibility),2)as "mold_avalibility"
+							round(avg(c_t_actually),0)as c_t_actually
 							
 					'''
 sql_quality_water_content='''
@@ -948,10 +890,7 @@ class Block():
 									round(min(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
 									round(min(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
 									round(min(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
-									round(min(q.shift1_scrabe_No_parts),0)as shift1_scrabe_No_parts,
 									
-									round(sum(q.shift1_scrabe_no_item),0)as shift1_scrabe_no_item,
-									round(sum(shift1_all_production),0)as shift1_all_production,
 									round(min(q.shift2_production_cards),0)as shift2_production_cards,
 									round(min(q.shift2_prod_page),0)as shift2_prod_page,
 									round(min(q.shift2_proper_production),0)as shift2_proper_production,
@@ -964,31 +903,8 @@ class Block():
 									round(min(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
 									round(min(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
 									round(min(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
-									round(min(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
 									
-									round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
-									round(sum(shift2_all_production),0)as shift2_all_production,
-									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-									round(sum(q.sum_scrabe_broken_bySet),0)as sum_scrabe_broken_bySet,
-									round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-									round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-									round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-									round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-									round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-									round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									round(sum(q.sum_scrabe_no_parts),0)as number_scrab_by_item,/*select one item only in mold________*/
-																	
-									round(min(q.gross_production),0)as gross_production,/*select one item only in mold________*/
-									round(sum(q.number_scrab_by_item)/avg(s.standard_dry_weight),3)as standard_scrap_weight_kg ,
-									round(sum(q.gross_production)/avg(s.standard_dry_weight),3)as standard_production_weight_kg,
-									round(sum(q.number_scrab_by_item)/avg(q.average_dry_weight),3)as scrap_weight_kg,
-									round(sum(q.gross_production)/avg(q.average_dry_weight),3)as production_weight_kg,
-									round(avg(q.number_day_use),0)as number_day_use   /*average not sum for not dublicate the same molds*/,
 									
-									round(sum(number_scrab_by_item)/avg(rat_actually),3)as HoursScrap /*number hourse of scrap*/,
-									
-									round((sum(q.gross_production)/sum(q.number_day_use))/(22*avg(s.standard_rate_hour)),3)as mold_avalibility /*avalibility bercent in 22 work hours */,
 									s.density,
 									q.date_day
 									from v10quality_inpsection q
@@ -1051,9 +967,7 @@ class Block():
 									round(sum(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
 									round(sum(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
 									round(sum(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
-									round(sum(q.shift1_scrabe_No_parts),0)as shift1_scrabe_No_parts,
-									round(sum(q.shift1_scrabe_no_item),0)as shift1_scrabe_no_item,
-									round(sum(q.shift1_all_production),0)as shift1_all_production,
+									
 									round(sum(q.shift2_production_cards),0)as shift2_production_cards,
 									round(sum(q.shift2_prod_page),0)as shift2_prod_page,
 									round(sum(q.shift2_proper_production),0)as shift2_proper_production,
@@ -1066,35 +980,7 @@ class Block():
 									round(sum(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
 									round(sum(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
 									round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
-									round(sum(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
-									
-									round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
-		
-									round(sum(q.shift2_all_production),0)as shift2_all_production,
-									
-									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-									round(sum(q.sum_scrabe_broken_bySet),0)as sum_scrabe_broken_bySet,
-									round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-									round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-									round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-									round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-									round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-									round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									round(sum(q.sum_scrabe_no_parts),0)as sum_scrabe_no_parts,
-									round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-									
-									
-									round(sum(q.gross_production),0)as gross_production,
-									round(sum(q.number_scrab_by_item)/avg(s.standard_dry_weight),3)as standard_scrap_weight_kg ,
-									round(sum(q.gross_production)/avg(s.standard_dry_weight),3)as standard_production_weight_kg,
-									round(sum(q.number_scrab_by_item)/avg(q.average_dry_weight),3)as scrap_weight_kg,
-									round(sum(q.gross_production)/avg(q.average_dry_weight),3)as production_weight_kg,
-									
-									round(avg(q.number_day_use),0)as number_day_use   /*average not sum for not dublicate the same molds*/,
-									round(sum(number_scrab_by_item)/avg(rat_actually),3)as HoursScrap /*number hourse of scrap*/,
-									round((sum(q.gross_production)/sum(q.number_day_use))/(22*avg(s.standard_rate_hour)),3)as mold_avalibility /*avalibility bercent in 22 work hours */
-									 ,s.density
+									s.density
 									from v10quality_inpsection q
 									left join v96item_specifications s
 									on q.part_id=s.id_part
@@ -1156,10 +1042,6 @@ class Block():
 								round(sum(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
 								round(sum(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
 								round(sum(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
-								round(sum(q.shift1_scrabe_No_parts),0)as shift1_scrabe_No_parts,
-								
-								round(sum(q.shift1_scrabe_no_item),0)as shift1_scrabe_no_item,
-								round(sum(shift1_all_production),0)as shift1_all_production,
 								
 								round(sum(q.shift2_production_cards),0)as shift2_production_cards,
 								round(sum(q.shift2_prod_page),0)as shift2_prod_page,
@@ -1173,33 +1055,9 @@ class Block():
 								round(sum(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
 								round(sum(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
 								round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
-								round(sum(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
 								
-								round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
-		
-								round(sum(shift2_all_production),0)as shift2_all_production,
-								round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-								round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-								round(sum(q.sum_scrabe_broken_bySet),0)as sum_scrabe_broken_bySet,
-								round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-								round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-								round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-								round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-								round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-								round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-								round(sum(q.sum_scrabe_no_parts),0)as sum_scrabe_no_parts,
-								round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
 								
-								round(sum(q.gross_production),0)as gross_production,
-								round(sum(q.number_scrab_by_item)/avg(s.standard_dry_weight),3)as standard_scrap_weight_kg ,
-									round(sum(q.gross_production)/avg(s.standard_dry_weight),3)as standard_production_weight_kg,
-									round(sum(q.number_scrab_by_item)/avg(q.average_dry_weight),3)as scrap_weight_kg,
-									round(sum(q.gross_production)/avg(q.average_dry_weight),3)as production_weight_kg,
-								round(avg(q.number_day_use),0)as number_day_use    /*average not sum for not dublicate the same molds*/,
-								
-								round(sum(number_scrab_by_item)/avg(rat_actually),3)as HoursScrap /*number hourse of scrap*/,
-								round((sum(q.gross_production)/sum(q.number_day_use))/(22*avg(s.standard_rate_hour)),3)as mold_avalibility /*avalibility bercent in 22 work hours */
-								,s.density
+								s.density
 								from v10quality_inpsection q
 								left join v108items_master s
 								on q.item_id=s.item_id
@@ -1281,10 +1139,8 @@ class Block():
 								round(sum(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
 								round(sum(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
 								round(sum(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
-								round(sum(q.shift1_scrabe_No_parts),0)as shift1_scrabe_No_parts,
 								
-								round(sum(q.shift1_scrabe_no_item),0)as shift1_scrabe_no_item,
-								round(sum(q.shift1_all_production),0)as shift1_all_production,
+								
 								
 								round(sum(q.shift2_production_cards),0)as shift2_production_cards,
 								round(sum(q.shift2_prod_page),0)as shift2_prod_page,
@@ -1298,24 +1154,8 @@ class Block():
 								round(sum(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
 								round(sum(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
 								round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
-								round(sum(q.shift2_scrabe_No_parts),0)as shift2_scrabe_No_parts,
-								round(sum(q.shift2_scrabe_no_item),0)as shift2_scrabe_no_item,
-								round(sum(q.shift2_all_production),0)as shift2_all_production,
-								
-								round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-								round(sum(q.gross_production),0)as gross_production,
-								m.scrabe_standard,
-								round((sum(q.number_scrab_by_item))/(sum(q.gross_production)),3)as scrap_percent_by_item,
-								
-								case
-									WHEN round((sum(q.number_scrab_by_item))/(sum(q.gross_production)),3) <= m.scrabe_standard THEN 1 
-								end as scrab_validation,
 								
 								
-								round(sum(standard_scrap_weight_kg),1)as standard_scrap_weight_kg,
-								round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-								round((sum(q.number_scrab_by_item))*(avg(q.average_dry_weight))/1000,1) as scrap_weight_kg,
-								round((sum(q.gross_production))*(avg(q.average_dry_weight))/1000,1) as production_weight_kg,
 								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
 								date_part('week', q.day::date) AS weeksNumbers,
 								p.mold_name,m.machine_type
@@ -1340,27 +1180,10 @@ class Block():
 							,s.c_t_standard_per_second,
 							round(avg(q.c_t_actually),0)as c_t_actually,
 							round(avg(q.rat_actually),0)as rat_actually,
-							round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-							round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-							round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-							round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-							round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-							round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-							round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-							round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-							round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-							m.scrabe_standard,
 							
-							round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
+							m.scrabe_standard
 							
-							round(sum(q.gross_production),0)as gross_production,
-							round(sum(standard_scrap_weight_kg),1)as standard_scrap_weight_kg,
-							round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-							round(sum(scrap_weight_kg),1) as scrap_weight_kg,
-							round(sum(production_weight_kg),1)as production_weight_kg,
-							round(count(q.number_day_use),0)as number_day_use,
-							round(sum(number_scrab_by_item)/avg(rat_actually),1) as HoursScrap,
-							round((sum(q.gross_production)/sum(q.number_day_use))/(22*avg(s.standard_rate_hour)),3)as mold_avalibility /*avalibility bercent in 22 work hours */
+							
 							from v106quality_inspection_molds q
 							left join v12molds_list s
 							on q.mold_id=s.mold_id
@@ -1386,28 +1209,8 @@ class Block():
 								,p.standard_rate_hour as standard_rate_hour
 								,p.c_t_standard_per_second c_t_standard_per_second
 								,round(avg(q.rat_actually),0)as rat_actually
-								,round(avg(q.c_t_actually),0)as c_t_actually
-								,round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-								round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-								round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet,
-								round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-								round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-								round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-								round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-								round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-								round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-								m.scrabe_standard as scrabe_standard,
+								,round(avg(q.c_t_actually),0)as c_t_actually,
 								
-								round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-								
-								round(sum(q.gross_production),0)as gross_production,
-								round(sum(standard_scrap_weight_kg),1)as standard_scrap_weight_kg,
-								round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-								round(sum(scrap_weight_kg),1)as scrap_weight_kg,
-								round(sum(production_weight_kg),1)as production_weight_kg,
-								round(count(q.number_day_use),0)as number_day_use,
-								round(sum(number_scrab_by_item)/avg(rat_actually),1) as HoursScrap,
-								round(avg(q.mold_avalibility),2)as "mold_avalibility",
 								p.customer_name,
 								p.item_name_customers,
 								p.item_code_customers
@@ -1434,19 +1237,7 @@ class Block():
 							round(avg(q.rat_actually),0)as rat_actually,
 							round(avg(q.c_t_actually),0)as c_t_actually,
 							
-							round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-							round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-							round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-							round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-							round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-							round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-							round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-							round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-							round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
 							
-							round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-							
-							round(sum(q.gross_production),0)as gross_production,
 							m.scrabe_standard,
 						
 							
@@ -1680,22 +1471,9 @@ class Block():
 								q.year, q.month ,
 								round(avg(q.average_dry_weight),1)as average_dry_weight,
 								round(avg(q.rat_actually),0)as rat_actually,
-								round(avg(q.c_t_actually),0)as c_t_actually,
+								round(avg(q.c_t_actually),0)as c_t_actually
 								
-								round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-								round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-								round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-								round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-								round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-								round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-								round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-								round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-								round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
 								
-								round(sum(q.sum_scrabe_no_parts),0)as sum_scrabe_no_parts,
-								round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-								
-								round(sum(q.gross_production),0)as gross_production																
 					
 				from v105quality_inspection_items q
 							
@@ -1723,28 +1501,7 @@ class Block():
 									q.year, q.month ,q.machine_id,m.scrabe_standard,
 									round(avg(q.average_dry_weight),1)as average_dry_weight,
 									round(avg(q.rat_actually),0)as rat_actually,
-									round(avg(q.c_t_actually),0)as c_t_actually,
-									
-									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-									round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-									round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-									round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-									round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-									round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-									round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-									round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									
-									
-									round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-									
-									round(sum(q.gross_production),0)as gross_production,
-									round(sum(q.gross_production),1)as standard_scrap_weight_kg,
-									round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-									round(sum(scrap_weight_kg),1) as scrap_weight_kg,
-									round(sum(production_weight_kg),1)as production_weight_kg ,
-									round(sum(HoursScrap),3)as HoursScrap ,
-									round(avg(q.mold_avalibility),2)as "mold_avalibility"
+									round(avg(q.c_t_actually),0)as c_t_actually
 									
 					from v105quality_inspection_items q
 								
@@ -1770,28 +1527,8 @@ class Block():
 									q.year, q.month ,q.day,m.scrabe_standard,
 									round(avg(q.average_dry_weight),1)as average_dry_weight,
 									round(avg(q.rat_actually),0)as rat_actually,
-									round(avg(q.c_t_actually),0)as c_t_actually,
+									round(avg(q.c_t_actually),0)as c_t_actually
 									
-									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-									round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-									round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-									round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-									round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-									round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-									round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-									round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									
-									
-									round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-									
-									round(sum(q.gross_production),0)as gross_production,
-									round(sum(standard_scrap_weight_kg),1)as standard_scrap_weight_kg,
-									round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-									round(sum(scrap_weight_kg),1) as scrap_weight_kg,
-									round(sum(production_weight_kg),1)as production_weight_kg ,
-									round(sum(HoursScrap),3)as HoursScrap 					
-						
 					from v105quality_inspection_items q
 								
 								
@@ -1820,27 +1557,8 @@ class Block():
 									q.year, q.month ,q.day,
 									round(avg(q.average_dry_weight),1)as average_dry_weight,
 									round(avg(q.rat_actually),0)as rat_actually,
-									round(avg(q.c_t_actually),0)as c_t_actually,
+									round(avg(q.c_t_actually),0)as c_t_actually
 									
-									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-									round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-									round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-									round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-									round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-									round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-									round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-									round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									
-									round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-									
-									round(sum(q.gross_production),0)as gross_production,
-									round(sum(standard_scrap_weight_kg),1)as standard_scrap_weight_kg,
-									round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-									round(sum(scrap_weight_kg),1) as scrap_weight_kg,
-									round(sum(production_weight_kg),1)as production_weight_kg,
-									round(sum(HoursScrap),3)as HoursScrap 						
-						
 					from v105quality_inspection_items q
 								
 								
@@ -1866,27 +1584,8 @@ class Block():
 									q.year ,q.machine_id,m.scrabe_standard,
 									round(avg(q.average_dry_weight),1)as average_dry_weight,
 									round(avg(q.rat_actually),0)as rat_actually,
-									round(avg(q.c_t_actually),0)as c_t_actually,
+									round(avg(q.c_t_actually),0)as c_t_actually
 									
-									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-									round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-									round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-									round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-									round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-									round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-									round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-									round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									
-									
-									round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-									
-									round(sum(q.gross_production),0)as gross_production,
-									round(sum(standard_scrap_weight_kg),1)as standard_scrap_weight_kg,
-									round(sum(standard_production_weight_kg),1)as standard_production_weight_kg,
-									round(sum(scrap_weight_kg),1) as scrap_weight_kg,
-									round(sum(production_weight_kg),1)as production_weight_kg ,
-									round(sum(HoursScrap),3)as HoursScrap 
 					from v105quality_inspection_items q
 								
 								left join v108items_master p
@@ -2009,21 +1708,7 @@ class Block():
 			cursor.execute(SQL2, (month,))	
 	def monthly_report_ncr_scrap(self,year,month):
 		SQL1='''with quary_molds_report as (select 
-									q.year, q.month ,q.mold_id,q.item_id,p.product_name,p.product_code,m.scrabe_standard,					
-									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-									round(sum(q.sum_scrabe_broken_bySet),0)as sum_scrabe_broken_bySet,
-									round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-									round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-									round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-									round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-									round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-									round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-									
-									round(sum(q.gross_production),0)as gross_production,
-									round(count(q.number_day_use),0)as number_day_use,
-									round((sum(q.number_scrab_by_item))/(sum(q.gross_production)),3)as percentage
+									q.year, q.month ,q.mold_id,q.item_id,p.product_name,p.product_code,m.scrabe_standard
 																		
 								from v105quality_inspection_items q
 								left join v108items_master p
@@ -2168,20 +1853,6 @@ class Block():
 									round(avg(q.rat_actually),0)as rat_actually,
 									round(avg(q.c_t_actually),0)as c_t_actually,
 									
-									round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-									round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-									round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-									round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-									round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-									round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-									round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-									round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-									round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-									
-									round(sum(q.sum_scrabe_no_parts),0)as sum_scrabe_no_parts,
-									round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-									round(sum(q.gross_production),0)as gross_production,
-									round(count(q.number_day_use),0)as number_day_use,
 								/*	round(count(unique(q.machine_id)),0)as machines_number, */
 									round(min(q.machine_id),0)as machines_min_use,
 									round(max(q.machine_id),0)as machines_max_use						
@@ -2284,19 +1955,6 @@ class Block():
 							round(avg(q.rat_actually),0)as rat_actually,
 							round(avg(q.c_t_actually),0)as c_t_actually,
 							
-							round(sum(q.sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-							round(sum(q.sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-							round(sum(q.sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-							round(sum(q.sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-							round(sum(q.sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-							round(sum(q.sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-							round(sum(q.sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-							round(sum(q.sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-							round(sum(q.sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-							
-							round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
-							
-							round(sum(q.gross_production),0)as gross_production,
 							m.scrabe_standard,
 	
 							q.bachStartDate
@@ -2421,22 +2079,6 @@ class Material():
 							
 							round(avg(rat_actually),0)as rat_actually,
 							round(avg(c_t_actually),0)as c_t_actually,
-							
-							round(sum(sum_scrabe_shortage_bySet),0)as sum_scrabe_shortage_bySet,
-							round(sum(sum_scrabe_roll_bySet),0)as sum_scrabe_roll_bySet,
-							round(sum(sum_scrabe_broken_bySet  ),0)as sum_scrabe_broken_bySet  ,
-							round(sum(sum_scrabe_curve_bySet),0)as sum_scrabe_curve_bySet,
-							round(sum(sum_scrabe_shrinkage_bySet),0)as sum_scrabe_shrinkage_bySet,
-							round(sum(sum_scrabe_dimentions_bySet),0)as sum_scrabe_dimentions_bySet,
-							round(sum(sum_scrabe_weight_bySet),0)as sum_scrabe_weight_bySet,
-							round(sum(sum_scrabe_dirty_bySet),0)as sum_scrabe_dirty_bySet,
-							round(sum(sum_scrabe_cloration_bySet),0)as sum_scrabe_cloration_bySet,
-							
-							round(sum(number_scrab_by_item),0)as number_scrab_by_item,
-							
-							round(sum(gross_production),0)as gross_production,
-							scrabe_standard,
-							round(count(Product_name),1)as number_use_day,
 							
 				 			density
 				

@@ -213,13 +213,13 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.tabSubAnalysis.setCurrentIndex(1)
         self.tabMaps.setCurrentIndex(0)
     def connSubWeb_filler(self):
-        self.but_web_controler.setCurrentIndex(1)
+        self.but_web_controler_2.setCurrentIndex(1)
         self.tabMaps.setCurrentIndex(0)
     def connSubWeb_mail(self):
-        self.but_web_controler.setCurrentIndex(2)
+        self.but_web_controler_2.setCurrentIndex(2)
         self.tabMaps.setCurrentIndex(1)
     def connSubWeb_next(self):
-        self.but_web_controler.setCurrentIndex(0)
+        self.but_web_controler_2.setCurrentIndex(0)
         self.tabMaps.setCurrentIndex(1)
     def forward(self):
         self.setCurrentIndex(self.currentIndex() + 1)
@@ -248,11 +248,11 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 self.tabMaps.setCurrentIndex(0)
     
     
-    def mailControl():
+    def mailControl(self):
         '''for contorl to operating system and its contents from files and sub filess'''
         from apps import Mails_management
         
-        Mails_management.send_emails("") 
+        Mails_management.send_emails(self) 
 
     #___________________________analysis section_____________________________#
     def deepLearning(self):
@@ -280,7 +280,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         from Lib import ModifyTableDialog
 
     def database_management(self):
-        from memory import Block,PgAccess,MoldsQuality
+        from apps.analysis import Block,PgAccess,MoldsQuality
         
         year=str(self.analysis_DByear.currentText())
         month=str(self.analysis_DBmonth.currentText())
@@ -373,8 +373,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 PgAccess.alterName_columns(self,category,old_column,new_column)
 
     def connect_shareDb(self):
-        from apps import Unique,Select,Group
-        from memory import Block
+        from apps import Unique,Select,Group,Block
+        
         #connect to database
         year=self.analysis_year.currentText()
         month=self.analysis_month.currentText()

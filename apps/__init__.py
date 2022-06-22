@@ -1,5 +1,5 @@
 #own app puilding and all andalosy  compy rights is reseved
-from .analysis import Unique,Select, Group
+from .analysis import *
 from .files import Convert
 from .files import Names
 from .files import Files_control
