@@ -1130,6 +1130,7 @@ class Block():
 								round(sum(q.shift1_production_cards),0)as shift1_production_cards,
 								round(sum(q.shift1_prod_page),0)as shift1_prod_page,
 								round(sum(q.shift1_proper_production),0)as shift1_proper_production,
+
 								round(sum(q.shift1_scrabe_shortage),0)as shift1_scrabe_shortage,
 								round(sum(q.shift1_scrabe_roll),0)as shift1_scrabe_roll,
 								round(sum(q.shift1_scrabe_broken),0)as shift1_scrabe_broken,
@@ -1139,9 +1140,7 @@ class Block():
 								round(sum(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
 								round(sum(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
 								round(sum(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
-								
-								
-								
+												
 								round(sum(q.shift2_production_cards),0)as shift2_production_cards,
 								round(sum(q.shift2_prod_page),0)as shift2_prod_page,
 								round(sum(q.shift2_proper_production),0)as shift2_proper_production,
@@ -1158,7 +1157,7 @@ class Block():
 								
 								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
 								date_part('week', q.day::date) AS weeksNumbers,
-								p.mold_name,m.machine_type
+								p.mold_name,m.machine_type,m.scrabe_standard
 				from v105quality_inspection_items q
 							
 							left join v108items_master p

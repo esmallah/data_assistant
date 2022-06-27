@@ -66,8 +66,9 @@ columns_quality=['year',
     'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
     ,'shift1_scrabe_cloration','shift2_production_cards','shift2_prod_page','shift2_proper_production','shift2_scrabe_shortage',
     'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
-    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration'
-    
+    ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration',
+
+    'standard_dry_weight','standard_dry_weight_from','standard_dry_weight_to','standard_rate_hour','scrabe_standard'
     ]
     
     #the previous columns separate to 
@@ -283,7 +284,7 @@ class Select():
         'shift2_dry_weight4','shift2_dry_weight5',
         ]
         
-        get_data['average_dry_weight']=data[dry_weight_cl].mean(axis=1)
+        data['average_dry_weight']=data[dry_weight_cl].mean(axis=1)
         wet_weight_cl=[
         'shift1_wet_weight1',
         'shift1_wet_weight2',
@@ -295,15 +296,15 @@ class Select():
         'shift2_wet_weight3',
         'shift2_wet_weight4',
         'shift2_wet_weight5']
-        get_data['average_wet_weight']=data[wet_weight_cl].mean(axis=1)
+        data['average_wet_weight']=data[wet_weight_cl].mean(axis=1)
         
         cycletime_cl=['shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2']
     
         data['c_t_actually']=data[cycletime_cl].mean(axis=1)
         
-        get_data['rat_actually']=(3600 / data['c_t_actually']) * data['set'].fillna(0).astype(int)
+        data['rat_actually']=(3600 / data['c_t_actually']) * data['set'].fillna(0).astype(int)
         
-        get_data['c_t_actually']=data['c_t_actually']
+        data['c_t_actually']=data['c_t_actually']
         
         scrab_shift1_cl=[
         'shift1_scrabe_shortage',
@@ -334,17 +335,33 @@ class Select():
         data['sum_scrabe_weight']=data[['shift1_scrabe_weight','shift2_scrabe_weight']].sum(axis=1)
         data['sum_scrabe_dirty_bySet']=data[['shift1_scrabe_dirty','shift2_scrabe_dirty']].sum(axis=1)
         data['sum_scrabe_cloration']=data[['shift1_scrabe_cloration','shift2_scrabe_cloration']].sum(axis=1)
-        #
-		#data['HoursScrap']=data['number_scrab_by_item']/data['rat_actually'] #number hourse of scrap*/,
-		#data['mold_avalibility']=data['gross_production'].sum*data['number_day_use']/22*data['standard_rate_hour']#as  /*avalibility bercent in 22 work hours */
-        #notece that
-        #data['standard_scrap_weight_kg']= data.number_scrab_by_item.sum()/data.standard_dry_weight.mean()
-		#data['standard_production_weight_kg']=data.gross_production.sum()/data.standard_dry_weight.mean()
-	    #data.scrap_weight_kground=data.number_scrab_by_item.sum()/data.average_dry_weight.mean()
-		#data.production_weight_kg= data.gross_production.sum()/data.average_dry_weight.mean()
-		#data.number_day_use=data.number_day_use.mean()#average not sum for not dublicate the same molds*/,
-		
 
+        data['HoursScrap']=data['number_scrab_by_item']/data['rat_actually'] #number hourse of scrap*/,
+        data['number_day_use']=data['average_dry_weight'].count()
+        
+        data['mold_avalibility']=data['gross_production'] * (data['number_day_use']/22) * data['standard_rate_hour'].fillna(0).astype(int)#as  /*avalibility bercent in 22 work hours */
+        #notece that
+        data['standard_scrap_weight_kg']= data.number_scrab_by_item.sum()/data.standard_dry_weight.mean()
+        data['standard_production_weight_kg']=data.gross_production.sum()/data.standard_dry_weight.mean()
+        #data['scrap_weight_kg'=data.number_scrab_by_item.sum()/data.average_dry_weight.mean()
+        #data.production_weight_kg= data.gross_production.sum()/data.average_dry_weight.mean()
+        data['scrap_weight_kg'=data.number_scrab_by_item/data.average_dry_weight
+        data.production_weight_kg= data.gross_production/data.average_dry_weight
+        data.number_day_use=data.number_day_use.mean()#average not sum for not dublicate the same molds*/,
+        get_data['average_dry_weight']=data['average_dry_weight']
+        get_data['average_wet_weight']=data['average_wet_weight']
+        data['wet_average_percent']=data['average_wet_weight']-data['average_wet_weight']-data['standard_dry_weight'].fillna(0).astype(int)/data['standard_dry_weight'].fillna(0).astype(int)
+        get_data['standard_dry_weight']=data['standard_dry_weight'].fillna(0).astype(int)
+        get_data['standard_dry_weight_from']=data['standard_dry_weight_from'].fillna(0).astype(int)
+        get_data['standard_dry_weight_to']=data['standard_dry_weight_to'].fillna(0).astype(int)
+        get_data['scrabe_standard']=data['scrabe_standard'].fillna(0).astype(int)
+        get_data['number_day_use']=data['number_day_use']
+        
+        get_data['wet_average_percent']=data['wet_average_percent']
+        #الوزن المبلل - معياري الوزن الجاف للصنف/معياري الوزن الجاف للصنف
+        get_data['standard_rate_hour']=data['standard_rate_hour'].fillna(0).astype(int)
+        get_data['rat_actually']=data['rat_actually']
+        get_data['c_t_actually']=data['c_t_actually']
         get_data['sum_scrabe_shortage_bySet']=(data['sum_scrabe_shortage_bySet'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_roll']=(data['sum_scrabe_roll'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_broken']=(data['sum_scrabe_broken'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
@@ -365,6 +382,10 @@ class Select():
         get_data['shift2_all_production']=data['shift2_all_production']    
         get_data['number_scrab_by_item']=data['number_scrab_by_item']    
         get_data['gross_production']=data['gross_production']    
+        get_data['scrap_percent_by_item']=data['number_scrab_by_item']/data['gross_production']
+        get_data['scrap_weight_kg']=data['scrap_weight_kg']
+        get_data['production_weight_kg']=data['production_weight_kg']
+
         return get_data
 
     def select_data(self,year,month,day,isday=True,monthly=True,yearly=True,masterData=True,quality_records=True):
@@ -1104,19 +1125,24 @@ class Select():
         #new_data = pd.DataFrame()
         #new_data['tsneY'] = df['tsneY'].values.tolist()
         print('weight3',wieght3)
-        wieght2=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight","c_t_actually"].mean()
-        
-        #wieght2["machine_id"]=wieght2["machine_id"].values.tolist()
-        
-        #wieght2.values.tolist() #to solve unrichiable columns name
-        print ("test_____________wieght2[standard_dry_weight_from",wieght2.iloc[1],type(wieght2))
-        #filter low weithrs
-        weight_nonconfomity_low=wieght2[wieght2.iloc[1]<wieght2.iloc[2]] #add column tocount number of non conformity product
+        wieght2=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
 
-        #weight_nonconfomity_low=wieght2[wieght2["average_dry_weight"]<wieght2["standard_dry_weight_from"]] #add column tocount number of non conformity product
-        #add rows for filter high weight
-            #fix error for zero ncr
-        #if daily_analysis1["dryweight_deviation_validation"]==0 
+     #   wieght2.columns = wieght2.columns.map(str.strip)
+        #encoding='utf-8-sig'
+#        wieght2.columns = [u'machine_id']
+ #       wieght2.columns = [u'mold_name']
+  #      wieght2.columns = [u'standard_dry_weight_from']
+   #     wieght2.columns = [u'standard_dry_weight_to']
+    #    wieght2.columns = [u'average_dry_weight']
+        print ("test_____________wieght2[standard_dry_weight_from",wieght2,wieght2.info())
+
+        #filter low weithrs
+        #weight_nonconfomity_low=wieght2[wieght2.iloc[:3]<wieght2.iloc[:1]] #add column tocount number of non conformity product
+
+        #weight_nonconfomity_low=wieght2[wieght2.loc["average_dry_weight"]<wieght2.loc["standard_dry_weight_from"]] #add column tocount number of non conformity product
+        #weight_nonconfomity_high=wieght2[wieght2.iloc[:3]>wieght2.iloc[:2]]
+        weight_nonconfomity_low=wieght2[wieght2['average_dry_weight'] <= wieght2["standard_dry_weight_from"]]
+
         weight_nonconfomity_high=wieght2[wieght2['average_dry_weight']>wieght2["standard_dry_weight_to"]]
 
         wieght=weight_nonconfomity_high

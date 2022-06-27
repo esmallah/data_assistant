@@ -540,8 +540,10 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def files_control(self):
         '''for contorl to operating system and its contents from files and sub filess'''
         from apps import Files_control
-        path=r"E:\work\contact_group\QHSE\block"
-        outputpath=r"E:\work\contact_group\QHSE_activation\QES general\document control"
+        #path=r"E:\work\contact_group\QHSE\block"
+        #outputpath=r"E:\work\contact_group\QHSE_activation\QES general\document control"
+        path=self.FileLocationInputLineEdit.text()
+        outputpath=self.FileLocationOutputLineEdit.text()
         if self.checkBox_FileControl_getfilesNames.isChecked():
             #Files_control.get_folders_list(path)
             Files_control.get_Files_names(path,outputpath)
