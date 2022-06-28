@@ -341,13 +341,13 @@ class Select():
         
         data['mold_avalibility']=data['gross_production'] * (data['number_day_use']/22) * data['standard_rate_hour'].fillna(0).astype(int)#as  /*avalibility bercent in 22 work hours */
         #notece that
-        data['standard_scrap_weight_kg']= data.number_scrab_by_item.sum()/data.standard_dry_weight.mean()
-        data['standard_production_weight_kg']=data.gross_production.sum()/data.standard_dry_weight.mean()
+        data['standard_scrap_weight_kg']= data['number_scrab_by_item']/data['standard_dry_weight'].fillna(0).astype(int)
+        data['standard_production_weight_kg']=data['gross_production']/data['standard_dry_weight'].fillna(0).astype(int)
         #data['scrap_weight_kg'=data.number_scrab_by_item.sum()/data.average_dry_weight.mean()
         #data.production_weight_kg= data.gross_production.sum()/data.average_dry_weight.mean()
-        data['scrap_weight_kg'=data.number_scrab_by_item/data.average_dry_weight
-        data.production_weight_kg= data.gross_production/data.average_dry_weight
-        data.number_day_use=data.number_day_use.mean()#average not sum for not dublicate the same molds*/,
+        data['production_weight_kg']= data.gross_production/data.average_dry_weight
+        data['scrap_weight_kg']=data.number_scrab_by_item/data.average_dry_weight
+                
         get_data['average_dry_weight']=data['average_dry_weight']
         get_data['average_wet_weight']=data['average_wet_weight']
         data['wet_average_percent']=data['average_wet_weight']-data['average_wet_weight']-data['standard_dry_weight'].fillna(0).astype(int)/data['standard_dry_weight'].fillna(0).astype(int)
@@ -355,13 +355,24 @@ class Select():
         get_data['standard_dry_weight_from']=data['standard_dry_weight_from'].fillna(0).astype(int)
         get_data['standard_dry_weight_to']=data['standard_dry_weight_to'].fillna(0).astype(int)
         get_data['scrabe_standard']=data['scrabe_standard'].fillna(0).astype(int)
-        get_data['number_day_use']=data['number_day_use']
         
-        get_data['wet_average_percent']=data['wet_average_percent']
         #الوزن المبلل - معياري الوزن الجاف للصنف/معياري الوزن الجاف للصنف
         get_data['standard_rate_hour']=data['standard_rate_hour'].fillna(0).astype(int)
         get_data['rat_actually']=data['rat_actually']
         get_data['c_t_actually']=data['c_t_actually']
+        ##### end the query and start anasist will put in sheet by order
+        
+        
+
+        get_data['shift1_scrabe_no_parts']=data['shift1_scrabe_no_parts']
+        
+    
+        get_data['shift1_scrabe_no_item']=data['shift1_scrabe_no_item']
+        get_data['shift1_all_production']=data['shift1_all_production']  
+        get_data['shift2_scrabe_no_parts']=data['shift2_scrabe_no_parts']
+        get_data['shift2_scrabe_no_item']=data['shift2_scrabe_no_item']
+        get_data['shift2_all_production']=data['shift2_all_production']
+
         get_data['sum_scrabe_shortage_bySet']=(data['sum_scrabe_shortage_bySet'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_roll']=(data['sum_scrabe_roll'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_broken']=(data['sum_scrabe_broken'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
@@ -372,20 +383,15 @@ class Select():
         get_data['sum_scrabe_dirty_bySet']=(data['sum_scrabe_dirty_bySet'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_cloration']=(data['sum_scrabe_cloration'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
 
-        get_data['shift1_scrabe_no_parts']=data['shift1_scrabe_no_parts']
-        get_data['shift2_scrabe_no_parts']=data['shift2_scrabe_no_parts']
-    
-        get_data['shift1_scrabe_no_item']=data['shift1_scrabe_no_item']
-        get_data['shift2_scrabe_no_item']=data['shift2_scrabe_no_item']
-    
-        get_data['shift1_all_production']=data['shift1_all_production']    
-        get_data['shift2_all_production']=data['shift2_all_production']    
         get_data['number_scrab_by_item']=data['number_scrab_by_item']    
         get_data['gross_production']=data['gross_production']    
         get_data['scrap_percent_by_item']=data['number_scrab_by_item']/data['gross_production']
+        get_data['standard_scrap_weight_kg']= data['standard_scrap_weight_kg']
+        get_data['standard_production_weight_kg']=data['standard_production_weight_kg']
         get_data['scrap_weight_kg']=data['scrap_weight_kg']
         get_data['production_weight_kg']=data['production_weight_kg']
-
+        get_data['number_day_use']=data['number_day_use']
+        get_data['wet_average_percent']=data['wet_average_percent']
         return get_data
 
     def select_data(self,year,month,day,isday=True,monthly=True,yearly=True,masterData=True,quality_records=True):
@@ -1055,6 +1061,7 @@ class Select():
 
         wb.save(year+"-QC_molds_daily_yearly_v3.xlsx")
     def daily_molds(self,year,month,day):
+        os.chdir(self.folder)
         '''to get summary report'''
         sql_query=Block.get_daily_dataentry_items(self,year,month,day)
 
@@ -1126,14 +1133,6 @@ class Select():
         #new_data['tsneY'] = df['tsneY'].values.tolist()
         print('weight3',wieght3)
         wieght2=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
-
-     #   wieght2.columns = wieght2.columns.map(str.strip)
-        #encoding='utf-8-sig'
-#        wieght2.columns = [u'machine_id']
- #       wieght2.columns = [u'mold_name']
-  #      wieght2.columns = [u'standard_dry_weight_from']
-   #     wieght2.columns = [u'standard_dry_weight_to']
-    #    wieght2.columns = [u'average_dry_weight']
         print ("test_____________wieght2[standard_dry_weight_from",wieght2,wieght2.info())
 
         #filter low weithrs
@@ -1209,17 +1208,17 @@ class Select():
         production_set_molds=scrap_molds["gross_production"].sum()
         scrap_set_molds=scrap_molds["number_scrab_by_item"].sum()
         scrap_percent_molds=(scrap_set_molds.astype(int)/production_set_molds.astype(int))*100
-        scrap_molds["percent"]=(scrap_molds["number_scrab_by_item"]/scrap_molds["gross_production"].astype(int))*100
+        scrap_molds["percent"]=(scrap_molds["number_scrab_by_item"]/scrap_molds["gross_production"])*100
         ##scrap for items(as item master)___
         scrap_items=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
         
         scrap_items["gross_production"]=scrap5.groupby(["machine_type","machine_id","product_name"])['gross_production'].sum()
-        scrap_items["number_day_use"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_day_use'].mean()
+        #scrap_items["number_day_use"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_day_use'].mean()
         scrap_items["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['scrap_weight_kg'].sum()
         scrap_items["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['production_weight_kg'].sum()
         scrap_items["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
-        scrap_items["percent"]=((scrap_items["number_scrab_by_item"].astype(int))/(scrap_items["gross_production"].astype(int)))*100
-#        molds_newmachines=scrap_molds.filter(lambda x: x['machine_type']=="new_machine")
+        scrap_items["percent"]=((scrap_items["number_scrab_by_item"])/(scrap_items["gross_production"]))*100
+
         
         
         
@@ -1253,7 +1252,7 @@ class Select():
         scrap_nonconfomity.to_excel(writer,"scrap_ncr")
         scrap_items.to_excel(writer,"scrap_items",merge_cells=False)
     
-        wieght2.to_excel(writer,merge_cells=False)
+#        wieght2.to_excel(writer,merge_cells=False)
         daily_analysis1.to_excel(writer,"input_molds", index=False)
         
         writer.save()
@@ -1279,25 +1278,26 @@ class Select():
         ws['d1'] = last_year    #year for molds report
         ws['A4'] = scrap_percent           #scrap on all machie
         ws['B4'] = scrap_percent_new    #scrap on new macine
+        print ("c_t_nonconfomity for sheet" , c_t_nonconfomity)
+        ws['a14'] =c_t_nonconfomity.iloc[0][5]                #ct pass 
+        ws['b14'] =c_t_nonconfomity.iloc[0][4]                #ct not acceptable
         
-        ws['a14'] =c_t_nonconfomity.iloc[0][6]                #ct pass 
-        ws['b14'] =c_t_nonconfomity.iloc[0][5]                #ct not acceptable
-        
-        ws['a25'] = weight_nonconfomity.iloc[0][5]             #weight pass 
-        ws['b25'] =weight_nonconfomity.iloc[0][4]
+        ws['a25'] = weight_nonconfomity.iloc[0][4]             #weight pass 
+        ws['b25'] =weight_nonconfomity.iloc[0][3]
         #if weight_nonconfomity_high>=1:  # for ignor impty index error        
-        #    ws['b25'] =weight_nonconfomity_low.iloc[0][4]            #weights low not acceptable
+        print ("weight_nonconfomity_low for sheet" , weight_nonconfomity_low)
+        ws['b25'] =weight_nonconfomity_low.iloc[0][3]            #weights low not acceptable
         #else:
         #    ws['b25'] =0
-        #ws['a35'] = weight_nonconfomity.iloc[0][5]             #weight pass 
+        ws['a35'] = weight_nonconfomity.iloc[0][4]             #weight pass 
         #if weight_nonconfomity_high>=1:  # for ignor impty index error        
         #    ws['b35'] =weight_nonconfomity_high.iloc[0][4]            #weights hig not acceptable
         #else:
         #    ws['b35'] =0           #weights hig not acceptable
         #_______
         
-        ws['a35'] = weight_nonconfomity.iloc[0][5]             #weight pass 
-        ws['b25'] =weight_nonconfomity.iloc[0][4]
+        ws['a35'] = weight_nonconfomity.iloc[0][4]             #weight pass 
+        ws['b25'] =weight_nonconfomity.iloc[0][3]
 
         #to select index of columns for scraps
         if scrap_nonconfomity_count>=1:

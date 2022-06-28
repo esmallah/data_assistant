@@ -1120,7 +1120,6 @@ class Block():
 								round(avg(q.shift2_c_t2),0)as shift2_c_t2,
 								round(avg(q.average_wet_weight),1)as average_wet_weight,
 								round(avg(q.average_dry_weight),1)as average_dry_weight,
-								round((avg(average_wet_weight)-p.standard_dry_weight)/avg(p.standard_dry_weight),1) as wet_average_percent,
 								p.standard_rate_hour,
 								p.c_t_standard_per_second,								
 								round(avg(q.rat_actually),0)as rat_actually,
