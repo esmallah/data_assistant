@@ -320,12 +320,10 @@ class Select():
         data['sum_scrabe_no_parts']=data[['shift1_scrabe_no_parts','shift2_scrabe_no_parts',]].sum(axis=1)
         data['shift1_scrabe_no_item']=data['shift1_scrabe_no_parts'].fillna(0).astype(int)/ data['no_on_set']
         data['shift2_scrabe_no_item']=data['shift2_scrabe_no_parts'].fillna(0).astype(int)/ data['no_on_set']
-        data['shift1_all_production']=data[['shift1_proper_production','shift1_scrabe_no_item']].sum(axis=1)
-        data['shift2_all_production']=data[['shift2_proper_production','shift2_scrabe_no_item']].sum(axis=1)
+        data['shift1_all_production']=data[['shift1_proper_production','shift1_scrabe_no_item']].fillna(0).astype(int).sum(axis=1)
+        data['shift2_all_production']=data[['shift2_proper_production','shift2_scrabe_no_item']].fillna(0).astype(int).sum(axis=1)
         data['number_scrab_by_item']=data[['shift1_scrabe_no_item','shift2_scrabe_no_item']].sum(axis=1)
         data['gross_production']=data[['shift1_all_production','shift2_all_production']].sum(axis=1)
-        
-        
         data['sum_scrabe_shortage_bySet']=data[['shift1_scrabe_shortage','shift2_scrabe_shortage']].sum(axis=1)
         data['sum_scrabe_roll']=data[['shift1_scrabe_roll','shift2_scrabe_roll']].sum(axis=1)
         data['sum_scrabe_broken']=data[['shift1_scrabe_broken','shift2_scrabe_broken']].sum(axis=1)
@@ -335,7 +333,6 @@ class Select():
         data['sum_scrabe_weight']=data[['shift1_scrabe_weight','shift2_scrabe_weight']].sum(axis=1)
         data['sum_scrabe_dirty_bySet']=data[['shift1_scrabe_dirty','shift2_scrabe_dirty']].sum(axis=1)
         data['sum_scrabe_cloration']=data[['shift1_scrabe_cloration','shift2_scrabe_cloration']].sum(axis=1)
-
         data['HoursScrap']=data['number_scrab_by_item']/data['rat_actually'] #number hourse of scrap*/,
         data['number_day_use']=data['average_dry_weight'].count()
         
@@ -345,8 +342,8 @@ class Select():
         data['standard_production_weight_kg']=data['gross_production']/data['standard_dry_weight'].fillna(0).astype(int)
         #data['scrap_weight_kg'=data.number_scrab_by_item.sum()/data.average_dry_weight.mean()
         #data.production_weight_kg= data.gross_production.sum()/data.average_dry_weight.mean()
-        data['production_weight_kg']= data.gross_production/data.average_dry_weight
-        data['scrap_weight_kg']=data.number_scrab_by_item/data.average_dry_weight
+        data['production_weight_kg']= data['gross_production']/data['average_dry_weight']
+        data['scrap_weight_kg']=data['number_scrab_by_item']/data['average_dry_weight']
                 
         get_data['average_dry_weight']=data['average_dry_weight']
         get_data['average_wet_weight']=data['average_wet_weight']
@@ -544,15 +541,12 @@ class Select():
         sql_query=Block.get_daily_dataentry_items(self,year,month,day)
         get_data = self.load_data(sql_query)        
 
-        
-
         list_item_size=get_data.shape[0]
         #get_data.shift1_all_production=sum(get_data.shift1_scrabe_shortage,get_data.shift1_scrabe_roll,get_data.shift1_scrabe_broken, get_data.shift1_scrabe_curve,  get_data.shift1_scrabe_shrinkage,get_data.shift1_scrabe_dimentions,get_data.shift1_scrabe_weight,get_data.shift1_scrabe_dirty)
         
         print('______________get data________________________',get_data['average_dry_weight'])
         #__________________________________________________________________
         #daily input
-        
 
         ws1=wb["input_daily"]
         #create  the index sheet:
@@ -1136,10 +1130,7 @@ class Select():
         print ("test_____________wieght2[standard_dry_weight_from",wieght2,wieght2.info())
 
         #filter low weithrs
-        #weight_nonconfomity_low=wieght2[wieght2.iloc[:3]<wieght2.iloc[:1]] #add column tocount number of non conformity product
 
-        #weight_nonconfomity_low=wieght2[wieght2.loc["average_dry_weight"]<wieght2.loc["standard_dry_weight_from"]] #add column tocount number of non conformity product
-        #weight_nonconfomity_high=wieght2[wieght2.iloc[:3]>wieght2.iloc[:2]]
         weight_nonconfomity_low=wieght2[wieght2['average_dry_weight'] <= wieght2["standard_dry_weight_from"]]
 
         weight_nonconfomity_high=wieght2[wieght2['average_dry_weight']>wieght2["standard_dry_weight_to"]]
@@ -1155,7 +1146,6 @@ class Select():
             weight_nonconfomity=pd.DataFrame()##error we muast select index of groupby
         
         weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_low)    #for append the light weights
-        weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_high)    #for append the heavy weights
         
         weight_nonconfomity['weight_nonconfomity_count']=weight_nonconfomity_count
         weight_ok=mold_count-weight_nonconfomity_count
@@ -1168,11 +1158,9 @@ class Select():
         
         #scrap5=report.append(scrap5)#we need fix rong calucate sacrap percent for 
         
-
         scrap_newmachines=scrap5[scrap5["machine_type"]=="new_machine"]
         scrap_oldmachines=scrap5[scrap5["machine_type"]=="old_machine"]
         
-
         scrap_part_new=scrap_newmachines["number_scrab_by_item"].sum()
         production_part_new=scrap_newmachines["gross_production"].sum()
         
@@ -1190,14 +1178,12 @@ class Select():
         scrap=scrap2
         print("_______________scrap____________________",scrap)
         scrap["scrab_parts_new_machine"]=scrap_part_new
-        
         scrap["production_parts_new_machine"]=production_part_new
         scrap["production_parts_all"]=production_set
         scrap["scrap_percent_new_machine"]=scrap_percent_new
         scrap["scrap_percent_all"]=scrap_percent
         scrap["scrab_parts_all"]=scrap_part
-        scrap_nonconfomity_count=scrap["number_scrab_by_item"].count()
-        
+        scrap_nonconfomity_count=scrap["number_scrab_by_item"].count()        
         ##scrap for molds___________________
         '''must be in excel sheet (input) not showing null value for not mistacks in average result'''
         scrap_molds=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
@@ -1219,9 +1205,6 @@ class Select():
         scrap_items["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
         scrap_items["percent"]=((scrap_items["number_scrab_by_item"])/(scrap_items["gross_production"]))*100
 
-        
-        
-        
         scrap_percent_new=scrap_part_new/production_part_new * 100
         ##scrap non conformity_______________________
         
@@ -1244,7 +1227,7 @@ class Select():
 
         writer = pd.ExcelWriter("day_analysis2.xlsx")
 
-        #weight_nonconfomity.to_excel(writer,"weight_ncr")
+        weight_nonconfomity.to_excel(writer,"weight_ncr")
         
         c_t_nonconfomity.to_excel(writer,"c.t")
         scrap.to_excel(writer,"scrap")
@@ -1285,19 +1268,19 @@ class Select():
         ws['a25'] = weight_nonconfomity.iloc[0][4]             #weight pass 
         ws['b25'] =weight_nonconfomity.iloc[0][3]
         #if weight_nonconfomity_high>=1:  # for ignor impty index error        
-        print ("weight_nonconfomity_low for sheet" , weight_nonconfomity_low)
-        ws['b25'] =weight_nonconfomity_low.iloc[0][3]            #weights low not acceptable
+        print ("weight_nonconfomity_low for sheet" , weight_nonconfomity)
+        ws['b25'] =weight_nonconfomity_low.iloc[0][2]            #weights low not acceptable
         #else:
         #    ws['b25'] =0
         ws['a35'] = weight_nonconfomity.iloc[0][4]             #weight pass 
         #if weight_nonconfomity_high>=1:  # for ignor impty index error        
-        #    ws['b35'] =weight_nonconfomity_high.iloc[0][4]            #weights hig not acceptable
+        ws['b35'] =weight_nonconfomity_high.iloc[0][2]            #weights hig not acceptable
         #else:
         #    ws['b35'] =0           #weights hig not acceptable
         #_______
         
-        ws['a35'] = weight_nonconfomity.iloc[0][4]             #weight pass 
-        ws['b25'] =weight_nonconfomity.iloc[0][3]
+        #ws['a35'] = weight_nonconfomity.iloc[0][3]             #weight pass 
+        #ws['b25'] =weight_nonconfomity.iloc[0][2]               #weight not pass
 
         #to select index of columns for scraps
         if scrap_nonconfomity_count>=1:

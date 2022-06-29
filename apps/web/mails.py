@@ -18,13 +18,14 @@ class Mails_management():
         self.writefile=writefile
         self.sheetwriter=sheetwriter
     def send_emails(self):
-        #os.chdir(self.folder)
+        os.chdir(self.folder)
         #reader=pd.read_excel(self.readfile,self.readsheet)
         #return_day_bool=reader["month"]==self.column1
         #return_day=reader[return_day_bool]
+        name= "Eng.Mario"
         personal_mail='mario.sameh@lge.com'
         name='mario'
-        subject_mail='<h2>dear Eng. $<br>good day<br> you can find your interested report in attached  <br></h2>'
+        subject_mail='<h2>dear %s<br>good day<br> you can find your interested report in attached  <br></h2>'%name
         '''
         mafdy_mail='mafdy.khalil@cg-eg.com'
         ihab='ehab.adel@cg-eg.com'
@@ -46,10 +47,11 @@ class Mails_management():
         mail.HTMLBody = subject_mail
 
         # To attach a file to the email (optional):
-        attachment  = "D:\programing\python\a1leader\data_assistant\apps\analysis\formats\v129molds_shoutcount.xlsx"
-        #mail.Attachments.Add(attachment)
+        attachment  = "v129molds_shoutcount.xlsx"
+        mail.Attachments.Add(attachment)
         mail.Send()
-
+        print ("mail was send to with attachmed ",attachment,"located in ",self.folder)
+        
     import win32com.client
 
 
