@@ -10,15 +10,13 @@ import os
 import numpy as np
 import glob
 
-from .db_reports import Block,Material,cursor
 #import database_postgrsql as database
-
-
+from apps.analysis.db_reports import Block,cursor,conn,Material
 from random import randint,seed
 
 #master data
     #for columns from ite_ master for molds ( the one product from one moldes)
-columns_machines=['id','scrabe_standard','machine_type','place' ,'low_size','high_size']
+#columns_machines=['id','scrabe_standard','machine_type','place' ,'low_size','high_size']
 
 columns_molds=['mold_id','ORG_CODE','ORG_NAME','Ctegory','UOM','machie_size','No_on_Set',
 'set','No_on_Set',"sub_category",'mold_name','status','c_t_standard_per_second','c_t_standard_per_second_from',
@@ -30,7 +28,7 @@ columns_molds=['mold_id','ORG_CODE','ORG_NAME','Ctegory','UOM','machie_size','No
 #for columns to more than one products form the same mold
 columns_parts=['part_id','product_code','product_name_by_parts','Weight_kg','standard_rate_hour','highlite',
     'standard_dry_weight','standard_dry_weight_from','standard_dry_weight_to','positive_weight','negative_weight',
-    'sub_category','mold_id','product_parts','item_id','product_name','item_name_customers','item_code_customers','item_classification_customers'
+    'sub_category','mold_id','product_parts','item_id','product_name','item_classification_customers','item_code_customers','item_classification_customers'
     ,"view_items","view_molds",
     'view_parts','density','row_material_typeA','row_material_typeB',
     'tall_mm','tall_positive_tolerance','tall_negative_tolerance','width_mm','width_positive_tolerance','width_negative_tolerance',
@@ -68,12 +66,15 @@ columns_quality=['year',
     'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
     ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration',
 
-    'standard_dry_weight','standard_dry_weight_from','standard_dry_weight_to','standard_rate_hour','scrabe_standard'
+    'standard_dry_weight','standard_dry_weight_from','standard_dry_weight_to','c_t_standard_per_second','standard_rate_hour','scrabe_standard',
+    'customer_name',
+    'item_classification_customers',
+    'item_code_customers',
     ]
     
     #the previous columns separate to 
         #1 cycle time table
-columns_cycle_time=['year','month','day','machine_id','rat_actually','rat_validation','c_t_deviation','shift1_c_t1','shift1_c_t2'
+columns_cycle_time=['year','month','day','machine_id','rat_actually','c_t_deviation','shift1_c_t1','shift1_c_t2'
                 ,'shift2_c_t1','shift2_c_t2','c_t_actually','mold_id','part_id','item_id','number_day_use','factory','id_DayPartUnique'
                 ,'parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
@@ -86,7 +87,7 @@ columns_QCinspection=['year','month','day','machine_id','item_id','number_day_us
 
     'shift2_ct1','shift2_ct2'
 
-    ,'average_wet_weight','average_dry_weight','rat_actually','rat_validation','dryweight_deviation_validation','part_id','shift1_production_cards'
+    ,'average_wet_weight','average_dry_weight','rat_actually','shift1_production_cards'
     ,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
     'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
     ,'shift1_scrabe_cloration','shift1_scrabe_no_parts'
@@ -96,14 +97,14 @@ columns_QCinspection=['year','month','day','machine_id','item_id','number_day_us
     'shift2_scrabe_roll','shift2_scrabe_broken','shift2_scrabe_curve','shift2_scrabe_shrinkage','shift2_scrabe_dimentions'
     ,'shift2_scrabe_weight','shift2_scrabe_dirty','shift2_scrabe_cloration'    
     ,'bachStartDate',
-'id_DayPartUnique','factory','deepth_mm','parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
+'parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
             #the previeuse table separate to
                     #1weights table
 columns_weight=['year','month','day','machine_id','item_id','number_day_use','mold_id','product_parts',
 'shift1_dry_weight1','shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4'
 ,'shift1_dry_weight5','shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4',
-'shift2_dry_weight5','average_wet_weight','average_dry_weight','dryweight_deviation_validation','part_id','id_DayPartUnique','factory'
+'shift2_dry_weight5','average_wet_weight','average_dry_weight','dryweight_deviation_validation'
 ,'parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
                     #2scrab table
@@ -120,8 +121,89 @@ columns_scrap=['year','month','day','machine_id','item_id','mold_id','product_pa
 'gross_production','scrap_percent_by_item','factory','id_DayPartUnique','Items_patchsNumbers'
 ,'parts_patchsNumbers','bachStartDate','bachEndDate']
 
+
+column_monthly_report=[
+                'year',
+				'month',
+				'day',
+                'mold_id',
+				'item_id',
+                "product_name",
+                "product_code",
+                
+                "standard_dry_weight",
+                "standard_dry_weight_from",
+                "standard_dry_weight_to",
+                #"c_t_deviation",
+                #'rat_validation',
+                                
+                
+                "standard_dry_weight",
+                "average_dry_weight",
+                
+				'average_wet_weight',
+                'wet_average_percent',
+                "standard_rate_hour",
+                "c_t_standard_per_second",
+                "rat_actually",
+                "c_t_actually",
+
+                'sum_scrabe_shortage_bySet',
+                'sum_scrabe_roll',
+                'sum_scrabe_broken',
+                'sum_scrabe_curve',
+                'sum_scrabe_shrinkage',
+                'sum_scrabe_dimentions',
+                'sum_scrabe_weight',
+                'sum_scrabe_dirty_bySet',
+                'sum_scrabe_cloration',
+                "scrabe_standard",
+                
+                'number_scrab_by_item',
+                'gross_production',
+                
+                "standard_scrap_weight_kg",
+                "standard_production_weight_kg",
+                "scrap_weight_kg",
+                "production_weight_kg",
+                "HoursScrap",
+                "mold_avalibility",
+				'number_day_use',
+				'customer_name',
+                'item_classification_customers',
+                'item_code_customers',
+                "scrap_percent_by_item"
+
+]
 #error __________________
 #must be reduce column by ceate calculating columns
+
+col_rename={"product_name": "اسم المنتج","product_name":"اسم المنتج بالاجزاء"
+        ,"product_code":"كود المنتج","product_parts":"اجزاء المنتج","machine_id":'رقم الماكينة',"number_day_use":"عدد ايام التشغيل"
+        ,"standard_dry_weight_from":"مواصفة الوزن الجاف من","standard_dry_weight_to":"مواصفة الوزن الجاف إلي",
+        "weight_under_validation":"الاوزان الاقل من المواصفة","weight_above_validation":"الاوزان الاعلي من المواصفة",
+        #"c_t_deviation":"الفارق بين المعدل المعيارى والفعلى","rat_standard_deviation":'الانحراف المعياري لمعدل الانتاج',
+        
+        "sum_scrabe_no_parts":"عدد التوالف بالقطع","number_scrab_by_item":"عدد التوالف بالطقم",
+        "gross_production":"إجمالي الانتاج بالقطعة","scrap_percent_by_item":"نسبة الاسكراب بالطقم",
+        "product_groub":"اسم المنتج المجمع","standard_dry_weight":"الوزن الجاف المعياري","average_dry_weight":"متوسط الوزن الجاف الفعلي"
+        ,"standard_rate_hour":"المعدل المعياري بالساعة","rat_actually":"متوسط المعدل الفعلي بالساعة"
+        ,"c_t_standard_per_second":"زمن الدورة المعياري بالثانية","c_t_actually":"متوسط زمن الدورة الفعلي بالثانية"
+        ,"scrabe_standard":"معياري الاسكراب","parts_patchsNumbers":"ارقام الباتشات بالجزء","scrap_percent_by_item":"نسبة التوالف بالقطعة"
+        ,"Items_patchsNumbers":"ارقام الباتشات بالاصناف","scrabe_standard":"معياري التوالف","part_id":"رقم الجزء",
+        "mold_id":"رقم الاسطمبة","item_id":"رقم المنتج" }      # for recaull module to change english name to arabic
+
+columns_weight=["day","year","month","machine_id","product_name","product_code","standard_dry_weight",
+"standard_dry_weight_from","standard_dry_weight_to",'shift1_dry_weight1','shift1_dry_weight2','shift1_dry_weight3',
+        'shift1_dry_weight4','shift1_dry_weight5','shift2_dry_weight1','shift2_dry_weight2',
+        'shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',"average_dry_weight",]
+
+columns_machine=["day","year","month","machine_id","product_name","product_code","scrabe_standard",
+"sum_scrabe_no_parts","number_scrab_by_item","gross_production",'scrap_percent_by_item'
+,"number_day_use","item_id","machine_type"]
+
+columns_cycle_time=["day","year","month","machine_id","mold_name","product_name","product_code","set","standard_rate_hour"
+,"c_t_standard_per_second",'shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2',"rat_actually","c_t_actually","number_day_use","mold_id",]
 
 class Unique():
     def __init__(self,folder,readfile,readsheet,column1,column2,writefile,sheetwriter):
@@ -264,10 +346,8 @@ class Select():
         self.writefile=writefile
         self.writesheet=writesheet
     def load_data(self,sql_query):
-        
         from apps import cursor
         sql_query
-        
         get_data2=cursor.fetchall()
         #__________________________________________________________________        
         column_names = [desc[0] for desc in cursor.description]
@@ -352,7 +432,7 @@ class Select():
         get_data['standard_dry_weight_from']=data['standard_dry_weight_from'].fillna(0).astype(int)
         get_data['standard_dry_weight_to']=data['standard_dry_weight_to'].fillna(0).astype(int)
         get_data['scrabe_standard']=data['scrabe_standard'].fillna(0).astype(int)
-        
+        get_data['c_t_standard_per_second']=data['c_t_standard_per_second'].fillna(0).astype(int)
         #الوزن المبلل - معياري الوزن الجاف للصنف/معياري الوزن الجاف للصنف
         get_data['standard_rate_hour']=data['standard_rate_hour'].fillna(0).astype(int)
         get_data['rat_actually']=data['rat_actually']
@@ -379,7 +459,7 @@ class Select():
         get_data['sum_scrabe_weight']=(data['sum_scrabe_weight'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_dirty_bySet']=(data['sum_scrabe_dirty_bySet'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_cloration']=(data['sum_scrabe_cloration'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
-
+        get_data['sum_scrabe_no_parts']=data['sum_scrabe_no_parts']
         get_data['number_scrab_by_item']=data['number_scrab_by_item']    
         get_data['gross_production']=data['gross_production']    
         get_data['scrap_percent_by_item']=data['number_scrab_by_item']/data['gross_production']
@@ -387,8 +467,13 @@ class Select():
         get_data['standard_production_weight_kg']=data['standard_production_weight_kg']
         get_data['scrap_weight_kg']=data['scrap_weight_kg']
         get_data['production_weight_kg']=data['production_weight_kg']
+        get_data["HoursScrap"]=data['HoursScrap']
+        get_data['mold_avalibility']=data['mold_avalibility']
         get_data['number_day_use']=data['number_day_use']
         get_data['wet_average_percent']=data['wet_average_percent']
+        get_data['customer_name']=data['customer_name']
+        get_data['item_classification_customers']=data['item_classification_customers']
+        get_data['item_code_customers']=data['item_code_customers']
         return get_data
 
     def select_data(self,year,month,day,isday=True,monthly=True,yearly=True,masterData=True,quality_records=True):
@@ -1056,7 +1141,7 @@ class Select():
         wb.save(year+"-QC_molds_daily_yearly_v3.xlsx")
     def daily_molds(self,year,month,day):
         os.chdir(self.folder)
-        '''to get summary report'''
+        '''to get summary report for each day '''
         sql_query=Block.get_daily_dataentry_items(self,year,month,day)
 
         mold_analysis4 = self.load_data(sql_query)        
@@ -1363,3 +1448,500 @@ class Select():
         
         
         wb_formats.save("QC_molds_daily_archive.xlsx")    
+        
+    def monthly_molds(self,writerFile,year,month,day,to_day,*args,monthly=True):
+        '''
+        to get daily report and monthly repots ended by QC_molds_daily_archive_v3
+        '''        
+
+        os.chdir(self.folder)
+
+        wb = xl.load_workbook(self.readfile1)
+        #__________________________________________________________________        
+
+        sql_query=Block.get_daily_dataentry_items(self,year,month,day)
+        get_data = self.load_data(sql_query)        
+        list_item_size=get_data.shape[0]    #to write
+        #___________________analysis data
+        daily_analysis3=get_data#[column_monthly_report]
+        
+        
+        daily_analysis_bool3=daily_analysis3["year"]==year
+        daily_analysis2=daily_analysis3[daily_analysis_bool3]
+        daily_analysis_bool2=daily_analysis2["month"]==month
+        daily_analysis=daily_analysis2[daily_analysis_bool2]
+        print("daily_analysis for month",daily_analysis.head(5))
+        daily_analysis_bool=daily_analysis["day"]<=day #for less than the day
+        daily_analysis=daily_analysis[daily_analysis_bool]
+        #daily_analysis=daily_analysis[column_monthly_report]       
+        print("daily_analysis for day",day,daily_analysis)
+        print("date",year,month,day)
+        dry_weight3=daily_analysis[columns_weight]
+        dry_weight_bool=dry_weight3['average_dry_weight'].notnull()
+        dry_weight2=dry_weight3[dry_weight_bool]
+
+        scrap4=daily_analysis[columns_machine]
+        scrap_bool=scrap4["gross_production"].notnull()
+        scrap3=scrap4[scrap_bool]
+        scrap2=scrap3
+        molds_rate3=daily_analysis[columns_cycle_time]
+        molds_rate_bool=molds_rate3["c_t_actually"].notnull()
+        molds_rate2=molds_rate3[molds_rate_bool]
+        print("please weight1")
+        #scrap
+        scrap=scrap2.groupby(["product_name","product_code","scrabe_standard"])['number_scrab_by_item',
+        "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
+        
+        scrap["scrap_percent_by_item"]=scrap['number_scrab_by_item']/scrap['gross_production']
+        #scrap= pd.DataFrame()
+
+        scrap_product_machine=scrap2.groupby(["product_name","product_code","machine_id","scrabe_standard"])['number_scrab_by_item',
+        "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
+        scrap_product_machine["scrap_percent_by_item"]=scrap_product_machine['number_scrab_by_item']/scrap_product_machine['gross_production']
+        
+        print("_____scrap____",scrap_product_machine)
+
+        scrap_machine_product=scrap2.groupby(["machine_id","scrabe_standard","product_name","product_code"])['number_scrab_by_item',
+        "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
+        scrap_machine_product["scrap_percent_by_item"]=scrap_machine_product['number_scrab_by_item']/scrap_machine_product['gross_production']
+        
+        machines=scrap2.groupby(["machine_id","scrabe_standard","machine_type"])['number_scrab_by_item',
+        'sum_scrabe_no_parts',"gross_production","number_day_use"].sum()
+        machines["scrap_percent_by_item"]=machines['number_scrab_by_item']/machines['gross_production']
+        scrap_bool2=scrap2["scrap_percent_by_item"]>scrap2["scrabe_standard"]
+        scrap_ncr=scrap2[scrap_bool2]
+        print("please weight2")
+        #production rate report
+        
+        molds_rate=molds_rate2.groupby(["product_name","product_code","set","standard_rate_hour"
+        ,"c_t_standard_per_second"])["rat_actually","c_t_actually"].mean()
+        #molds_rate_bools_ncr=molds_rate["rat_actually"]>molds_rate["standard_rate_hour"]
+        #molds_rate_ncr=molds_rate[molds_rate_bools_ncr]
+        dry_weight=dry_weight2.groupby(["product_name","product_code","standard_dry_weight",
+        "standard_dry_weight_from","standard_dry_weight_to"])["average_dry_weight"].mean()
+        #dry_weight_bool_low=dry_weight["average_dry_weight"] < dry_weight["standard_dry_weight_from"]
+        #dry_weight_bool_high=dry_weight["average_dry_weight"] > dry_weight["standard_dry_weight_to"]
+        #dry_weight_ncr_low=dry_weight[dry_weight_bool_low]
+        #dry_weight_ncr_high=dry_weigh[dry_weight_bool_high]
+        # export
+        
+        #validation data
+        #scap validation
+        product_parts_input=daily_analysis["gross_production"].sum
+        
+        scrab_set_input=daily_analysis["number_scrab_by_item"].sum
+        #scrab_input=product_parts_input + product_set_input + scrab_parts_input + scrab_set_input
+
+        product_parts_outbut=machines["gross_production"].sum
+        
+        
+        scrab_set_outbut=machines["number_scrab_by_item"].sum
+        #scrab_output=product_parts_outbut + product_set_outbut +  scrab_parts_outbut + scrab_set_outbut
+
+        #if  scrab_input!=scrab_output:#not equal validation
+        #    exit
+        #    print("the scrap data or production data is worng kinldy review ")
+        #export analysis to excel sheets is named output in the same folder
+        
+                # export monthly
+                #  analysis 
+        writer = pd.ExcelWriter("QC_molds_monthly_until.xlsx")
+    
+   
+        daily_analysis.rename(columns={c:c.lower() for c in col_rename})      
+
+        daily_analysis.to_excel(writer,'input', index=False)
+
+        scrap.rename(columns={c:c.lower() for c in col_rename})
+        scrap.to_excel(writer,'scrap_product', index=True)
+
+        scrap_product_machine.rename(columns={c:c.lower() for c in col_rename})
+        scrap_product_machine.to_excel(writer,'scrap_product_machines', index=True)
+
+        scrap_machine_product.rename(columns={c:c.lower() for c in col_rename})
+        scrap_machine_product.to_excel(writer,'scrap_machines_product', index=True)
+        
+        machines.rename(columns={c:c.lower() for c in col_rename})
+        machines.to_excel(writer,"scrap_machines", index=True)
+        
+        dry_weight.rename(columns={c:c.lower() for c in col_rename})
+        dry_weight.to_excel(writer,'weights', index=True)
+        molds_rate.rename(columns={c:c.lower() for c in col_rename})
+        molds_rate.to_excel(writer,'c_t', index=True)
+        
+        print ("analysis for ")
+        print(self.column1)
+        print(self.column2)
+        print("for the days")
+        print(daily_analysis["day"].unique())
+    #__________________________________merge
+        
+        ws1=wb["input_daily"]
+        #create  the index sheet:
+        r = 4  # start at 4th row
+        c = 1 # column 'a'
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = get_data.iloc[row]
+            for item in rows:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
+        
+        #material by silo
+        ws_bach=wb["material_daily"]
+        Material.material_bySilo_daily(self,year,month,day,to_day)
+        get_data=cursor.fetchall()
+        rows=get_data      
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws_bach.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #Bache input
+        ws_bach=wb["batches"]
+        Block.show_monthly_Baches(self,year,month)
+        
+#        sql_query=Block.show_monthly_Baches(self,year,month)
+#       get_data = self.load_data(sql_query)        
+
+        get_data=cursor.fetchall()
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws_bach.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #monthly scrap report by day
+        ws8=wb["scrap_type_machines"]
+        Block.show_scrap_monthly_report_type_machines(self,year,month)
+        #sql_query=Block.show_scrap_monthly_report_type_machines(self,year,month)
+        #get_data = self.load_data(sql_query)        
+
+        rows = cursor.fetchall()
+        r = 3  # start at 33th row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+        
+            for item in row:
+                ws8.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+            #monthly machine report
+        ws8=wb["scrap_days"]
+        Block.show_scrap_monthly_report_by_days(self,year,month)
+        #sql_query=Block.show_scrap_monthly_report_by_days(self,year,month)
+        #get_data = self.load_data(sql_query)        
+        rows = cursor.fetchall()
+        r = 3  # start at 33th row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+        
+            for item in row:
+                ws8.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1    
+        #water content report
+        ws1=wb["moisture_daily"]
+
+        Block.show_water_content_daily(self,year,month,day,to_day)
+        #sql_query=Block.show_water_content_daily(self,year,month,day,to_day)
+        #get_data = self.load_data(sql_query)        
+        get_data=cursor.fetchall()
+        #get_data.set_index("serial", inplace=True) #put index
+        
+        #get_data=pd.DataFrame(get_data["id"])
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #monthly output
+        if monthly:
+            ws2=wb["output"]
+            rows = cursor.fetchall()
+            r = 3  # start at third row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws2.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #______yearly report
+            #monthly mold report
+            
+            #filter on non conformity weights
+                #part one low weight
+            ws5=wb["wieght_report"]
+            Block.monthly_report_ncr_weight_low(self,year,month)
+            rows = cursor.fetchall()
+            r = 12  # start at 12 row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws5.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+                #part tow hight weight
+                ws5=wb["wieght_report"]
+            Block.monthly_report_ncr_weight_hight(self,year,month)
+            rows = cursor.fetchall()
+            r = 33  # start at 33th row
+            c = 1 # column 'a'
+            for row in rows:
+                
+                for item in row:
+                    ws5.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #filter on non conformity ct
+            ws6=wb["ct_report"]
+            Block.monthly_report_ncr_ct(self,year,month)
+            rows = cursor.fetchall()
+            r = 11  # start at 11th row
+            c = 1 # column 'a'
+            for row in rows:
+                
+                for item in row:
+                    ws6.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #filter on on conformity scrap
+            ws7=wb["scrap_report"]
+            Block.monthly_report_ncr_scrap(self,year,month)
+            rows= cursor.fetchall()
+            r = 15  # start at 15th row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws7.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #monthly machine report
+            ws8=wb["scrap_machine"]
+            Block.show_machine_monthly_report(self,year,month)
+            rows = cursor.fetchall()
+            r = 3  # start at 33th row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws8.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            
+            
+            #monthly machine report
+            ws8=wb["scrap_machine_yearly"]
+            Block.show_machine_yearly_report(self,year,month)
+            rows = cursor.fetchall()
+            r = 3  # start at 33th row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws8.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            
+        
+            ws2=wb["output_monthly"]
+            Block.show_yearly_report_itemsByMonths(self,year,args)
+            
+            rows = cursor.fetchall()
+            r = 3  # start at third row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws2.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            
+            ws3=wb["year"]
+            Block.show_machine_report_yearly(self,year,month)
+            rows = cursor.fetchall()
+            r = 3  # start at third row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws3.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #scrap monthly
+            ws3=wb["month"]
+            Block.show_monthly_report_view_month(self,year,month)
+            rows = cursor.fetchall()
+            r = 3  # start at third row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws3.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #yearly item report
+            ws2=wb["output_yearly"]
+            Block.items_report_arabic_custom_item(self,year,month,args)
+            
+            rows = cursor.fetchall()
+            r = 3  # start at third row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws2.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            
+            
+            #monthly mold report by molds not items
+            ws_output_molds=wb["output_molds"]
+            Block.show_mnthly_report_molds(self,year,month)
+
+            rows = cursor.fetchall()
+            r = 3  # start at third row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+
+                for item in row:
+                    ws_output_molds.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+
+            ws_output_molds_yearly=wb["output_mold_monthly"]
+            Block.yearly_report_molds_byMonthes(self,year,args)
+
+            rows = cursor.fetchall()
+            r = 3  # start at third row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+
+                for item in row:
+                    ws_output_molds_yearly.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+
+                #report for moldsy monthly
+            
+            ws_wieght_yearly=wb["output_molds_yearly"]
+            Block.show_yearly_report_molds(self,year,month)
+            rows = cursor.fetchall()
+            r = 3  # start at 3th row
+            c = 1 # column 'a'
+            for row in rows:
+                for item in row:
+                    ws_wieght_yearly.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            
+                #report of hight weight
+            ws_wieght_yearly=wb["wieght_yearly"]
+            Block.yearly_report_ncr_weight(self,year,month)
+            rows = cursor.fetchall()
+            r = 10  # start at 10th row
+            c = 1 # column 'a'
+            for row in rows:
+                
+                for item in row:
+                    ws_wieght_yearly.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #filter on non conformity ct
+            ws_ct_yearly=wb["ct_yearly"]
+            Block.yearly_report_ncr_ct(self,year,month)
+            rows = cursor.fetchall()
+            r = 11  # start at 11th row
+            c = 1 # column 'a'
+            for row in rows:
+                
+                for item in row:
+                    ws_ct_yearly.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #filter on on conformity scrap
+            ws_scrap_yearly=wb["scrap_yearly"]
+            Block.yearly_report_ncr_scrap(self,year,month)
+            rows= cursor.fetchall()
+            r = 15  # start at 15th row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+            
+                for item in row:
+                    ws_scrap_yearly.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+            #for material
+            ws1=wb["materials"]
+            Material.materialToPorduct(self,year)
+            get_data=cursor.fetchall()
+            #get_data.set_index("serial", inplace=True) #put index
+            
+            #get_data=pd.DataFrame(get_data["id"])
+            rows=get_data
+            #rows = get_data[columns_quality]
+            
+            r = 4  # start at fourd row
+            c = 1 # column 'a'
+            for row in rows:
+                #print(row)
+                for item in row:
+                    ws1.cell(row=r, column=c).value = item
+                    c += 1 # Column 'b'
+                c = 1
+                r += 1
+        wb.save(writerFile)

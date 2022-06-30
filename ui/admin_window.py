@@ -456,13 +456,13 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         
         #for daily report
             print("year",type(year),"month",type(month),"day",type(day))
-            git_dashboard.export_report_mothly(dailyReportName,year,month,day,to_day,monthly=False)
+            git_dashboard.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False)
             print("the daily report has downloaded for day ",day," , month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_monthlyReport.isChecked():
         
         #for monthly report
-            git_database.export_report_mothly(monthlyReportName,year,month,day,to_day,monthly=True) #add output_batches for calculate items group by its continusliy production by RNN to learn brevious to get values
+            git_database.monthly_molds(monthlyReportName,year,month,day,to_day,monthly=True) #add output_batches for calculate items group by its continusliy production by RNN to learn brevious to get values
             print("the monthly report has downloaded for month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_yearlyInput.isChecked():
