@@ -403,7 +403,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         #format_path = os.path.join(format_path2, )
         
         git_database=Select(format_path,"formatQC_molds_monthly.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
-        git_dashboard=Select(format_path,"formatQC_molds_daily.xlsx","output",year,month,'QC_dashboard_v1.xlsx',"Sheet1")
+        
                     #import data
         #import database on share
         quality1=Select(data_store,"QC_daily_v2 - Copy.xlsx","input",year,month,"","")
@@ -456,7 +456,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         
         #for daily report
             print("year",type(year),"month",type(month),"day",type(day))
-            git_dashboard.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False)
+            git_database.export_report_mothly(dailyReportName,year,month,day,to_day,monthly=False)
             print("the daily report has downloaded for day ",day," , month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_monthlyReport.isChecked():

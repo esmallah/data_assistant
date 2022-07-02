@@ -469,7 +469,7 @@ class Select():
         get_data['production_weight_kg']=data['production_weight_kg']
         get_data["HoursScrap"]=data['HoursScrap']
         get_data['mold_avalibility']=data['mold_avalibility']
-        get_data['number_day_use']=data['number_day_use']
+        get_data['number_day_use']=data['number_day_use'].fillna(0).astype(int)
         get_data['wet_average_percent']=data['wet_average_percent']
         get_data['customer_name']=data['customer_name']
         get_data['item_classification_customers']=data['item_classification_customers']
@@ -1139,9 +1139,16 @@ class Select():
             r += 1
 
         wb.save(year+"-QC_molds_daily_yearly_v3.xlsx")
-    def daily_molds(self,year,month,day):
+    def daily_molds(self,writerFile,year,month,day,to_day,*args,monthly=True):
+        '''
+            1- to get summary report for each day
+            
+        '''        
+
         os.chdir(self.folder)
-        '''to get summary report for each day '''
+
+        wb = xl.load_workbook(self.readfile1)
+        
         sql_query=Block.get_daily_dataentry_items(self,year,month,day)
 
         mold_analysis4 = self.load_data(sql_query)        
@@ -1451,29 +1458,49 @@ class Select():
         
     def monthly_molds(self,writerFile,year,month,day,to_day,*args,monthly=True):
         '''
-        to get daily report and monthly repots ended by QC_molds_daily_archive_v3
+        mold report for 
+            1- to get summary report for each day
+            2- to get daily report 
+            3- monthly repots ended by QC_molds_daily_archive_v3
+        
         '''        
 
         os.chdir(self.folder)
 
         wb = xl.load_workbook(self.readfile1)
-        #__________________________________________________________________        
-
+        
         sql_query=Block.get_daily_dataentry_items(self,year,month,day)
-        get_data = self.load_data(sql_query)        
-        list_item_size=get_data.shape[0]    #to write
-        #___________________analysis data
-        daily_analysis3=get_data#[column_monthly_report]
+
+        mold_analysis4 = self.load_data(sql_query)        
+
+        last_year=int(mold_analysis4["year"].max())
+        print("_________daily report___________for year________",last_year,type(last_year))       
+        mold_analysis_bool4=mold_analysis4["year"]==last_year
+        mold_analysis3=mold_analysis4[mold_analysis_bool4]
         
+        last_month=int(mold_analysis3["month"].max())
+        mold_analysis_bool3=mold_analysis3["month"]==last_month
+        mold_analysis2=mold_analysis3[mold_analysis_bool3]
         
-        daily_analysis_bool3=daily_analysis3["year"]==year
-        daily_analysis2=daily_analysis3[daily_analysis_bool3]
-        daily_analysis_bool2=daily_analysis2["month"]==month
-        daily_analysis=daily_analysis2[daily_analysis_bool2]
-        print("daily_analysis for month",daily_analysis.head(5))
-        daily_analysis_bool=daily_analysis["day"]<=day #for less than the day
-        daily_analysis=daily_analysis[daily_analysis_bool]
+        #dateDay3=mold_analysis2['date_day'].tail(1)
+        print("_________daily report___________for month________",last_month,type(last_month))       
+        mold_days=mold_analysis2["day"].count()
+
+        import datetime
+
+        d = datetime.datetime(int(year), int(month), int(day))
+
+        date_day=d.date()
+      
+
+        daily_analysis1_bool=mold_analysis2["day"]==date_day
+
+        daily_analysis1=mold_analysis2[daily_analysis1_bool]
+        #validate input 
+
+        daily_analysis=mold_analysis2
         #daily_analysis=daily_analysis[column_monthly_report]       
+        
         print("daily_analysis for day",day,daily_analysis)
         print("date",year,month,day)
         dry_weight3=daily_analysis[columns_weight]
@@ -1497,6 +1524,7 @@ class Select():
 
         scrap_product_machine=scrap2.groupby(["product_name","product_code","machine_id","scrabe_standard"])['number_scrab_by_item',
         "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
+
         scrap_product_machine["scrap_percent_by_item"]=scrap_product_machine['number_scrab_by_item']/scrap_product_machine['gross_production']
         
         print("_____scrap____",scrap_product_machine)
@@ -1564,14 +1592,12 @@ class Select():
         machines.rename(columns={c:c.lower() for c in col_rename})
         machines.to_excel(writer,"scrap_machines", index=True)
         
-        dry_weight.rename(columns={c:c.lower() for c in col_rename})
+        #dry_weight.rename(columns={c:c.lower() for c in col_rename})
         dry_weight.to_excel(writer,'weights', index=True)
         molds_rate.rename(columns={c:c.lower() for c in col_rename})
         molds_rate.to_excel(writer,'c_t', index=True)
-        
-        print ("analysis for ")
-        print(self.column1)
-        print(self.column2)
+        writer.save()
+
         print("for the days")
         print(daily_analysis["day"].unique())
     #__________________________________merge
