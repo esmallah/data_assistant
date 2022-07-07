@@ -9,7 +9,7 @@ from setting import *
 
 from interface import Ui_MainWindow
 
-
+data_path=r'D:\ProgramData\assistantApplcation'
 class AppWindow(Ui_MainWindow,QMainWindow):  
     switch_window = QtCore.pyqtSignal(str)
     def __init__(self,parent=None):
@@ -251,14 +251,15 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def mailControl(self):
         '''for contorl to operating system and its contents from files and sub filess'''
         from apps import Mails_management
-        
-        Mails_management.send_emails(self) 
+        attachment_name=self.WebSiteLineEdit_mail_address.text()
+
+        Mails_management.send_emails(self,data_path,attachment_name) 
 
     #___________________________analysis section_____________________________#
     def deepLearning(self):
         from leader import Ai_thinking
         
-        data_path=Ai_thinking(r'D:\ProgramData\assistantApplcation','trainData.xlsx',"train","names","id_inside_cagegory","defined_names.xlsx")
+        
         if self.checkBox_Leader_adjust_input_data.isChecked():
             data_path.show_data()
 
@@ -451,18 +452,30 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         
                     #data basse export data
         #_______developer stage________________________________current_________====================
-
+#if self.checkBox_analsys_monthlyreport.isChecked():
+        if self.checkBox_analysis_summaryReport.isChecked():
+            print ("checkBox_analysis_summaryReport start",analysisInput)
+            git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=True)
+            #qc_daily.daily_molds(year,month,day)#____________________________________daily report______________________________
+        if self.checkBox_analysis_spc.isChecked():
+            item_id=int(self.comboBox_analysisDb_analysis_spc.currentText())    
+            if self.comboBox_analysisDb_analysis_spc_move.currentText()=="new_workbook":
+                qc_daily.spc_molds(int(year),int(month),item_id,create_workbook=True)
+            if self.comboBox_analysisDb_analysis_spc_move.currentText()=="add_sheet":
+                qc_daily.spc_molds(int(year),int(month),item_id,create_workbook=False)
+            print("item_id,item_id","type",type(item_id))
+        
         if self.checkBox_analysis_DB_daily.isChecked():
         
         #for daily report
             print("year",type(year),"month",type(month),"day",type(day))
-            git_database.export_report_mothly(dailyReportName,year,month,day,to_day,monthly=False)
+            git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=False)
             print("the daily report has downloaded for day ",day," , month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_monthlyReport.isChecked():
         
         #for monthly report
-            git_database.monthly_molds(monthlyReportName,year,month,day,to_day,monthly=True) #add output_batches for calculate items group by its continusliy production by RNN to learn brevious to get values
+            git_database.monthly_molds(monthlyReportName,year,month,day,to_day,monthly=True,daily=False) #add output_batches for calculate items group by its continusliy production by RNN to learn brevious to get values
             print("the monthly report has downloaded for month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_yearlyInput.isChecked():
@@ -498,37 +511,14 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             item_master_all=Select(r"E:\work\programing\2data_analysis\files\master_data","warehouse2018.xlsx",None,year,month,"items_all.xlsx","sheet1")
             qc_yearly.multi_sheet()
     #___________________________________reports_from_PC_______________________________________
-        query_output=Group(r'E:\work\contact_group\QHSE_activation\QC quality control\qc_molds\database','database_output.xlsx',"output",2020,2,"qc_analysis_monthly.xlsx","Sheet1")
-        yearly_molds=Group(analysisInput,'QC_daily_v2.xlsx',"input",2020,2,"qc_analysis_yearly.xlsx","Sheet1")
-        yearly_molds_sheet_from_database=Group(r'E:\work\contact_group\QHSE_activation\QC quality control\qc_molds','QC_molds_monthly_v2.xlsx',"output_monthly",2019,8,"qc_analysis_yearly.xlsx","Sheet1")
-        yearly_molds18=Group(r'E:\work\contact_group\QHSE_activation\QC quality control\qc_molds2018','2018QC_molds_daily.xls',"input",2019,12,"qc_analysis_yearly2018_custom.xlsx","Sheet1")
-        mothly_molds=Group(analysisInput,"QC_daily_v2.xlsx","input",2020,2,31,31)
-        mold_data=Group(analysisInput,"drywtmonthly_sorce.xlsm","input",2019,1,"drywtmonthly_v2.xlsx","input")
+        #query_output=Group(r'E:\work\contact_group\QHSE_activation\QC quality control\qc_molds\database','database_output.xlsx',"output",2020,2,"qc_analysis_monthly.xlsx","Sheet1")
+        #yearly_molds=Group(analysisInput,'QC_daily_v2.xlsx',"input",2020,2,"qc_analysis_yearly.xlsx","Sheet1")
+        #yearly_molds_sheet_from_database=Group(r'E:\work\contact_group\QHSE_activation\QC quality control\qc_molds','QC_molds_monthly_v2.xlsx',"output_monthly",2019,8,"qc_analysis_yearly.xlsx","Sheet1")
+        #yearly_molds18=Group(r'E:\work\contact_group\QHSE_activation\QC quality control\qc_molds2018','2018QC_molds_daily.xls',"input",2019,12,"qc_analysis_yearly2018_custom.xlsx","Sheet1")
+        #mothly_molds=Group(analysisInput,"QC_daily_v2.xlsx","input",2020,2,31,31)
+        #mold_data=Group(analysisInput,"drywtmonthly_sorce.xlsm","input",2019,1,"drywtmonthly_v2.xlsx","input")
         qc_daily=Select(analysisInput,"QC_daily_v2.xlsx","input","253","254",1,31)
-        #if self.checkBox_analsys_monthlyreport.isChecked():
-        if self.checkBox_analysis_summaryReport.isChecked():
-            print ("checkBox_analysis_summaryReport start",analysisInput)
-            qc_daily.daily_molds(year,month,day)#____________________________________daily report______________________________
-        if self.checkBox_analysis_spc.isChecked():
-            item_id=int(self.comboBox_analysisDb_analysis_spc.currentText())    
-            if self.comboBox_analysisDb_analysis_spc_move.currentText()=="new_workbook":
-                qc_daily.spc_molds(int(year),int(month),item_id,create_workbook=True)
-            if self.comboBox_analysisDb_analysis_spc_move.currentText()=="add_sheet":
-                qc_daily.spc_molds(int(year),int(month),item_id,create_workbook=False)
-            print("item_id,item_id","type",type(item_id))
-        #____________________________________to upload data from pc______________________________
-        query_output=Group(r'.\data\qc_molds\database','database_output.xlsx',"output",2020,2,"qc_analysis_monthly.xlsx","Sheet1")
-        yearly_molds=Group(r'.\data\qc_molds','QC_daily_v2.xlsx',"input",2020,2,"qc_analysis_yearly.xlsx","Sheet1")
-        yearly_molds_sheet_from_database=Group(r'.\data\qc_molds','QC_molds_monthly_v2.xlsx',"output_monthly",2019,8,"qc_analysis_yearly.xlsx","Sheet1")
-        yearly_molds18=Group(r'.\data\qc_molds2018','2018QC_molds_daily.xls',"input",2019,12,"qc_analysis_yearly2018_custom.xlsx","Sheet1")
-        mothly_molds=Group(r".\data\qc_molds","QC_daily_v2.xlsx","input",2020,2,31,31)
-
-        quality1=Select(r".\data\qc_molds\database","QC_daily_v2 - Copy.xlsx",year,month,"input",2020,3)
-        quality2=Select(r".\data\qc_molds\database","input_to_csv.xlsx",year,month,"Sheet1","input_to_database.csv","Sheet1")
-        upload_database=Block(r".\data\qc_molds\database","QC_daily - Copy.xls")
-        #group(folder,readfile,readsheet,column1,column2,writefile,writesheet)
-        #quality1.select_data()
-        #quality1.convert_csv()
+        
     def test(self):
         import test_main
         year=self.analysis_year.currentText()

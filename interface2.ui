@@ -784,7 +784,7 @@ color: rgb(255, 255, 255);</string>
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>Lib/pyqt_sqlite/ui/icons/lc_dbtableedit.png</normaloff>Lib/pyqt_sqlite/ui/icons/lc_dbtableedit.png</iconset>
+            <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_dbtableedit.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_dbtableedit.png</iconset>
           </property>
          </widget>
         </item>
@@ -798,7 +798,7 @@ color: rgb(255, 255, 255);</string>
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>Lib/pyqt_sqlite/ui/icons/lc_dbtabledelete.png</normaloff>Lib/pyqt_sqlite/ui/icons/lc_dbtabledelete.png</iconset>
+            <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_dbtabledelete.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_dbtabledelete.png</iconset>
           </property>
          </widget>
         </item>
@@ -812,7 +812,7 @@ color: rgb(255, 255, 255);</string>
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>Lib/pyqt_sqlite/ui/icons/lc_dbnewtable.png</normaloff>Lib/pyqt_sqlite/ui/icons/lc_dbnewtable.png</iconset>
+            <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_dbnewtable.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_dbnewtable.png</iconset>
           </property>
          </widget>
         </item>
@@ -860,7 +860,7 @@ color: rgb(255, 255, 255);</string>
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>Lib/pyqt_sqlite/ui/icons/sc_newrecord.png</normaloff>Lib/pyqt_sqlite/ui/icons/sc_newrecord.png</iconset>
+            <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/sc_newrecord.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/sc_newrecord.png</iconset>
           </property>
          </widget>
         </item>
@@ -871,7 +871,7 @@ color: rgb(255, 255, 255);</string>
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>Lib/pyqt_sqlite/ui/icons/sc_deleterecord.png</normaloff>Lib/pyqt_sqlite/ui/icons/sc_deleterecord.png</iconset>
+            <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/sc_deleterecord.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/sc_deleterecord.png</iconset>
           </property>
          </widget>
         </item>
@@ -895,7 +895,7 @@ color: rgb(255, 255, 255);</string>
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>Lib/pyqt_sqlite/ui/icons/sc_refresh.png</normaloff>Lib/pyqt_sqlite/ui/icons/sc_refresh.png</iconset>
+            <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/sc_refresh.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/sc_refresh.png</iconset>
           </property>
          </widget>
         </item>
@@ -918,7 +918,7 @@ color: rgb(255, 255, 255);</string>
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>Lib/pyqt_sqlite/ui/icons/lc_sbaexecutesql.png</normaloff>Lib/pyqt_sqlite/ui/icons/lc_sbaexecutesql.png</iconset>
+              <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_sbaexecutesql.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_sbaexecutesql.png</iconset>
             </property>
            </widget>
           </item>
@@ -957,7 +957,7 @@ color: rgb(255, 255, 255);</string>
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>Lib/pyqt_sqlite/ui/icons/lc_dbnewviewsql.png</normaloff>Lib/pyqt_sqlite/ui/icons/lc_dbnewviewsql.png</iconset>
+            <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_dbnewviewsql.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/Lib/pyqt_sqlite/ui/icons/lc_dbnewviewsql.png</iconset>
           </property>
          </widget>
         </item>
@@ -4992,13 +4992,6 @@ font: 75 11pt &quot;MS Shell Dlg 2&quot;;</string>
          <item row="2" column="1">
           <widget class="QComboBox" name="stanpAccountComboBox"/>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="stanpAccountLabel">
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Stanp Account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="sendMailLabel">
            <property name="styleSheet">
@@ -5309,7 +5302,7 @@ color: rgb(255, 255, 255);</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>100</y>
+           <y>170</y>
            <width>221</width>
            <height>23</height>
           </rect>
@@ -5322,22 +5315,35 @@ color: rgb(255, 255, 255);</string>
           <string>send mail</string>
          </property>
         </widget>
-       </widget>
-       <widget class="QLineEdit" name="interTheWebSiteLineEdit_4">
-        <property name="geometry">
-         <rect>
-          <x>380</x>
-          <y>80</y>
-          <width>201</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
+        <widget class="QLabel" name="stanpAccountLabel">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>70</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;attachment&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="WebSiteLineEdit_mail_address">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>130</y>
+           <width>231</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -6512,7 +6518,7 @@ p, li { white-space: pre-wrap; }
   <action name="actionNew">
    <property name="icon">
     <iconset>
-     <normalon>icons/lc_newdoc.png</normalon>
+     <normalon>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/icons/lc_newdoc.png</normalon>
     </iconset>
    </property>
    <property name="text">
@@ -6525,7 +6531,7 @@ p, li { white-space: pre-wrap; }
   <action name="actionOpen">
    <property name="icon">
     <iconset>
-     <normaloff>icons/lc_open.png</normaloff>icons/lc_open.png</iconset>
+     <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/icons/lc_open.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/icons/lc_open.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Open</string>
@@ -6537,7 +6543,7 @@ p, li { white-space: pre-wrap; }
   <action name="actionExit">
    <property name="icon">
     <iconset>
-     <normaloff>icons/lc_quit.png</normaloff>icons/lc_quit.png</iconset>
+     <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/icons/lc_quit.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/icons/lc_quit.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -6573,7 +6579,7 @@ p, li { white-space: pre-wrap; }
   <action name="actionSave">
    <property name="icon">
     <iconset>
-     <normalon>icons/sc_save.png</normalon>
+     <normalon>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/icons/sc_save.png</normalon>
     </iconset>
    </property>
    <property name="text">
@@ -6589,7 +6595,7 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>icons/lc_closedoc.png</normaloff>icons/lc_closedoc.png</iconset>
+     <normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/icons/lc_closedoc.png</normaloff>C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/icons/lc_closedoc.png</iconset>
    </property>
    <property name="text">
     <string>Close</string>
@@ -6606,6 +6612,7 @@ p, li { white-space: pre-wrap; }
  </widget>
  <resources>
   <include location="resources/maps.qrc"/>
+  <include location="C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/resources/maps.qrc"/>
  </resources>
  <connections/>
 </ui>
