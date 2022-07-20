@@ -553,7 +553,7 @@ class Block():
 			cursor.execute(create_view_molds_list)
 
 			create_view_item_specification='''create view v96item_specifications as (select p.* ,M.machie_size 
-									  ,M.set  ,M.mold_name ,
+									  ,M.set  ,M.mold_name ,m.density,
 									M.customer_id ,M.c_t_standard_per_second ,	M.c_t_standard_per_second_from ,
 								M.c_t_standard_per_second_to
 								from insutech.t11parts_list p
@@ -562,7 +562,7 @@ class Block():
 			cursor.execute(create_view_item_specification)
 			
 			create_view_item_master='''create view v108items_master as (select p.* ,M.machie_size 
-									  ,M.set  ,M.mold_name ,
+									  ,M.set  ,M.mold_name ,m.density,
 									M.customer_id  ,M.c_t_standard_per_second ,	M.c_t_standard_per_second_from ,
 								M.c_t_standard_per_second_to ,customer_name,company_of_customer
 								from insutech.t11parts_list p

@@ -431,7 +431,7 @@ class Select():
         get_data['standard_dry_weight']=data['standard_dry_weight'].fillna(0).astype(int)
         get_data['standard_dry_weight_from']=data['standard_dry_weight_from'].fillna(0).astype(int)
         get_data['standard_dry_weight_to']=data['standard_dry_weight_to'].fillna(0).astype(int)
-        get_data['scrabe_standard']=data['scrabe_standard'].fillna(0).astype(int)
+        get_data['scrabe_standard']=data['scrabe_standard'].fillna(0).astype(float)
         get_data['c_t_standard_per_second']=data['c_t_standard_per_second'].fillna(0).astype(int)
         #الوزن المبلل - معياري الوزن الجاف للصنف/معياري الوزن الجاف للصنف
         get_data['standard_rate_hour']=data['standard_rate_hour'].fillna(0).astype(int)
@@ -474,6 +474,22 @@ class Select():
         get_data['customer_name']=data['customer_name']
         get_data['item_classification_customers']=data['item_classification_customers']
         get_data['item_code_customers']=data['item_code_customers']
+
+
+        #to convert decimel
+        decimals = pd.Series([1,1,1,1,1,1, 1,0,0,0], index=[
+            'wet_average_percent',
+            'production_weight_kg',
+            'standard_production_weight_kg',
+            
+            'average_wet_weight',
+            'average_dry_weight',
+            'scrap_weight_kg',
+            'mold_avalibility',
+            'rat_actually'
+            ,'c_t_actually',
+            'HoursScrap'])
+        get_data.round(decimals)    
         return get_data
 
     def select_data(self,year,month,day,isday=True,monthly=True,yearly=True,masterData=True,quality_records=True):
@@ -1837,16 +1853,14 @@ class Select():
         sheets_daily=["input_daily"]
         sheets_monthly=["input_daily","output","wieght_report","ct_report","scrap_report"]
 
-        ws2= wb.get_sheet_by_name('input_daily')
-        
-        ws1=wb.copy_worksheet(ws2)   #copy new sheet
-
+        #for copy sheet
+        #ws2= wb.get_sheet_by_name('input_daily')
+        #ws1=wb.copy_worksheet(ws2)   #copy new sheet
         #splite day
-        
-        ws1.title="input"  #rename new sheet by the name
+        #ws1.title="input"  #rename new sheet by the name
         
         list_item_size=get_data.shape[0]
-        ws1=wb["input"]
+        ws1=wb["input_daily"]
         #create  the index sheet:
         r = 4  # start at 4th row
         c = 1 # column 'a'
