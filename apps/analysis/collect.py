@@ -438,8 +438,7 @@ class Select():
         get_data['rat_actually']=data['rat_actually']
         get_data['c_t_actually']=data['c_t_actually']
         ##### end the query and start anasist will put in sheet by order
-        
-        
+              
 
         get_data['shift1_scrabe_no_parts']=data['shift1_scrabe_no_parts']
         
@@ -1134,319 +1133,6 @@ class Select():
         #to save excel sheet by columns original columns
         writer_report = pd.ExcelWriter("QC_molds_daily_yearly_v3.xlsx")
         writer_report.save()
-
-    def daily_molds(self,year,month,day):
-        '''
-            1- to get summary report for each day
-        '''        
-
-        os.chdir(self.folder)
-
-        wb = xl.load_workbook(self.readfile1)
-        sql_query=Block.get_daily_dataentry_items(self,year,month,day)
-        mold_analysis4 = self.load_data(sql_query)        
-
-        last_year=int(mold_analysis4["year"].max())
-        print("_________daily report___________for year________",last_year,type(last_year))       
-        mold_analysis_bool4=mold_analysis4["year"]==last_year
-        mold_analysis3=mold_analysis4[mold_analysis_bool4]
-        
-        last_month=int(mold_analysis3["month"].max())
-        mold_analysis_bool3=mold_analysis3["month"]==last_month
-        mold_analysis2=mold_analysis3[mold_analysis_bool3]
-        
-        #dateDay3=mold_analysis2['date_day'].tail(1)
-        print("_________daily report___________for month________",last_month,type(last_month))       
-        mold_days=mold_analysis2["day"].count()
-
-        import datetime
-
-        d = datetime.datetime(int(year), int(month), int(day))
-
-        date_day=d.date()
-      
-
-        daily_analysis1_bool=mold_analysis2["day"]==date_day
-
-        daily_analysis1=mold_analysis2[daily_analysis1_bool]
-        #validate input 
-
-        #for fix nan error in ct
-        daily_analysis = daily_analysis1.dropna(subset=['c_t_actually'])#remove all numric data
-        daily_analysis = daily_analysis.dropna(subset=['c_t_actually'])#drop And for remove all rows with NaNs in column x use dropna: 
-        daily_analysis["c_t_actually"]=daily_analysis["c_t_actually"]#Last convert values to ints:
-
-        report_forCt=daily_analysis.groupby(["machine_id","mold_name"])["c_t_standard_per_second","standard_rate_hour","rat_actually","c_t_actually"].mean()
-        
-        
-        print("___________daily_analysis   standard_dry_weight_from",mold_analysis2[["standard_dry_weight_from"]])
-
-        print("___________report_forCt   data",report_forCt)
-        #report=pd.DataFrame()
-        
-        
-        mold_count=report_forCt["rat_actually"].count()
-        #cycle timpe report
-        
-        c_t=report_forCt[["c_t_standard_per_second","standard_rate_hour","rat_actually","c_t_actually"]]
-        
-        c_t_nonconfomity=c_t[c_t['rat_actually']*1.05<c_t['standard_rate_hour']]
-        c_t_nonconfomity_count=c_t_nonconfomity["rat_actually"].count()
-        
-        
-        if c_t_nonconfomity_count==0:  # for ignor impty index error
-            c_t_nonconfomity=pd.DataFrame(index=[0])
-            c_t_nonconfomity["mold_name"]=0
-            c_t_nonconfomity["c_t_standard_per_second"]=0
-            c_t_nonconfomity["standard_rate_hour"]=0
-            c_t_nonconfomity["rat_actually"]=0
-            
-        ct_ok=mold_count-c_t_nonconfomity_count
-        c_t_nonconfomity["c_t_nonconfomity_count"]=c_t_nonconfomity_count
-        c_t_nonconfomity["ct_ok"]=ct_ok
-        #weight report
-       #fix whistespaces in column names
-        weight_cl=["machine_id","mold_name","standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"]
-        wieght3=daily_analysis1[weight_cl]
-        #new_data = pd.DataFrame()
-        #new_data['tsneY'] = df['tsneY'].values.tolist()
-        print('weight3',wieght3)
-        wieght2=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
-        print ("test_____________wieght2[standard_dry_weight_from",wieght2,wieght2.info())
-
-        #filter low weithrs
-
-        weight_nonconfomity_low=wieght2[wieght2['average_dry_weight'] <= wieght2["standard_dry_weight_from"]]
-
-        weight_nonconfomity_high=wieght2[wieght2['average_dry_weight']>wieght2["standard_dry_weight_to"]]
-
-        wieght=weight_nonconfomity_high
-        wieght=wieght.append(weight_nonconfomity_low)
-
-        weight_nonconfomity=weight_nonconfomity_high
-        weight_nonconfomity_count=weight_nonconfomity["average_dry_weight"].count()
-        if weight_nonconfomity_count==0:  # for ignor impty index error        
-            weight_nonconfomity=pd.DataFrame(index=[0])
-        if weight_nonconfomity_count>1:  # for ignor impty index error        
-            weight_nonconfomity=pd.DataFrame()##error we muast select index of groupby
-        
-        weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_low)    #for append the light weights
-        
-        weight_nonconfomity['weight_nonconfomity_count']=weight_nonconfomity_count
-        weight_ok=mold_count-weight_nonconfomity_count
-        weight_nonconfomity['weight_ok']=weight_ok
-        
-        ##screap report by parts##_________
-                #scap by parts
-        #report=pd.DataFrame()
-        scrap5=daily_analysis1[["machine_type","machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"mold_name","scrap_weight_kg","production_weight_kg","product_name","scrabe_standard","average_dry_weight"]]
-        
-        #scrap5=report.append(scrap5)#we need fix rong calucate sacrap percent for 
-        
-        scrap_newmachines=scrap5[scrap5["machine_type"]=="new_machine"]
-        scrap_oldmachines=scrap5[scrap5["machine_type"]=="old_machine"]
-        
-        scrap_part_new=scrap_newmachines["number_scrab_by_item"].sum()
-        production_part_new=scrap_newmachines["gross_production"].sum()
-        
-        scrap_percent_new=scrap_part_new/production_part_new * 100
-        scrap_part=scrap5["number_scrab_by_item"].sum()
-        production_set=scrap5["gross_production"].sum()
-        scrap_percent=(scrap_part/production_set * 100).astype(int)
-        scrap4=scrap5[scrap5["average_dry_weight"]>1]      #for filter the using machines only
-        
-    
-        scrap3=scrap4[scrap4["scrap_percent_by_item"]>scrap4["scrabe_standard"]]
-        
-        scrap2=scrap3[scrap3["gross_production"]>scrap3["number_scrab_by_item"]]# for filter any machines didn't create production
-        
-        scrap=scrap2
-        print("_______________scrap____________________",scrap)
-        scrap["scrab_parts_new_machine"]=scrap_part_new
-        scrap["production_parts_new_machine"]=production_part_new
-        scrap["production_parts_all"]=production_set
-        scrap["scrap_percent_new_machine"]=scrap_percent_new
-        scrap["scrap_percent_all"]=scrap_percent
-        scrap["scrab_parts_all"]=scrap_part
-        scrap_nonconfomity_count=scrap["number_scrab_by_item"].count()        
-        ##scrap for molds___________________
-        '''must be in excel sheet (input) not showing null value for not mistacks in average result'''
-        scrap_molds=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
-        scrap_molds["gross_production"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['gross_production'].sum()
-        scrap_molds["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['scrap_weight_kg'].sum()
-        scrap_molds["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['production_weight_kg'].sum()
-        scrap_molds["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
-        production_set_molds=scrap_molds["gross_production"].sum()
-        scrap_set_molds=scrap_molds["number_scrab_by_item"].sum()
-        scrap_percent_molds=(scrap_set_molds.astype(int)/production_set_molds.astype(int))*100
-        scrap_molds["percent"]=(scrap_molds["number_scrab_by_item"]/scrap_molds["gross_production"])*100
-        ##scrap for items(as item master)___
-        scrap_items=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
-        
-        scrap_items["gross_production"]=scrap5.groupby(["machine_type","machine_id","product_name"])['gross_production'].sum()
-        #scrap_items["number_day_use"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_day_use'].mean()
-        scrap_items["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['scrap_weight_kg'].sum()
-        scrap_items["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['production_weight_kg'].sum()
-        scrap_items["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
-        scrap_items["percent"]=((scrap_items["number_scrab_by_item"])/(scrap_items["gross_production"]))*100
-
-        scrap_percent_new=scrap_part_new/production_part_new * 100
-        ##scrap non conformity_______________________
-        
-        
-        if scrap_nonconfomity_count>0:  # for ignor impty index error
-        #    scrap=pd.DataFrame(index=[0])
-            scrap_nonconfomity=scrap2.groupby(["machine_id","mold_name"])['number_scrab_by_item'].sum()
-            #for ignor error when srcap is 0
-            
-            
-        else:
-            #if scrap_nonconfomity.datatypt==0:  # for ignor impty index error
-            scrap_nonconfomity=pd.DataFrame(index=[0])
-            scrap_nonconfomity["mold_name"]=0
-        print("_____________test__________scrap nonconfromity____",scrap_nonconfomity)
-        #extract excel report
-        writer_report = pd.ExcelWriter("QC_molds_daily_archive.xlsx")
-        mold_analysis2.to_excel(writer_report,"input", index=False)
-        writer_report.save()
-
-        writer = pd.ExcelWriter("day_analysis2.xlsx")
-
-        weight_nonconfomity.to_excel(writer,"weight_ncr")
-        
-        c_t_nonconfomity.to_excel(writer,"c.t")
-        scrap.to_excel(writer,"scrap")
-        scrap_molds.to_excel(writer,"scrap_molds",merge_cells=False)
-        scrap_nonconfomity.to_excel(writer,"scrap_ncr")
-        scrap_items.to_excel(writer,"scrap_items",merge_cells=False)
-    
-#        wieght2.to_excel(writer,merge_cells=False)
-        daily_analysis1.to_excel(writer,"input_molds", index=False)
-        
-        writer.save()
-        
-        #extract daily excel report by formating
-
-        wb = load_workbook("QC_molds_daily_summary.xlsx")
-        ws2= wb.get_sheet_by_name('daily')
-        
-        ws=wb.copy_worksheet(ws2)   #copy new sheet
-
-        #splite day
-        
-        
-        ws.title=str(day)  #rename new sheet by the name
-        
-                
-        # Data can be assigned directly to cells
-        ws['b1'] = day            #day for molds report
-        ws['c1'] = last_month    #month for molds report
-        ws['d1'] = last_year    #year for molds report
-        ws['A4'] = scrap_percent           #scrap on all machie
-        ws['B4'] = scrap_percent_new    #scrap on new macine
-        print ("c_t_nonconfomity for sheet" , c_t_nonconfomity)
-        ws['a14'] =c_t_nonconfomity.iloc[0][5]                #ct pass 
-        ws['b14'] =c_t_nonconfomity.iloc[0][4]                #ct not acceptable
-        
-        ws['a25'] = weight_nonconfomity.iloc[0][4]             #weight pass 
-        ws['b25'] =weight_nonconfomity.iloc[0][3]
-        #if weight_nonconfomity_high>=1:  # for ignor impty index error        
-        print ("weight_nonconfomity_low for sheet" , weight_nonconfomity)
-        #ws['b25'] =weight_nonconfomity_low.iloc[0][2]            #weights low not acceptable
-        #else:
-        #    ws['b25'] =0
-        ws['a35'] = weight_nonconfomity.iloc[0][4]             #weight pass 
-        #if weight_nonconfomity_high>=1:  # for ignor impty index error        
-        #ws['b35'] =weight_nonconfomity_high.iloc[0][2]            #weights hig not acceptable
-        #else:
-        #    ws['b35'] =0           #weights hig not acceptable
-        #_______
-        
-        #ws['a35'] = weight_nonconfomity.iloc[0][3]             #weight pass 
-        #ws['b25'] =weight_nonconfomity.iloc[0][2]               #weight not pass
-
-        #to select index of columns for scraps
-        if scrap_nonconfomity_count>=1:
-            rows = scrap_nonconfomity.index
-            r = 4  # start at 10th row
-            c = 3 # column 'c'
-            for row in rows:       
-                for item in row:
-                    ws.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 3
-                r += 1
-
-        #to select index of columns to weights
-        
-        if c_t_nonconfomity_count>=1:  # for ignor impty index error        
-            rows = c_t_nonconfomity.index
-            #rows = weight_nonconfomity.index
-            r = 14  # start at 10th row
-            c = 3 # column 'c'
-            
-            for row in rows:       
-                for item in row:
-                    ws.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 3
-                r += 1
-        
-        #to select index of columns to light weights 
-        if weight_nonconfomity_count>=1:  # for ignor impty index error        
-            rows = weight_nonconfomity_low.index
-            #rows = weight_nonconfomity.index
-            r = 25  # start at 10th row
-            c = 3 # column 'c'
-            
-            for row in rows:       
-                for item in row:
-                    ws.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 3
-                r += 1
-        #to select index of columns to hight weights 
-        if weight_nonconfomity_count>=1:  # for ignor impty index error        
-            rows = weight_nonconfomity_high.index
-            #rows = weight_nonconfomity.index
-            r = 35  # start at 10th row
-            c = 3 # column 'c'
-            
-            for row in rows:       
-                for item in row:
-                    ws.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 3
-                r += 1
-        
-        wb.save("QC_molds_daily_summary.xlsx")
-        #__________________archinve work boook monthly and daily report________________________________________        
-        #__________________archinve work boook monthly and daily report general________________________________________
-        #input report
-        wb_formats=load_workbook("format_QC_reports_v2.xlsx")    
-        ws_input= wb_formats.get_sheet_by_name('input')
-        #ws_input=wb_formats.copy_worksheet(ws_input2)   #copy new sheet
-        ws_input.sheet_view.zoomScale = 60 #zoom set
-
-        column_size_input=pd.DataFrame(mold_analysis2,columns=["month"]).shape[0]
-        #print("______test___")
-        #print(mold_analysis2)
-        
-        r = 4  # start at 4th row
-        c = 1 # column 'a'
-        
-        for row in range(0,column_size_input):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-            rows = mold_analysis2.iloc[row]
-            for item in rows:
-                ws_input.cell(row=r, column=c).value = item
-                c += 1 # Column 'd'
-            c = 1
-            r += 1
-        #__________________archinve work boook monthly and daily report for specific mold
-        
-        
-        wb_formats.save("QC_molds_daily_archive.xlsx")    
-        
     def monthly_molds(self,writerFile,year,month,day,to_day,*args,monthly=True,daily=True):
         '''
         mold report for 
@@ -1748,7 +1434,7 @@ class Select():
     
 #        wieght2.to_excel(writer,merge_cells=False)
         daily_analysis1.to_excel(writer,"input_molds", index=False)
-        
+        output.to_excel(writer,"output_molds")
         writer.save()
         
         #extract daily excel report by formating
@@ -1963,7 +1649,7 @@ class Select():
             print ("test monthly ___________________",output)
             list_item_size=output.shape[0]
             ws2=wb["output"]
-            
+            print("____________test_______",output)    
             r = 3  # start at third row
             c = 1 # column 'a'
             for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
@@ -1973,8 +1659,9 @@ class Select():
                     c += 1 # Column 'd'
                 c = 1
                 r += 1   
-            
         
+        
+                    
             #filter on non conformity weights
                 #part one low weight
             list_item_size=weight_nonconfomity_low.shape[0]
