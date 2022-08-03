@@ -262,7 +262,7 @@ class Unique():
         reader["scrap_percent_by_set_all"]=reader['number_scrab_by_item']/reader['gross_production']
         molds_scrap_bool=reader["scrabe_standard"]<reader["scrap_percent_by_set_all"]
         molds_scrap2=reader[molds_scrap_bool]
-        molds_scrap_ncr=molds_scrap2.groupby("mold_name")["gross_production","number_scrab_by_item","sum_scrabe_no_parts"].sum()
+        molds_scrap_ncr=molds_scrap2.groupby(["mold_name"])["gross_production","number_scrab_by_item","sum_scrabe_no_parts"].sum()
 
         #ct analsysis
         molds_ncr_rat_bool=reader["rat_actually"]<reader["standard_rate_hour"]
@@ -1150,7 +1150,6 @@ class Select():
 
         get_data = self.load_data(sql_query)        
         
-
         last_year=int(get_data["year"].max())
         print("_________daily report___________for year________",last_year,type(last_year))       
         mold_analysis_bool4=get_data["year"]==last_year
@@ -1225,16 +1224,15 @@ class Select():
         #molds_rate_ncr=molds_rate[molds_rate_bools_ncr]
         dry_weight=dry_weight2.groupby(["product_name","product_code","standard_dry_weight",
         "standard_dry_weight_from","standard_dry_weight_to"])["average_dry_weight","average_wet_weight"].mean()
-        
-
+       
         # export
         output_average=daily_analysis.groupby(["product_name","product_code","standard_dry_weight",
         "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
-        ,"c_t_standard_per_second","scrabe_standard"])["average_dry_weight","average_wet_weight","rat_actually","c_t_actually"].mean()
+        ,"c_t_standard_per_second","scrabe_standard"], as_index=False)["average_dry_weight","average_wet_weight","rat_actually","c_t_actually"].mean()
         
         output_aggrigate=daily_analysis.groupby(["product_name","product_code","standard_dry_weight",
         "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
-        ,"c_t_standard_per_second","scrabe_standard"])['number_scrab_by_item',
+        ,"c_t_standard_per_second","scrabe_standard"], as_index=False)['number_scrab_by_item',
         "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
 
         output=output_average
