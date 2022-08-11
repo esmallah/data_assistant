@@ -125,10 +125,16 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         "OLED65A26LAside":21,
         "lg70UQ980updown":22,
         "lg70UQ980sides":23,
-        "LgWasherCover":24,
-        "LgWasherAngels":25,
-        "LgWasherBase":26,
-        "LgWasherBase_VIVACHE":27
+
+        "lg_OLED65CS_set":24,
+        "lg_OLED65CS_sides":25,
+        "OLED55CS_set":26,
+        "OLED55CS_side":27,
+
+        "LgWasherCover":28,
+        "LgWasherAngels":29,
+        "LgWasherBase":30,
+        "LgWasherBase_VIVACHE":31
         }
 
         #self.ButWebFilterFIllNames.clicked.disconnect()

@@ -196,6 +196,34 @@ class AutomatedFilling():
         lg70UQ980sides_low=[486,162,157,193.84]
         MFZ67207502=[lg70UQ980sides_high,lg70UQ980sides_low]
 
+        #OLED65CS
+        lg_OLED65CS_set="mfz66237401"#OLED65CS
+        lg_OLED65CS_set_high=[877.1,192,223,759.33,784.6,178,306,805.39]
+        lg_OLED65CS_set_low=[870.1,187,219,667.16,777.6,173,301,707.63]
+        mfz66237401=[lg_OLED65CS_set_high,lg_OLED65CS_set_low]
+
+        #lg_OLED65CS_set
+        
+        lg_OLED65CS_sides="mfz66237402"#LGNano80side
+        lg_OLED65CS_sides_high=[383.2,185.8,165,213.12]
+        lg_OLED65CS_sides_low=[378.2,180.8,159,187.25]
+        mfz66237402=[lg_OLED65CS_sides_high,lg_OLED65CS_sides_low]
+
+        #OLED55CS
+        #mma
+        #set
+        #
+        OLED55CS_set="mfz66237601"#OLED55CS_set
+        OLED55CS_set_high=[1330,192,265,616.89,1330,178,244,491.58]
+        OLED55CS_set_low=[1323,187,260,542.01,1323,173,239,431.91]
+        mfz66237601=[OLED55CS_set_high,OLED55CS_set_low]
+
+        #side
+        #mfz66237602
+        OLED55CS_side="mfz66237602"#OLED55CS_side
+        OLED55CS_side_high=[229,186,118,148.86]
+        OLED55CS_side_low=[224,182,114,130.79]
+        mfz66237602=[OLED55CS_side_high,OLED55CS_side_low]
             # "mmf" classification
         LG_cover="3920EZ2058A"# LGwasher machine cover
         LG_cover_high=[106,71.4,643.5,261.7]
@@ -228,7 +256,7 @@ class AutomatedFilling():
             items=[MFZ65333701,MFZ65333801,MFZ65914801,MFZ66333001,mfz66236501,MFZ65262201,
                 MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
                 MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67207202,MFZ67209701,
-                MFZ67212201,MFZ67212202,MFZ67319401,MFZ67319402,MFZ67207501,MFZ67207502,
+                MFZ67212201,MFZ67212202,MFZ67319401,MFZ67319402,MFZ67207501,MFZ67207502,mfz66237401,mfz66237402,mfz66237601,mfz66237602,
                 LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801,AGG76599802]
             
             item=items[itemSelection]
@@ -276,6 +304,7 @@ class AutomatedFilling():
                     LG65UM73up,LG65UM73LR,LG43UP77,LG65UP775Front,LG65UP77set,LG65UP81set,
                     LG65UP81Side,LG75UP77FRONT,LG75UP77Set,LG75UP77Side,LG43UP81,
                     LGNano80set,LGNano80side,LGOLED65A26LA_set,OLED65A26LAside,lg70UQ980updown,lg70UQ980sides
+                    ,lg_OLED65CS_set,lg_OLED65CS_sides,OLED55CS_set,OLED55CS_side
                     ,LG_cover,lG_angels,lg_kaeda,lg_base_VIV]
             
             item=items[itemSelection]

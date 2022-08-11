@@ -466,10 +466,10 @@ class Select():
         get_data['standard_production_weight_kg']=data['standard_production_weight_kg']
         get_data['scrap_weight_kg']=data['scrap_weight_kg']
         get_data['production_weight_kg']=data['production_weight_kg']
+        get_data['wet_average_percent']=data['wet_average_percent']
         get_data["HoursScrap"]=data['HoursScrap']
         get_data['mold_avalibility']=data['mold_avalibility']
         get_data['number_day_use']=data['number_day_use'].fillna(0).astype(int)
-        get_data['wet_average_percent']=data['wet_average_percent']
         get_data['customer_name']=data['customer_name']
         get_data['item_classification_customers']=data['item_classification_customers']
         get_data['item_code_customers']=data['item_code_customers']
@@ -1237,7 +1237,11 @@ class Select():
 
         output=output_average
         output.append(output_aggrigate)
-        
+#        output.to_frame()
+        output.unstack()
+        #Convert the Groupby to a DataFrame with to_frame()
+
+        #https://www.easytweaks.com/pandas-groupby-to-dataframe/
         #validation data
         #scap validation
         product_parts_input=daily_analysis["gross_production"].sum
@@ -1657,9 +1661,7 @@ class Select():
                     c += 1 # Column 'd'
                 c = 1
                 r += 1   
-        
-        
-                    
+                            
             #filter on non conformity weights
                 #part one low weight
             list_item_size=weight_nonconfomity_low.shape[0]
