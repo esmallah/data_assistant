@@ -37,7 +37,8 @@ class Files_control():
 
     
     #2 write xcel file for folders name
-    def get_folders_list (path): 
+    def get_folders_list (path,outputpath): 
+        os.chdir(outputpath)
         folders= os.listdir (path) # get all files' and folders' names in the current directory
         result = ['the departments']
         for folder in folders: # loop through all the files and folders

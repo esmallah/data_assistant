@@ -1237,8 +1237,9 @@ class Select():
 
         output=output_average
         output.append(output_aggrigate)
-#        output.to_frame()
-        output.unstack()
+
+        #output.to_frame()
+#        output.unstack()
         #Convert the Groupby to a DataFrame with to_frame()
 
         #https://www.easytweaks.com/pandas-groupby-to-dataframe/
@@ -1648,7 +1649,9 @@ class Select():
             r += 1
         #monthly output
         if monthly:
+
             print ("test monthly ___________________",output)
+            '''      
             list_item_size=output.shape[0]
             ws2=wb["output"]
             print("____________test_______",output)    
@@ -1657,11 +1660,17 @@ class Select():
             for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
                 rows = output.iloc[row]
                 for item in rows:
+                    #ws.merge_cells('B2:F4')
+                    #top_left_cell = ws['B2']
+                    #top_left_cell.value = "My Cell"
+                    #ws1.merge_cells(str(ws1.cell(row=r, column=c)),str(ws1.cell(row=r, column=c)))
+                    #top_left_cell = ws1.cell(row=r, column=c)
+                    #top_left_cell.value = item
                     ws1.cell(row=r, column=c).value = item
                     c += 1 # Column 'd'
                 c = 1
-                r += 1   
-                            
+                r += 1
+                '''
             #filter on non conformity weights
                 #part one low weight
             list_item_size=weight_nonconfomity_low.shape[0]
@@ -1679,7 +1688,6 @@ class Select():
         
                 #part tow hight weight
                 ws5=wb["wieght_report"]
-            
             
             list_item_size=weight_nonconfomity_high.shape[0]
             rows = weight_nonconfomity_high
@@ -1707,7 +1715,7 @@ class Select():
                 r += 1   
             
             #filter on on conformity scrap
-            
+
             ws7=wb["scrap_report"]
             list_item_size=scrap_nonconfomity.shape[0]
             rows= scrap_nonconfomity
@@ -1721,7 +1729,7 @@ class Select():
                     c += 1 # Column 'd'
                 c = 1
                 r += 1   
-            
+
             #monthly machine report
             ws8=wb["scrap_machine"]
             list_item_size=machines.shape[0]
@@ -1735,7 +1743,7 @@ class Select():
                     c += 1 # Column 'd'
                 c = 1
                 r += 1   
-            '''
+
             #monthly machine report
             ws8=wb["scrap_machine_yearly"]
             Block.show_machine_yearly_report(self,year,month)
@@ -1915,5 +1923,5 @@ class Select():
                     c += 1 # Column 'b'
                 c = 1
                 r += 1
-        '''
+        
         wb.save(writerFile)

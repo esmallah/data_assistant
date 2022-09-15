@@ -78,6 +78,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.but_web_mail.clicked.connect(self.connSubWeb_mail)
         self.but_web_next.clicked.connect(self.connSubWeb_next)
         self.ButWebMailSend.clicked.connect(self.mailControl)
+        self.ButWebMailBrowser.clicked.connect(self.getfiles)
     #__________________________control panel
     def restart(self):        
         if __name__ == "__main__":
@@ -253,10 +254,14 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                 self.tabWidget_left.setCurrentIndex(5)
                 self.tabMaps.setCurrentIndex(0)
     
-    
+    def getfiles(self):
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Single File', QtCore.QDir.rootPath() ,)# '*.xlsx')
+        self.WebSiteLineEdit_mail_address.setText(fileName)
+
     def mailControl(self):
         '''for contorl to operating system and its contents from files and sub filess'''
         from apps import Mails_management
+        
         attachment_name=self.WebSiteLineEdit_mail_address.text()
 
         Mails_management.send_emails(self,data_path,attachment_name) 
@@ -541,8 +546,10 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         path=self.FileLocationInputLineEdit.text()
         outputpath=self.FileLocationOutputLineEdit.text()
         if self.checkBox_FileControl_getfilesNames.isChecked():
-            #Files_control.get_folders_list(path)
-            Files_control.get_Files_names(path,outputpath)
+            if str(self.comboBox_FileControl_output_type.currentText())=="folders and sub files" : #for chose any type of files
+                Files_control.get_folders_list(path,outputpath)
+            else:
+                Files_control.get_Files_names(path,outputpath)
         #______________________for convert files to pdf
         from apps import Convert
         #_________________________________pdf convertor_____________

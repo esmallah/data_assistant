@@ -4011,6 +4011,26 @@ color: rgb(255, 255, 255);</string>
         <string>for sheets control inside files</string>
        </property>
       </widget>
+      <widget class="QComboBox" name="comboBox_FileControl_output_type">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>40</y>
+         <width>101</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>folders and sub files</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>list of files only</string>
+        </property>
+       </item>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tabWebControl">
@@ -5301,7 +5321,7 @@ color: rgb(255, 255, 255);</string>
           <height>201</height>
          </rect>
         </property>
-        <widget class="QPushButton" name="ButWebFilterFIllData_2">
+        <widget class="QPushButton" name="ButWebMailBrowser">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -6692,7 +6712,6 @@ p, li { white-space: pre-wrap; }
  </widget>
  <resources>
   <include location="resources/maps.qrc"/>
-  <include location="C:/Users/youssri.ahmed.CONTACTGROUP/.designer/backup/resources/maps.qrc"/>
  </resources>
  <connections/>
 </ui>

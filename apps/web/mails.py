@@ -45,11 +45,12 @@ class Mails_management():
         mail.HTMLBody = subject_mail
 
         # To attach a file to the email (optional):
-        attachment  = folder+"v129molds_shoutcount.xlsx"
+        print ("mail was send to with attachmed ",attachment,"located in ",folder)
+
+        #attachment  = folder+"v129molds_shoutcount.xlsx"
         print(attachment)
         mail.Attachments.Add(attachment)
         mail.Send()
-        print ("mail was send to with attachmed ",attachment,"located in ",self.folder)
         
     import win32com.client
 
