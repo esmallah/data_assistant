@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QApplication
 
 import sys
 from ui import Login
-
         
         #self.close()
 def main():

@@ -65,7 +65,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.ButWebFilterOpensites.clicked.connect(lambda: Connection.site_connection(self,siteName))
 
         self.listWebFilterLGItems.currentItemChanged.connect(self.clickedList)
-
+        
         #sqlite database
         self.ButWebFilterOpensites_4.clicked.connect(self.dataIntry)
         #file controle___________________________________________
@@ -77,7 +77,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.but_web_filler.clicked.connect(self.connSubWeb_filler)
         self.but_web_mail.clicked.connect(self.connSubWeb_mail)
         self.but_web_next.clicked.connect(self.connSubWeb_next)
-        self.ButWebMailSend.clicked.connect(self.mailControl)
+        self.listWebEmailSelect.currentItemChanged.connect(self.mailControl)
         self.ButWebMailBrowser.clicked.connect(self.getfiles)
     #__________________________control panel
     def restart(self):        
@@ -98,6 +98,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                     break
     #___________________________automated web control section_____________________________#
     #@QtCore.pyqtSlot()    
+    
     def clickedList(self):
         from apps import AutomatedFilling
         print("___________________test interface______________")
@@ -161,6 +162,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             #print(map(x,switcher))   
             #self.close()
     
+
     def conntectTabs(self):
         self.tabWidget_left.setCurrentIndex(0)
         self.tabMaps.setCurrentIndex(1)    
@@ -259,12 +261,35 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.WebSiteLineEdit_mail_address.setText(fileName)
 
     def mailControl(self):
+
         '''for contorl to operating system and its contents from files and sub filess'''
         from apps import Mails_management
         
-        attachment_name=self.WebSiteLineEdit_mail_address.text()
+        switcher_mail = {
+        "shou_count_report":0,
+        "quality_repot_report":1,
+        }
 
-        Mails_management.send_emails(self,data_path,attachment_name) 
+        #self.ButWebFilterFIllNames.clicked.disconnect()
+        
+        Email_type = self.listWebFilterLGItems.currentItem()
+
+        if Email_type is None:
+            print("kindly select the item form the items list")
+        #if item is not None:
+        else:
+        
+            x=switcher_mail.get(Email_type.text(), "Invalid items")
+            print("now is printing","item:",Email_type.text(),"code:",x,"its type:",type(x))
+            direction=self.ButWebFilter_fillingDirection.currentText()
+            
+
+
+        #______________
+            attachment_name=self.WebSiteLineEdit_mail_address.text()
+
+             
+            self.ButWebMailSend.clicked.connect(Mails_management.send_emails(self,x,attachment_name))
 
     #___________________________analysis section_____________________________#
     def deepLearning(self):

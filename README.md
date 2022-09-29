@@ -27,7 +27,7 @@ source activate a1leader_pyqt
 python main.py
 
 conda init
-conda activate a1leader_pyqt   
+conda activate a1leader_pyqt
 
 if not activate conda restart your texteditor as adminstrator
 #_____for backup enviroment ( or run as adminstrator)

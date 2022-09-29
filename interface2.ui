@@ -4999,390 +4999,264 @@ font: 75 11pt &quot;MS Shell Dlg 2&quot;;</string>
        <attribute name="title">
         <string>Page</string>
        </attribute>
-       <widget class="QWidget" name="formLayoutWidget_5">
+       <widget class="QWidget" name="widget" native="true">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>40</y>
-          <width>311</width>
-          <height>136</height>
+          <x>30</x>
+          <y>10</y>
+          <width>581</width>
+          <height>411</height>
          </rect>
         </property>
-        <layout class="QFormLayout" name="formLayout">
-         <item row="4" column="0">
-          <widget class="QLabel" name="compaingnLabel">
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Compaign&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QComboBox" name="compaingnComboBox"/>
-         </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="sendAsLabel">
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Send as&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QComboBox" name="sendAsComboBox"/>
-         </item>
-         <item row="2" column="1">
-          <widget class="QComboBox" name="stanpAccountComboBox"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="sendMailLabel">
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);
-font: 75 12pt &quot;MS Shell Dlg 2&quot;;</string>
-           </property>
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600; color:#ffffff;&quot;&gt;Send Mail&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="5" column="1">
-          <spacer name="verticalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="1">
-          <spacer name="verticalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QTableWidget" name="tableWidget_4">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>280</y>
-          <width>661</width>
-          <height>151</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <row>
-         <property name="text">
-          <string>1</string>
+        <widget class="QWidget" name="formLayoutWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>0</y>
+           <width>541</width>
+           <height>401</height>
+          </rect>
          </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>2</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>3</string>
-         </property>
-        </row>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-         <property name="background">
-          <color>
-           <red>135</red>
-           <green>135</green>
-           <blue>140</blue>
-          </color>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Title
-</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>First Nam
-</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Last Name
-</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Address
-</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>City
-</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Postcode
-</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Country
-</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Test Preview
-</string>
-         </property>
-        </column>
-        <item row="0" column="1">
-         <property name="text">
-          <string>Dear</string>
-         </property>
-        </item>
-        <item row="0" column="2">
-         <property name="text">
-          <string>Brian
-</string>
-         </property>
-        </item>
-        <item row="0" column="3">
-         <property name="text">
-          <string>Harrison
-</string>
-         </property>
-        </item>
-        <item row="0" column="4">
-         <property name="text">
-          <string>1 Alexanra Trrac
-</string>
-         </property>
-        </item>
-        <item row="0" column="5">
-         <property name="text">
-          <string>Swansa
-</string>
-         </property>
-        </item>
-        <item row="0" column="6">
-         <property name="text">
-          <string>SA2 ODU
-</string>
-         </property>
-        </item>
-        <item row="0" column="7">
-         <property name="text">
-          <string>UK</string>
-         </property>
-        </item>
-        <item row="1" column="1">
-         <property name="text">
-          <string>Dear</string>
-         </property>
-        </item>
-        <item row="1" column="2">
-         <property name="text">
-          <string>Brian
-</string>
-         </property>
-        </item>
-        <item row="1" column="3">
-         <property name="text">
-          <string>Harrison
-</string>
-         </property>
-        </item>
-        <item row="1" column="4">
-         <property name="text">
-          <string>1 Alexanra Trrac
-</string>
-         </property>
-        </item>
-        <item row="1" column="5">
-         <property name="text">
-          <string>Swansa
-</string>
-         </property>
-        </item>
-        <item row="1" column="6">
-         <property name="text">
-          <string>SA2 ODU
-</string>
-         </property>
-        </item>
-        <item row="1" column="7">
-         <property name="text">
-          <string>UK</string>
-         </property>
-        </item>
-        <item row="2" column="1">
-         <property name="text">
-          <string>Dear</string>
-         </property>
-        </item>
-        <item row="2" column="2">
-         <property name="text">
-          <string>Brian
-</string>
-         </property>
-        </item>
-        <item row="2" column="3">
-         <property name="text">
-          <string>Harrison
-</string>
-         </property>
-        </item>
-        <item row="2" column="4">
-         <property name="text">
-          <string>1 Alexanra Trrac
-</string>
-         </property>
-        </item>
-        <item row="2" column="5">
-         <property name="text">
-          <string>Swansa
-</string>
-         </property>
-        </item>
-        <item row="2" column="6">
-         <property name="text">
-          <string>SA2 ODU
-</string>
-         </property>
-        </item>
-        <item row="2" column="7">
-         <property name="text">
-          <string>UK</string>
-         </property>
-        </item>
-       </widget>
-       <widget class="QPushButton" name="butSubImportEmailSend">
-        <property name="geometry">
-         <rect>
-          <x>590</x>
-          <y>400</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(161, 161, 171);
+         <layout class="QFormLayout" name="formLayout_6">
+          <item row="0" column="1">
+           <spacer name="verticalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="importFilesLabel_2">
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
+            </property>
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automated E.Mail sender&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="interTheWebSiteLabel_2">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;inter the web site&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QPushButton" name="ButWebMailBrowser">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(161, 161, 171);
+color: rgb(255, 255, 255);</string>
+            </property>
+            <property name="text">
+             <string>add attachment</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLineEdit" name="WebSiteLineEdit_mail_address">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QListWidget" name="listWebEmailSelect">
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>shou_count_report</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>quality_repot_report</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QComboBox" name="importFilesComboBox_2">
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>MFZ64817701</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ65175601</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ65333701</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ65333801</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ65952201</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ65914801</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ65833401</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ66333001</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>mfz66236501</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ65262201</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ66151901</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ66236701</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>MFZ66236702</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>3920EZ2058A</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>3920FZ3114C</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>AGG76599801</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QPushButton" name="ButWebMailSend">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(161, 161, 171);
+color: rgb(255, 255, 255);</string>
+            </property>
+            <property name="text">
+             <string>send mail</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QPushButton" name="butSubImportEmailSend">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(161, 161, 171);
 selection-background-color: rgb(77, 145, 215);
 font: 75 9pt &quot;MS Shell Dlg 2&quot;;
 selection-background-color: rgb(85, 85, 255);
 color: rgb(255, 255, 255);</string>
-        </property>
-        <property name="text">
-         <string>Send</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="widget" native="true">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>40</y>
-          <width>221</width>
-          <height>201</height>
-         </rect>
-        </property>
-        <widget class="QPushButton" name="ButWebMailBrowser">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>10</y>
-           <width>221</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(161, 161, 171);
+            </property>
+            <property name="text">
+             <string>Send</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="1">
+           <widget class="QLabel" name="label_53">
+            <property name="text">
+             <string>filling direction</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="1">
+           <widget class="QComboBox" name="ButWebFilter_fillingDirection_2">
+            <item>
+             <property name="text">
+              <string>vertically</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>horizontal</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>standards</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="16" column="1">
+           <widget class="QPushButton" name="ButWebFilterRefresh_2">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(161, 161, 171);
 color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>add mails</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="ButWebMailSend">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>170</y>
-           <width>221</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(161, 161, 171);
-color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>send mail</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="stanpAccountLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>110</y>
-           <width>70</width>
-           <height>18</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;attachment&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="WebSiteLineEdit_mail_address">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>130</y>
-           <width>231</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
+            </property>
+            <property name="text">
+             <string>refresh</string>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="1">
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="stanpAccountLabel">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;attachment&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </widget>
       </widget>

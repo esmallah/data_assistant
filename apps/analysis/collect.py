@@ -1235,8 +1235,8 @@ class Select():
         ,"c_t_standard_per_second","scrabe_standard"], as_index=False)['number_scrab_by_item',
         "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
 
-        output=output_average
-        output.append(output_aggrigate)
+        output_mold=output_average
+        output_mold.append(output_aggrigate)
 
         #output.to_frame()
 #        output.unstack()
@@ -1280,7 +1280,7 @@ class Select():
         dry_weight.to_excel(writer,'weights', index=True)
         molds_rate.rename(columns={c:c.lower() for c in col_rename})
         molds_rate.to_excel(writer,'c_t', index=True)
-        output.to_excel(writer,"output",index=True)
+        output_mold.to_excel(writer,"output",index=True)
         writer.save()
 
         print("for the days")
@@ -1331,14 +1331,14 @@ class Select():
 
         #filter low weithrs
 
-        weight_nonconfomity_low=wieght2[wieght2['average_dry_weight'] <= wieght2["standard_dry_weight_from"]]
+        weight_nonconfomity_low=wieght2[wieght2['average_dry_weight'] < wieght2["standard_dry_weight_from"]]
 
-        weight_nonconfomity_high=wieght2[wieght2['average_dry_weight']>wieght2["standard_dry_weight_to"]]
+        weight_nonconfomity_high=wieght2[wieght2['average_dry_weight']> wieght2["standard_dry_weight_to"]]
 
         wieght=weight_nonconfomity_high
         wieght=wieght.append(weight_nonconfomity_low)
 
-        weight_nonconfomity=weight_nonconfomity_high
+        weight_nonconfomity=wieght
         weight_nonconfomity_count=weight_nonconfomity["average_dry_weight"].count()
         if weight_nonconfomity_count==0:  # for ignor impty index error        
             weight_nonconfomity=pd.DataFrame(index=[0])
@@ -1426,7 +1426,9 @@ class Select():
         writer_report.save()
 
         writer = pd.ExcelWriter("day_analysis2.xlsx")
-
+        #there error IndexError: index 0 is out of bounds for axis 0 with size 0
+        
+            
         weight_nonconfomity.to_excel(writer,"weight_ncr")
         
         c_t_nonconfomity.to_excel(writer,"c.t")
@@ -1434,10 +1436,10 @@ class Select():
         scrap_molds.to_excel(writer,"scrap_molds",merge_cells=False)
         scrap_nonconfomity.to_excel(writer,"scrap_ncr")
         scrap_items.to_excel(writer,"scrap_items",merge_cells=False)
-    
+
 #        wieght2.to_excel(writer,merge_cells=False)
         daily_analysis1.to_excel(writer,"input_molds", index=False)
-        output.to_excel(writer,"output_molds")
+        output_mold.to_excel(writer,"output_molds")
         writer.save()
         
         #extract daily excel report by formating
@@ -1650,26 +1652,44 @@ class Select():
         #monthly output
         if monthly:
 
-            print ("test monthly ___________________",output)
-            '''      
-            list_item_size=output.shape[0]
+            print ("test monthly ___________________",output_mold)
+
+            list_item_size=output_mold.shape[0]
             ws2=wb["output"]
-            print("____________test_______",output)    
+            '''
+            ws = wb['%s' % (ws_name_wanted)]
+            for row in ws.iter_rows():
+                for cell in row:
+                    cell_value = cell.value
+                    new_col_loc = (chr(int(ord(cell.coordinate[0:1])) + 4))
+                    new_row_loc = cell.coordinate[1:]
+                    ws['%s%d' % (new_col_loc ,int(new_row_loc) + 3)] = cell_value
+                    ws['%s' % (cell.coordinate)] = ' '
+
+            df.to_clipboard(excel=False)
+            https://note.nkmk.me/en/python-pandas-to-clipboard/
+
+
+            
+            '''
+            print("____________test_______",output_mold)    
             r = 3  # start at third row
             c = 1 # column 'a'
-            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                rows = output.iloc[row]
-                for item in rows:
-                    #ws.merge_cells('B2:F4')
-                    #top_left_cell = ws['B2']
-                    #top_left_cell.value = "My Cell"
-                    #ws1.merge_cells(str(ws1.cell(row=r, column=c)),str(ws1.cell(row=r, column=c)))
-                    #top_left_cell = ws1.cell(row=r, column=c)
-                    #top_left_cell.value = item
-                    ws1.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
+            rows = output_mold
+            for row in rows:     
+                ws1.merge_cells('B2:F4')
+                top_left_cell = ws['B2']
+#                for item in row:
+                top_left_cell.cell(row=r, column=c).value = row
+                    #ws1.cell(row=r, column=c).value = item
+                #    c += 1 # Column 'd'
+                
                 c = 1
                 r += 1
+                '''
+                ws.merge_cells('B2:F4')
+                top_left_cell = ws['B2']
+                top_left_cell.value = "My Cell"
                 '''
             #filter on non conformity weights
                 #part one low weight
@@ -1719,7 +1739,7 @@ class Select():
             ws7=wb["scrap_report"]
             list_item_size=scrap_nonconfomity.shape[0]
             rows= scrap_nonconfomity
-
+            print("___TypeError: 'numpy.float64' object is not iterable___",scrap_nonconfomity)
             r = 15  # start at 15th row
             c = 1 # column 'a'
             for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
