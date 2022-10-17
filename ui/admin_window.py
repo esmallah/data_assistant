@@ -272,7 +272,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
 
         #self.ButWebFilterFIllNames.clicked.disconnect()
         
-        Email_type = self.listWebFilterLGItems.currentItem()
+        Email_type = self.listWebEmailSelect.currentItem()
 
         if Email_type is None:
             print("kindly select the item form the items list")
@@ -282,13 +282,10 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             x=switcher_mail.get(Email_type.text(), "Invalid items")
             print("now is printing","item:",Email_type.text(),"code:",x,"its type:",type(x))
             direction=self.ButWebFilter_fillingDirection.currentText()
-            
-
-
+        
         #______________
             attachment_name=self.WebSiteLineEdit_mail_address.text()
-
-             
+        
             self.ButWebMailSend.clicked.connect(Mails_management.send_emails(self,x,attachment_name))
 
     #___________________________analysis section_____________________________#

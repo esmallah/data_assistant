@@ -1208,7 +1208,7 @@ class Block():
 								,p.c_t_standard_per_second c_t_standard_per_second
 								,round(avg(q.rat_actually),0)as rat_actually
 								,round(avg(q.c_t_actually),0)as c_t_actually,
-								
+								m.scrabe_standard,
 								p.customer_name,
 								p.item_name_customers,
 								p.item_code_customers
@@ -1606,7 +1606,7 @@ class Block():
 									round(avg(q.average_dry_weight),1)as average_dry_weight,
 									
 									
-									round(count(q.number_day_use),0)as number_day_use,
+									
 									m.machine_type,
 									round(avg(q.average_dry_weight-p.standard_dry_weight),0)as Weight_deviation,
 									round(max(q.average_dry_weight),0)as max_WeightAtmonth,
@@ -1641,7 +1641,7 @@ class Block():
 									round(avg(q.average_dry_weight),1)as average_dry_weight,
 									
 									
-									round(count(q.number_day_use),0)as number_day_use,
+									
 									m.machine_type,
 									round(avg(q.average_dry_weight-p.standard_dry_weight),0)as Weight_deviation,
 									round(max(q.average_dry_weight),0)as max_WeightAtmonth,
@@ -1675,7 +1675,7 @@ class Block():
 									round(avg(q.rat_actually),0)as rat_actually,
 									round(avg(q.c_t_actually),0)as c_t_actually,
 									
-									round(count(q.number_day_use),0)as number_day_use,
+									
 									m.machine_type ,
 									round(avg(q.c_t_actually-p.c_t_standard_per_second),0)as c_t_deviation,
 									round(max(q.c_t_actually),0)as max_ctAtmonth,
@@ -1733,7 +1733,7 @@ class Block():
 									,p.standard_dry_weight_from,p.standard_dry_weight_to,
 									round(avg(q.average_dry_weight),1)as average_dry_weight,
 									
-									round(count(q.number_day_use),0)as number_day_use,
+									
 									m.machine_type,
 									round(avg(q.average_dry_weight-p.standard_dry_weight),0)as Weight_deviation,
 									round(max(q.average_dry_weight),0)as max_WeightAtmonth,
@@ -1762,7 +1762,7 @@ class Block():
 									round(avg(q.rat_actually),0)as rat_actually,
 									round(avg(q.c_t_actually),0)as c_t_actually,
 									
-									round(count(q.number_day_use),0)as number_day_use,
+									
 									m.machine_type,
 									round(avg(q.c_t_actually-p.c_t_standard_per_second),0)as c_t_deviation,
 									round(max(q.c_t_actually),0)as max_ctAtmonth,
@@ -1795,7 +1795,7 @@ class Block():
 									round(sum(q.number_scrab_by_item),0)as number_scrab_by_item,
 									
 									round(sum(q.gross_production),0)as gross_production,
-									round(count(q.number_day_use),0)as number_day_use,
+									
 									round((sum(q.number_scrab_by_item))/(sum(q.gross_production)),3)as percentage
 																		
 								from v105quality_inspection_items q

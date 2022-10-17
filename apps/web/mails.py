@@ -40,7 +40,7 @@ class Mails_management():
         LIST_NAME=[shoutcoun_name,qc_molds_name]
         EMAIL_TO=[shoutcount_to,qc_molds_to]
         EMAIL_CC=[shoutcount_cc,qc_molds_cc]
-        LIST_SUBJECT=[shoutcount_subject,qc_molds_subject]%LIST_NAME
+        LIST_SUBJECT=[shoutcount_subject,qc_molds_subject]
         LIST_TOPIC=[shoutcount_topic,qc_molds_topic]
         
         '''
@@ -61,7 +61,7 @@ class Mails_management():
         item_name=LIST_NAME[itemSelection]
         item_to=EMAIL_TO[itemSelection]
         item_cc=EMAIL_CC[itemSelection]
-        item_subject=LIST_SUBJECT[itemSelection]
+        item_subject=LIST_SUBJECT[itemSelection]#%item_name
         item_tobic=LIST_TOPIC[itemSelection]
         personal_mail=item_name
         subject_mail=item_subject

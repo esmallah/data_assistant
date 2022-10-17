@@ -459,7 +459,7 @@ class Select():
         get_data['sum_scrabe_dirty_bySet']=(data['sum_scrabe_dirty_bySet'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_cloration']=(data['sum_scrabe_cloration'].fillna(0).astype(int)/ data['no_on_set']).fillna(0).astype(int)
         get_data['sum_scrabe_no_parts']=data['sum_scrabe_no_parts']
-        get_data['number_scrab_by_item']=data['number_scrab_by_item']    
+        get_data['number_scrab_by_item']=data['number_scrab_by_item'].fillna(0).astype(int)
         get_data['gross_production']=data['gross_production']    
         get_data['scrap_percent_by_item']=data['number_scrab_by_item']/data['gross_production']
         get_data['standard_scrap_weight_kg']= data['standard_scrap_weight_kg']
@@ -1228,16 +1228,16 @@ class Select():
         # export
         output_average=daily_analysis.groupby(["product_name","product_code","standard_dry_weight",
         "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
-        ,"c_t_standard_per_second","scrabe_standard"], as_index=False)["average_dry_weight","average_wet_weight","rat_actually","c_t_actually"].mean()
+        ,"c_t_standard_per_second"])["average_dry_weight","average_wet_weight","rat_actually","c_t_actually"].mean()
         
         output_aggrigate=daily_analysis.groupby(["product_name","product_code","standard_dry_weight",
         "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
-        ,"c_t_standard_per_second","scrabe_standard"], as_index=False)['number_scrab_by_item',
+        ,"c_t_standard_per_second"])['number_scrab_by_item',
         "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
-
+        #removed "scrabe_standard" for error  'MergedCell' object attribute 'value' is read-only
         output_mold=output_average
         output_mold.append(output_aggrigate)
-
+        #output_mold=output_average
         #output.to_frame()
 #        output.unstack()
         #Convert the Groupby to a DataFrame with to_frame()
@@ -1332,25 +1332,37 @@ class Select():
         #filter low weithrs
 
         weight_nonconfomity_low=wieght2[wieght2['average_dry_weight'] < wieght2["standard_dry_weight_from"]]
+        weight_nonconfomity_low_count=weight_nonconfomity_low["average_dry_weight"].count()
+        weight_nonconfomity_low['weight_nonconfomity_low_count']=weight_nonconfomity_low_count
 
         weight_nonconfomity_high=wieght2[wieght2['average_dry_weight']> wieght2["standard_dry_weight_to"]]
-
+        weight_nonconfomity_high_count=weight_nonconfomity_low["average_dry_weight"].count()
+        weight_nonconfomity_low['weight_nonconfomity_hight_count']=weight_nonconfomity_high_count
+        
         wieght=weight_nonconfomity_high
         wieght=wieght.append(weight_nonconfomity_low)
 
-        weight_nonconfomity=wieght
-        weight_nonconfomity_count=weight_nonconfomity["average_dry_weight"].count()
+        
+        weight_nonconfomity_count=wieght["average_dry_weight"].count()
+        print("weight_nonconfomity_count",weight_nonconfomity_count)
         if weight_nonconfomity_count==0:  # for ignor impty index error        
             weight_nonconfomity=pd.DataFrame(index=[0])
+            weight_nonconfomity["mold_name"]=0
+            weight_nonconfomity["standard_dry_weight_from"]=0
+            weight_nonconfomity["standard_dry_weight_to"]=0
+            weight_nonconfomity["average_dry_weight"]=0
         if weight_nonconfomity_count>1:  # for ignor impty index error        
-            weight_nonconfomity=pd.DataFrame()##error we muast select index of groupby
+            weight_nonconfomity=wieght##error we muast select index of groupby
         
-        weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_low)    #for append the light weights
+        #weight_nonconfomity=weight_nonconfomity.append(weight_nonconfomity_low)    #for append the light weights
+        #for weigh low weight
         
+        #for all weigh non confimity
         weight_nonconfomity['weight_nonconfomity_count']=weight_nonconfomity_count
         weight_ok=mold_count-weight_nonconfomity_count
         weight_nonconfomity['weight_ok']=weight_ok
         
+
         ##screap report by parts##_________
                 #scap by parts
         #report=pd.DataFrame()
@@ -1440,6 +1452,7 @@ class Select():
 #        wieght2.to_excel(writer,merge_cells=False)
         daily_analysis1.to_excel(writer,"input_molds", index=False)
         output_mold.to_excel(writer,"output_molds")
+        machines.to_excel(writer,"machines")
         writer.save()
         
         #extract daily excel report by formating
@@ -1466,17 +1479,21 @@ class Select():
             print ("c_t_nonconfomity for sheet" , c_t_nonconfomity)
             ws['a14'] =c_t_nonconfomity.iloc[0][5]                #ct pass 
             ws['b14'] =c_t_nonconfomity.iloc[0][4]                #ct not acceptable
-            
-            ws['a25'] = weight_nonconfomity.iloc[0][4]             #weight pass 
-            ws['b25'] =weight_nonconfomity.iloc[0][3]
+            if weight_nonconfomity_count>1:
+                ws['a25'] = weight_nonconfomity.iloc[0][4]             #weight pass 
+                ws['b25'] = weight_nonconfomity.iloc[0][5]              # lwo wights
+            else:  
+                ws['b25'] =0
+                ws['b25'] =weight_nonconfomity_count
             #if weight_nonconfomity_high>=1:  # for ignor impty index error        
             print ("weight_nonconfomity_low for sheet" , weight_nonconfomity)
-            #ws['b25'] =weight_nonconfomity_low.iloc[0][2]            #weights low not acceptable
+            
             #else:
             #    ws['b25'] =0
             ws['a35'] = weight_nonconfomity.iloc[0][4]             #weight pass 
+            ws['b25'] =weight_nonconfomity_low.iloc[0][6]            #weights hight
             #if weight_nonconfomity_high>=1:  # for ignor impty index error        
-            #ws['b35'] =weight_nonconfomity_high.iloc[0][2]            #weights hig not acceptable
+            ws['b35'] =weight_nonconfomity_high.iloc[0][2]            #weights hig not acceptable
             #else:
             #    ws['b35'] =0           #weights hig not acceptable
             #_______
@@ -1653,44 +1670,21 @@ class Select():
         if monthly:
 
             print ("test monthly ___________________",output_mold)
-
+            '''
             list_item_size=output_mold.shape[0]
             ws2=wb["output"]
-            '''
-            ws = wb['%s' % (ws_name_wanted)]
-            for row in ws.iter_rows():
-                for cell in row:
-                    cell_value = cell.value
-                    new_col_loc = (chr(int(ord(cell.coordinate[0:1])) + 4))
-                    new_row_loc = cell.coordinate[1:]
-                    ws['%s%d' % (new_col_loc ,int(new_row_loc) + 3)] = cell_value
-                    ws['%s' % (cell.coordinate)] = ' '
-
-            df.to_clipboard(excel=False)
-            https://note.nkmk.me/en/python-pandas-to-clipboard/
-
-
             
-            '''
             print("____________test_______",output_mold)    
             r = 3  # start at third row
             c = 1 # column 'a'
             rows = output_mold
-            for row in rows:     
-                ws1.merge_cells('B2:F4')
-                top_left_cell = ws['B2']
-#                for item in row:
-                top_left_cell.cell(row=r, column=c).value = row
-                    #ws1.cell(row=r, column=c).value = item
-                #    c += 1 # Column 'd'
-                
+            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+                for item in rows:
+                    ws1.cell(row=r, column=c).value = item
+                    c += 1 # Column 'd'
                 c = 1
-                r += 1
-                '''
-                ws.merge_cells('B2:F4')
-                top_left_cell = ws['B2']
-                top_left_cell.value = "My Cell"
-                '''
+                r += 1   
+            '''            
             #filter on non conformity weights
                 #part one low weight
             list_item_size=weight_nonconfomity_low.shape[0]
@@ -1744,12 +1738,13 @@ class Select():
             c = 1 # column 'a'
             for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
                 rows = scrap_nonconfomity.iloc[row]
-                for item in rows:
-                    ws1.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
+#                for item in rows:
+                    #ws1.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = row
+ #                   c += 1 # Column 'd'
                 c = 1
                 r += 1   
-
+            '''
             #monthly machine report
             ws8=wb["scrap_machine"]
             list_item_size=machines.shape[0]
@@ -1763,7 +1758,7 @@ class Select():
                     c += 1 # Column 'd'
                 c = 1
                 r += 1   
-
+            '''
             #monthly machine report
             ws8=wb["scrap_machine_yearly"]
             Block.show_machine_yearly_report(self,year,month)
