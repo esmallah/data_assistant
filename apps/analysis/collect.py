@@ -1,6 +1,7 @@
 '''this module for the data was emported from database analysis'''
 from calendar import month
 import csv
+from datetime import date
 from statistics import mean
 import pandas as pd
 import openpyxl as xl
@@ -418,12 +419,12 @@ class Select():
         
         data['mold_avalibility']=data['gross_production'] * (data['number_day_use']/22) * data['standard_rate_hour'].fillna(0).astype(int)#as  /*avalibility bercent in 22 work hours */
         #notece that
-        data['standard_scrap_weight_kg']= data['number_scrab_by_item']/data['standard_dry_weight'].fillna(0).astype(int)
-        data['standard_production_weight_kg']=data['gross_production']/data['standard_dry_weight'].fillna(0).astype(int)
+        data['standard_scrap_weight_kg']= data['number_scrab_by_item']*data['standard_dry_weight'].fillna(0).astype(int)/1000
+        data['standard_production_weight_kg']=data['gross_production']*data['standard_dry_weight'].fillna(0).astype(int)/1000
         #data['scrap_weight_kg'=data.number_scrab_by_item.sum()/data.average_dry_weight.mean()
         #data.production_weight_kg= data.gross_production.sum()/data.average_dry_weight.mean()
-        data['production_weight_kg']= data['gross_production']/data['average_dry_weight']
-        data['scrap_weight_kg']=data['number_scrab_by_item']/data['average_dry_weight']
+        data['production_weight_kg']= (data['gross_production']*data['average_dry_weight'])/1000
+        data['scrap_weight_kg']=(data['number_scrab_by_item']*data['average_dry_weight'])/1000
                 
         get_data['average_dry_weight']=data['average_dry_weight']
         get_data['average_wet_weight']=data['average_wet_weight']
@@ -1155,6 +1156,11 @@ class Select():
         mold_analysis_bool4=get_data["year"]==last_year
         mold_analysis3=get_data[mold_analysis_bool4]
         
+    
+
+
+
+        #____________________________________________________monthes report section________________
         last_month=int(mold_analysis3["month"].max())
         mold_analysis_bool3=mold_analysis3["month"]==last_month
         mold_analysis2=mold_analysis3[mold_analysis_bool3]
@@ -1258,29 +1264,51 @@ class Select():
 
      
         writer = pd.ExcelWriter("QC_molds_monthly_until.xlsx")
-    
-   
+        #=========================================================================================
+        #____________________________________________________yearly report section (analysis________________
+        # export
+
+        
+        yearly_output_average=mold_analysis3.groupby(["year","month","product_name","product_code","standard_dry_weight",
+        "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
+        ,"c_t_standard_per_second"])["average_dry_weight","average_wet_weight","rat_actually","c_t_actually",].mean()
+        
+        yearly_output_aggrigate=mold_analysis3.groupby(["year","month","product_name","product_code","standard_dry_weight",
+        "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
+        ,"c_t_standard_per_second"])['number_scrab_by_item',
+        "sum_scrabe_no_parts","gross_production","number_day_use",'standard_scrap_weight_kg','standard_production_weight_kg','scrap_weight_kg','production_weight_kg',"HoursScrap"].sum()
+        #removed "scrabe_standard" for error  'MergedCell' object attribute 'value' is read-only
+        yearly_output_product=yearly_output_average
+        yearly_output_product.append(yearly_output_aggrigate)
+        print("_______________yearly_output_product____________________",yearly_output_product)
+
+
+
+
+
+        #=========================================================================================
+        #____________________________________________________to extract report (output)________________
         daily_analysis.rename(columns={c:c.lower() for c in col_rename})      
 
         daily_analysis.to_excel(writer,'input', index=False)
-
-        scrap.rename(columns={c:c.lower() for c in col_rename})
         scrap.to_excel(writer,'scrap_product', index=True)
-
         scrap_product_machine.rename(columns={c:c.lower() for c in col_rename})
         scrap_product_machine.to_excel(writer,'scrap_product_machines', index=True)
 
         scrap_machine_product.rename(columns={c:c.lower() for c in col_rename})
         scrap_machine_product.to_excel(writer,'scrap_machines_product', index=True)
         
-        machines.rename(columns={c:c.lower() for c in col_rename})
+        
         machines.to_excel(writer,"scrap_machines", index=True)
         
         #dry_weight.rename(columns={c:c.lower() for c in col_rename})
         dry_weight.to_excel(writer,'weights', index=True)
-        molds_rate.rename(columns={c:c.lower() for c in col_rename})
+        
         molds_rate.to_excel(writer,'c_t', index=True)
-        output_mold.to_excel(writer,"output",index=True)
+        output_mold.to_excel(writer,"output_yearly",index=True)
+        #output_mold.to_excel(writer,"output",index=True)
+        
+        
         writer.save()
 
         print("for the days")
@@ -1480,8 +1508,8 @@ class Select():
             ws['a14'] =c_t_nonconfomity.iloc[0][5]                #ct pass 
             ws['b14'] =c_t_nonconfomity.iloc[0][4]                #ct not acceptable
             if weight_nonconfomity_count>1:
-                ws['a25'] = weight_nonconfomity.iloc[0][4]             #weight pass 
-                ws['b25'] = weight_nonconfomity.iloc[0][5]              # lwo wights
+                ws['a25'] = weight_nonconfomity.iloc[0][6]             #weight pass 
+                ws['b25'] = weight_nonconfomity.iloc[0][4]              # lwo wights
             else:  
                 ws['b25'] =0
                 ws['b25'] =weight_nonconfomity_count
@@ -1490,18 +1518,13 @@ class Select():
             
             #else:
             #    ws['b25'] =0
-            ws['a35'] = weight_nonconfomity.iloc[0][4]             #weight pass 
-            ws['b25'] =weight_nonconfomity_low.iloc[0][6]            #weights hight
+            ws['a35'] = weight_nonconfomity.iloc[0][6]             #weight pass 
+            
             #if weight_nonconfomity_high>=1:  # for ignor impty index error        
-            ws['b35'] =weight_nonconfomity_high.iloc[0][2]            #weights hig not acceptable
+            ws['b35'] =weight_nonconfomity.iloc[0][5]            #weights hig not acceptable
             #else:
             #    ws['b35'] =0           #weights hig not acceptable
-            #_______
             
-            #ws['a35'] = weight_nonconfomity.iloc[0][3]             #weight pass 
-            #ws['b25'] =weight_nonconfomity.iloc[0][2]               #weight not pass
-
-            #to select index of columns for scraps
             if scrap_nonconfomity_count>=1:
                 rows = scrap_nonconfomity.index
                 r = 4  # start at 10th row
@@ -1758,7 +1781,7 @@ class Select():
                     c += 1 # Column 'd'
                 c = 1
                 r += 1   
-            '''
+            
             #monthly machine report
             ws8=wb["scrap_machine_yearly"]
             Block.show_machine_yearly_report(self,year,month)
@@ -1774,11 +1797,9 @@ class Select():
                 c = 1
                 r += 1
             
-        
+            '''
             ws2=wb["output_monthly"]
-            Block.show_yearly_report_itemsByMonths(self,year,args)
-            
-            rows = cursor.fetchall()
+            rows = yearly_output_product
             r = 3  # start at third row
             c = 1 # column 'a'
             for row in rows:

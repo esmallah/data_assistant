@@ -18,7 +18,7 @@ class Mails_management():
         self.column2=column2
         self.writefile=writefile
         self.sheetwriter=sheetwriter
-    def send_emails(self,itemSelection,attachment):
+    def send_emails(itemSelection,attachment):
         #os.chdir(folder)
         #print(folder)
         shoutcoun_name="Eng.Mario","DEAR.aLL"
@@ -69,9 +69,9 @@ class Mails_management():
         mail = outlook.CreateItem(0)
         mail.To = item_to
         mail.Cc = item_cc
-        mail.Subject = item_tobic
+        mail.Subject = subject_mail
         mail.Body = 'Message body'
-        mail.HTMLBody = subject_mail
+        mail.HTMLBody = item_tobic
 
         # To attach a file to the email (optional):
         print ("mail was send to with attachmed ",attachment,"located in ",itemSelection)
