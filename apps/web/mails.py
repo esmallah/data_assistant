@@ -4,7 +4,7 @@ import win32com.client as win32
 import pandas as pd
 import openpyxl as xl
 from openpyxl import load_workbook
-
+from apps.analysis.collect import Select
 import os
 
 outlook = win32.Dispatch('outlook.application')
@@ -21,28 +21,94 @@ class Mails_management():
     def send_emails(itemSelection,attachment):
         #os.chdir(folder)
         #print(folder)
+        fllowup_topic='''
+                Dear all<br>
+                Good day<br>
+                Kindly find the point is open to solving many quality issues<br>
+                 , kindly reply by last situation for your point after handling it<br>
+                السادة الكرام<br>
+                مرفق قائمة المتابعة الخاصة بموضوعات المتعلقة بحل مشكلات تؤثر علي جودة المنتجات <br>
+                ، برجاء مراجعة القائمة المرفقة التي توضح القضية والمطلوب والمسئول<br>
+                ، واغلاق المطلوب من كل فرد من السادة الذين تم اضافتهم في الايميل<br>
+                    '''
+
+        
         shoutcoun_name="Eng.Mario","DEAR.aLL"
         shoutcount_to='mario.sameh@lge.com'
         shoutcount_cc='Mohammed.Shawky@insutech-eg.com'
-
         shoutcount_subject='weekly report for shout count'
-        shoutcount_topic='<h2>dear %s<br>good day<br> you can find your interested report in attached  <br></h2>'
+        shoutcount_topic='<h2>dear eng.mario<br>good day<br> you can find your interested report in attached  <br></h2>'
 
         qc_molds_name="DEAR.aLL"
-        
         qc_molds_to=['hussein.rashad@insutech-eg.com','mohamed.abdallah@insutech-eg.com','mohamed.farid@insutech-eg.com','Mahmoud.AbdElFatah@cg-eg.com']
-        
         qc_molds_cc=['omar.jelany@insutech-eg.com','abdallah.hassan@insutech-eg.com','Mohammed.Shawky@insutech-eg.com','ahmed.aly@cg-eg.com','mostafa.abdelaziz@insutech-eg.com','ahmed.khayry@insutech-eg.com','ahmed.elsayed@insutech-eg.com']
         qc_molds_subject='تقرير الجودة اليومي'
+        qc_molds_topic='<h2>السادة الكرام <br>بعد التحية<br> مرفق تقرير الجودة لمنتجات حقن الفوم ، ولوحظ بعض حالات عدم المطابقة برجاء الرد عليها في المخلص التالي:  <br></h2>'
+        
+        test_name="Eng.Mario","DEAR.aLL"
+        test_to='youssri.ahmed@insutech-eg.com'
+        test_cc='youssri.ahmed@insutech-eg.com'
+        test_subject='تجربة'
+        test_topic='رسالة تجريبية'
 
-        qc_molds_topic=['<h2>السادة الكرام <br>بعد التحية<br> مرفق تقرير الجودة لمنتجات حقن الفوم ، ولوحظ بعض حالات عدم المطابقة برجاء الرد عليها في المخلص التالي:  <br></h2>']
+        fllowup_purchasing_to='mohamed.hamza@insutech-eg.com;ramy.ali@lge.com;mohamed.khater@cg-eg.com;Ismail.Mammon@insutech-eg.com']
+        fllowup_purchasing_cc='Mohammed.Shawky@insutech-eg.com;ahmed.Elmetwaly@cg-eg.com;manal.elsayed@insutech-eg.com'
+        fllowup_purchasing_subject='قائمة متابعة -ادارة المشتريات'
+        fllowup_purchasing_topic=fllowup_topic
+
+        fllowup_maintenance_to='ahmed.abozaid@insutech-eg.com;ahmed.sherif@cg-eg.com;ahmed.sabah@cg-eg.com'
+        fllowup_maintenance_cc='mostafa.abdelaziz@insutech-eg.com;Mohammed.Shawky@insutech-eg.com;mohamed.hegazy@cg-eg.com'
+        fllowup_maintenance_subject='قائمة متابعة -ادارة الصيانة'
+        fllowup_maintenance_topic=fllowup_topic
+
+        fllowup_production_to='omar.jelany@insutech-eg.com;AbdElrahman.Zakria@insutech-eg.com;mohamed.abdallah@insutech-eg.com'
+        fllowup_production_cc='mostafa.abdelaziz@insutech-eg.com;Mohammed.Shawky@insutech-eg.com'
+        fllowup_production_subject='قائمة متابعة -ادارة الانتاج'
+        fllowup_production_topic=fllowup_topic
+
+        fllowup_quality_to='Mohammed.Shawky@insutech-eg.com;ahmed.aly@cg-eg.com>'
+        fllowup_quality_cc=''
+        fllowup_quality_subject='قائمة متابعة -ادارة الجودة'
+        fllowup_quality_topic=fllowup_topic
+
+        fllowup_warehouse_to='Elhosaini Mohamed <elhosaini.mohamed@insutech-eg.com>; Ahmed Khaled <Block.RM@insutech-eg.com>; Alaa Mahdi <Block.SP@insutech-eg.com>'
+        fllowup_warehouse_cc='Mohammed Shawky <Mohammed.Shawky@insutech-eg.com>; Mostafa Abdelaziz <mostafa.abdelaziz@insutech-eg.com>; Hamada Elnaggar <hamada.elnaggar@insutech-eg.com>'
+        fllowup_warehouse_subject='قائمة متابعة -ادارة المخازن'
+        fllowup_warehouse_topic=fllowup_topic
+
+        fllowup_october_to='hamada.shawkey@insutech-eg.com;mohamed.abdallah@insutech-eg.com; ahmed.nagdy@insutech-eg.com'
+        fllowup_october_cc='Mohammed.Shawky@insutech-eg.com;mafdy.khalil@insutech-eg.com'
+        fllowup_october_subject='قائمة متابعة  مصنع 6 اكتوبر'
+        fllowup_october_topic=fllowup_topic
+
+        fllowup_safety_to='magdy.sleem@insutech-eg.com'
+        fllowup_safety_cc='Mohammed.Shawky@insutech-eg.com;ahmed.aboshady@insutech-eg.com'
+        fllowup_safety_subject='قائمة متابعة  السلامة والصحة المهنية'
+        fllowup_safety_topic=fllowup_topic
+
+        fllowup_hr_to='doaa.abdelhamid@insutech-eg.com;Belal.Saad@insutech-eg.com;mohamed.elsayed@insutech-eg.com'
+        fllowup_hr_cc='Mohammed.Shawky@insutech-eg.com;ahmed.aboshady@insutech-eg.com'
+        fllowup_hr_subject='قائمة متابع الموارد البشرية'
+        fllowup_hr_topic=fllowup_topic
+
+        #for data from Database
+        list=Select.monthly_molds
+
+        LIST_NAME=[shoutcoun_name,qc_molds_name,test_name,]
+        EMAIL_TO=[shoutcount_to,qc_molds_to,test_to,fllowup_purchasing_to,fllowup_maintenance_to,
+        fllowup_production_to,fllowup_quality_to,fllowup_warehouse_to,fllowup_october_to,
+        fllowup_safety_to,fllowup_hr_to]
+        EMAIL_CC=[shoutcount_cc,qc_molds_cc,test_cc,fllowup_purchasing_cc,fllowup_maintenance_cc,
+        fllowup_production_cc,fllowup_quality_cc,fllowup_warehouse_cc,fllowup_october_cc,
+        fllowup_safety_cc,fllowup_hr_cc]
+        LIST_SUBJECT=[shoutcount_subject,qc_molds_subject,test_subject,fllowup_purchasing_subject,fllowup_maintenance_subject,
+        fllowup_production_subject,fllowup_quality_subject,fllowup_warehouse_subject,fllowup_october_subject,
+        fllowup_safety_subject,fllowup_hr_subject]
+        LIST_TOPIC=[shoutcount_topic,qc_molds_topic,list,fllowup_purchasing_topic,fllowup_maintenance_topic,
+        fllowup_production_topic,fllowup_quality_topic,fllowup_warehouse_topic,fllowup_october_topic,
+        fllowup_safety_topic,fllowup_hr_topic]
         
-        LIST_NAME=[shoutcoun_name,qc_molds_name]
-        EMAIL_TO=[shoutcount_to,qc_molds_to]
-        EMAIL_CC=[shoutcount_cc,qc_molds_cc]
-        LIST_SUBJECT=[shoutcount_subject,qc_molds_subject]
-        LIST_TOPIC=[shoutcount_topic,qc_molds_topic]
-        
+
         '''
         mafdy_mail='mafdy.khalil@cg-eg.com'
         ihab='ehab.adel@cg-eg.com'

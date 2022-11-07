@@ -5014,7 +5014,7 @@ font: 75 11pt &quot;MS Shell Dlg 2&quot;;</string>
            <x>30</x>
            <y>0</y>
            <width>541</width>
-           <height>401</height>
+           <height>412</height>
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_6">
@@ -5060,7 +5060,7 @@ color: rgb(255, 255, 255);</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="8" column="1">
            <widget class="QLineEdit" name="WebSiteLineEdit_mail_address">
             <property name="styleSheet">
              <string notr="true"/>
@@ -5070,7 +5070,7 @@ color: rgb(255, 255, 255);</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="9" column="1">
            <widget class="QListWidget" name="listWebEmailSelect">
             <property name="styleSheet">
              <string notr="true">color: rgb(255, 255, 255);</string>
@@ -5085,9 +5085,59 @@ color: rgb(255, 255, 255);</string>
               <string>quality_repot_report</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>5s_followup</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>followUp_Issues</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>test</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>followup-purchasing</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>followup-production</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>followup-wharehouse</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>followup-quality</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>followup-6october</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>followup-safety</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>followup-hr</string>
+             </property>
+            </item>
            </widget>
           </item>
-          <item row="9" column="1">
+          <item row="10" column="1">
            <widget class="QComboBox" name="importFilesComboBox_2">
             <property name="styleSheet">
              <string notr="true">color: rgb(255, 255, 255);</string>
@@ -5174,7 +5224,7 @@ color: rgb(255, 255, 255);</string>
             </item>
            </widget>
           </item>
-          <item row="10" column="1">
+          <item row="11" column="1">
            <widget class="QPushButton" name="ButWebMailSend">
             <property name="styleSheet">
              <string notr="true">background-color: rgb(161, 161, 171);
@@ -5185,7 +5235,7 @@ color: rgb(255, 255, 255);</string>
             </property>
            </widget>
           </item>
-          <item row="11" column="1">
+          <item row="13" column="1">
            <widget class="QPushButton" name="butSubImportEmailSend">
             <property name="styleSheet">
              <string notr="true">background-color: rgb(161, 161, 171);
@@ -5195,18 +5245,18 @@ selection-background-color: rgb(85, 85, 255);
 color: rgb(255, 255, 255);</string>
             </property>
             <property name="text">
-             <string>Send</string>
+             <string>Send report from DB via Email</string>
             </property>
            </widget>
           </item>
-          <item row="12" column="1">
+          <item row="14" column="1">
            <widget class="QLabel" name="label_53">
             <property name="text">
              <string>filling direction</string>
             </property>
            </widget>
           </item>
-          <item row="13" column="1">
+          <item row="15" column="1">
            <widget class="QComboBox" name="ButWebFilter_fillingDirection_2">
             <item>
              <property name="text">
@@ -5225,7 +5275,7 @@ color: rgb(255, 255, 255);</string>
             </item>
            </widget>
           </item>
-          <item row="16" column="1">
+          <item row="18" column="1">
            <widget class="QPushButton" name="ButWebFilterRefresh_2">
             <property name="styleSheet">
              <string notr="true">background-color: rgb(161, 161, 171);
@@ -5236,7 +5286,7 @@ color: rgb(255, 255, 255);</string>
             </property>
            </widget>
           </item>
-          <item row="17" column="1">
+          <item row="19" column="1">
            <spacer name="verticalSpacer_3">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -5253,6 +5303,19 @@ color: rgb(255, 255, 255);</string>
            <widget class="QLabel" name="stanpAccountLabel">
             <property name="text">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;attachment&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="1">
+           <widget class="QCheckBox" name="checkEmailSendDbReport">
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);</string>
+            </property>
+            <property name="text">
+             <string>send Email from Rebort</string>
             </property>
            </widget>
           </item>

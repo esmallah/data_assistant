@@ -7,7 +7,7 @@ from .files import Direcories
 from .files import delete_files
 from .files import Edite
 from .files import Merge
-from .web import Mails_management
+#from .web import Mails_management
 from .web import AutomatedFilling
 from .web import Connection
 #for manage sqlite

@@ -20,11 +20,12 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.signals_control()
         self.show()
         self.deepLearning()
+        
     def switch(self):
         self.switch_window.emit(self.line_edit.text())
 
     def signals_control(self):        
-        from apps import Connection
+        from apps.web.web import Connection
         #switchers tabs
         self.button_AI_leader.clicked.connect(self.conntectTabs0)
         self.buttonKnowledge.clicked.connect(self.conntectTabs1)
@@ -78,7 +79,47 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.but_web_mail.clicked.connect(self.connSubWeb_mail)
         self.but_web_next.clicked.connect(self.connSubWeb_next)
         self.listWebEmailSelect.currentItemChanged.connect(self.mailControl)
+        self.butSubImportEmailSend.clicked.connect(self.connect_shareDb)
         self.ButWebMailBrowser.clicked.connect(self.getfiles)
+    def mailControl(self,list):
+
+        '''for contorl to operating system and its contents from files and sub filess'''
+        from apps.web.mails import Mails_management
+        
+        switcher_mail = {
+        "shou_count_report":0,
+        "quality_repot_report":1,
+        "5s_followup":2,
+        "followUp_Issues":3,
+        "test:4":4,
+        "followup-purchasing":5,
+        "followup-production":6,
+        "followup-wharehouse":7,
+        "followup-quality":8,
+        "followup-6october":9,
+        "followup-safety":10,
+        "followup-hr":11,
+        }
+
+        #self.ButWebFilterFIllNames.clicked.disconnect()
+        
+        Email_type = self.listWebEmailSelect.currentItem()
+
+        if Email_type is None:
+            print("kindly select the item form the items list")
+        #if item is not None:
+        else:
+        
+            x=switcher_mail.get(Email_type.text(), "Invalid items")
+            print("now is printing","item:",Email_type.text(),"code:",x,"its type:",type(x))
+            direction=self.ButWebFilter_fillingDirection.currentText()
+        #______________
+            attachment_name=self.WebSiteLineEdit_mail_address.text()
+            
+            #if self.ButWebEmail_sendDbReport.isChecked():
+            #else:
+
+            self.ButWebMailSend.clicked.connect(lambda:Mails_management.send_emails(x,attachment_name))
     #__________________________control panel
     def restart(self):        
         if __name__ == "__main__":
@@ -167,32 +208,6 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     def getfiles(self):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Single File', QtCore.QDir.rootPath() ,)# '*.xlsx')
         self.WebSiteLineEdit_mail_address.setText(fileName)
-
-    def mailControl(self):
-
-        '''for contorl to operating system and its contents from files and sub filess'''
-        from apps import Mails_management
-        
-        switcher_mail = {
-        "shou_count_report":0,
-        "quality_repot_report":1,
-        }
-
-        #self.ButWebFilterFIllNames.clicked.disconnect()
-        
-        Email_type = self.listWebEmailSelect.currentItem()
-
-        if Email_type is None:
-            print("kindly select the item form the items list")
-        #if item is not None:
-        else:
-        
-            x=switcher_mail.get(Email_type.text(), "Invalid items")
-            print("now is printing","item:",Email_type.text(),"code:",x,"its type:",type(x))
-            direction=self.ButWebFilter_fillingDirection.currentText()
-        #______________
-            attachment_name=self.WebSiteLineEdit_mail_address.text()
-            self.ButWebMailSend.clicked.connect(lambda:Mails_management.send_emails(x,attachment_name))
 
     def conntectTabs(self):
         self.tabWidget_left.setCurrentIndex(0)
@@ -422,6 +437,12 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         dailyReportName=str(year)+"-"+str(month)+"QC_molds_daily_archive_v3.xlsx"
         monthlyReportName=str(year)+"-"+str(month)+"QC_molds_monthly_v2.xlsx"
         format_path = os.path.join(BASE_DIR, os.path.normpath(r".\data_assistant\apps\analysis\formats"))
+        #______________________________________________________________________________________
+        #to send emails from db to outlook
+       #______________________________________________________________________________________ 
+        
+        
+        #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
         #to cahnge folder uploading data
         if str(self.comboBox_analysisDb_server_select.currentText())=="network" : #for select netowrk server in close site
             data_store=DATAFOLDER_ON_NETWORK
@@ -485,9 +506,14 @@ class AppWindow(Ui_MainWindow,QMainWindow):
                     #data basse export data
         #_______developer stage________________________________current_________====================
 #if self.checkBox_analsys_monthlyreport.isChecked():
-        if self.checkBox_analysis_summaryReport.isChecked():
+        if self.checkEmailSendDbReport.isChecked():   #to send this email via report
+            list=git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=True)
             print ("checkBox_analysis_summaryReport start",analysisInput)
-            git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=True)
+            self.mailControl(list)
+        if self.checkBox_analysis_summaryReport.isChecked():
+            pass
+            #git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=True)
+            
             #qc_daily.daily_molds(year,month,day)#____________________________________daily report______________________________
         if self.checkBox_analysis_spc.isChecked():
             item_id=int(self.comboBox_analysisDb_analysis_spc.currentText())    
@@ -496,12 +522,12 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             if self.comboBox_analysisDb_analysis_spc_move.currentText()=="add_sheet":
                 qc_daily.spc_molds(int(year),int(month),item_id,create_workbook=False)
             print("item_id,item_id","type",type(item_id))
-        
+    
         if self.checkBox_analysis_DB_daily.isChecked():
         
         #for daily report
             print("year",type(year),"month",type(month),"day",type(day))
-            git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=False)
+            git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=True)
             print("the daily report has downloaded for day ",day," , month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_monthlyReport.isChecked():
@@ -512,7 +538,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
 
         if self.checkBox_analysis_DB_yearlyInput.isChecked():
             git_database.export_report_daily_yearly(year,month,day,to_day)
-            print("the yearly input report has downloaded for day ",day," , month:",month,"and year:",year)
+            print("the yearly input report has downloaded for day ",day," , month:",month,"and year:",year,monthly=False,daily=False)
         if self.checkBox_analysis_DB_weekly.isChecked()==True:
             if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="quweekly production" : #for chose any type of files
                 git_database.export_report_daily_yearly(self,year,month,day,to_day)
