@@ -23,12 +23,13 @@ for activate virusal environment
 source ../env/Scripts/activate
 
 or in conda
-source activate a1leader_pyqt
-python main.py
+
 
 conda init
 conda activate a1leader_pyqt
 
+source activate a1leader_pyqt
+python main.py
 if not activate conda restart your texteditor as adminstrator
 #_____for backup enviroment ( or run as adminstrator)
 

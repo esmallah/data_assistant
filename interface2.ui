@@ -53,7 +53,7 @@ gridline-color: rgb(255, 255, 255,0%);
 </string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_AI_leader">
      <property name="accessibleName">
@@ -1351,6 +1351,11 @@ color: rgb(255, 255, 255);</string>
           </property>
           <item>
            <property name="text">
+            <string>2023</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>2022</string>
            </property>
           </item>
@@ -2192,6 +2197,19 @@ color: rgb(255, 255, 255);</string>
            </spacer>
           </item>
           <item>
+           <widget class="QCheckBox" name="checkBox_analysis_customer_complaints">
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);</string>
+            </property>
+            <property name="text">
+             <string>customer complants</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="checkBox_analysis_summaryReport">
             <property name="layoutDirection">
              <enum>Qt::LeftToRight</enum>
@@ -2448,7 +2466,52 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <property name="text">
+           <string>shout_count</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>weekly defect</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QComboBox" name="comboBox_analysisDb_complaintsChoices">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>50</y>
+           <width>121</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>betumen complaints</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>foam complaints</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QComboBox" name="comboBox_analysisDb_returnReportChoices">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>140</y>
+           <width>91</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>monthly</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>yearly</string>
           </property>
          </item>
         </widget>
@@ -4281,6 +4344,11 @@ color: rgb(255, 255, 255);</string>
            <item>
             <property name="text">
              <string>LgWasherBase_VIVACHE</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>lg_slides_50UQ75</string>
             </property>
            </item>
           </widget>

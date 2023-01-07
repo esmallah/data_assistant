@@ -243,7 +243,10 @@ class AutomatedFilling():
         lg_base_VIV_l=[266,637.5,98.6,642.5]
         AGG76599802=[lg_base_VIV_h,lg_base_VIV_l]
 
-
+        lg_slides_50UQ75="MFZ67452601"#LGwasher machine base VIVACHE
+        lg_slides_50UQ75_h=[1164.00,312,196,162,127.5,206,24]
+        lg_slides_50UQ75_l=[1156,308,194,158,112.03,204,22]
+        MFZ67452601=[lg_slides_50UQ75_h,lg_slides_50UQ75_l]
         
         #second version
         #time recorded for fill     30minint    #the time not accurecy because intenet speed defirince between time to time
@@ -257,7 +260,7 @@ class AutomatedFilling():
                 MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
                 MFZ67207701,MFZ67207601,MFZ67207602,MFZ65917901,MFZ67207201,MFZ67207202,MFZ67209701,
                 MFZ67212201,MFZ67212202,MFZ67319401,MFZ67319402,MFZ67207501,MFZ67207502,mfz66237401,mfz66237402,mfz66237601,mfz66237602,
-                LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801,AGG76599802]
+                LG_3920EZ2058A,LG_3920FZ3114C,AGG76599801,AGG76599802,MFZ67452601]
             
             item=items[itemSelection]
             lg_item=item
@@ -305,7 +308,7 @@ class AutomatedFilling():
                     LG65UP81Side,LG75UP77FRONT,LG75UP77Set,LG75UP77Side,LG43UP81,
                     LGNano80set,LGNano80side,LGOLED65A26LA_set,OLED65A26LAside,lg70UQ980updown,lg70UQ980sides
                     ,lg_OLED65CS_set,lg_OLED65CS_sides,OLED55CS_set,OLED55CS_side
-                    ,LG_cover,lG_angels,lg_kaeda,lg_base_VIV]
+                    ,LG_cover,lG_angels,lg_kaeda,lg_base_VIV,lg_slides_50UQ75]
             
             item=items[itemSelection]
             print(item)

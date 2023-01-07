@@ -1,5 +1,5 @@
 from .qc_molds import *
-#from .pyqt_sqlite import SqliteWindow
-from .login import Login
-#from ui.login import Login
+
+#from .login import Login   #for developing mode
+#from ui.login import Login  #for production mode
 from .qc import *

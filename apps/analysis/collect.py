@@ -44,9 +44,10 @@ columns_parts=['part_id','product_code','product_name_by_parts','Weight_kg','sta
 columns_quality=['year',
     'month',
     'day',
-    'machine_id',
-    'item_id',
-    'mold_id',
+    'date_day',
+    'f14machine_id',
+    'f11part_item_id',
+    'f12molds_id',
     'set',
     'no_on_set',
     'shift1_wet_weight1',
@@ -75,12 +76,12 @@ columns_quality=['year',
     
     #the previous columns separate to 
         #1 cycle time table
-columns_cycle_time=['year','month','day','machine_id','rat_actually','c_t_deviation','shift1_c_t1','shift1_c_t2'
+columns_cycle_time=['year','month','day','date_day','machine_id','rat_actually','c_t_deviation','shift1_c_t1','shift1_c_t2'
                 ,'shift2_c_t1','shift2_c_t2','c_t_actually','mold_id','part_id','item_id','number_day_use','factory','id_DayPartUnique'
                 ,'parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate']
 
         #2 quality inspections scrap and weights
-columns_QCinspection=['year','month','day','machine_id','item_id','number_day_use','mold_id','product_parts',
+columns_QCinspection=['year','month','day','date_day','machine_id','item_id','number_day_use','mold_id','product_parts',
     'shift1_wet_weight1','shift1_wet_weight2','shift1_wet_weight3','shift1_wet_weight4','shift1_wet_weight5',
     'shift1_dry_weight1',    'shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4','shift1_dry_weight5','shift1_ct1','shift1_ct2',
     'shift2_wet_weight1','shift2_wet_weight2','shift2_wet_weight3','shift2_wet_weight4','shift2_wet_weight5',
@@ -102,14 +103,14 @@ columns_QCinspection=['year','month','day','machine_id','item_id','number_day_us
 
             #the previeuse table separate to
                     #1weights table
-columns_weight=['year','month','day','machine_id','item_id','number_day_use','mold_id','product_parts',
+columns_weight=['year','month','day','date_day','machine_id','item_id','number_day_use','mold_id','product_parts',
 'shift1_dry_weight1','shift1_dry_weight2','shift1_dry_weight3','shift1_dry_weight4'
 ,'shift1_dry_weight5','shift2_dry_weight1','shift2_dry_weight2','shift2_dry_weight3','shift2_dry_weight4',
 'shift2_dry_weight5','average_wet_weight','average_dry_weight','dryweight_deviation_validation'
 ,'parts_patchsNumbers','Items_patchsNumbers','bachStartDate','bachEndDate','standard_dry_weight_from','standard_dry_weight_to','standard_dry_weight',]
 
                     #2scrab table
-columns_scrap=['year','month','day','machine_id','item_id','mold_id','product_parts','part_id','shift1_production_cards'
+columns_scrap=['year','month','day','date_day','machine_id','item_id','mold_id','product_parts','part_id','shift1_production_cards'
 ,'shift1_prod_page','shift1_proper_production','shift1_scrabe_shortage','shift1_scrabe_roll','shift1_scrabe_broken',
 'shift1_scrabe_curve','shift1_scrabe_shrinkage','shift1_scrabe_dimentions','shift1_scrabe_weight','shift1_scrabe_dirty'
 ,'shift1_scrabe_cloration','shift1_scrabe_no_parts','shift1_scrabe_no_item','shift1_all_production'
@@ -126,6 +127,7 @@ columns_scrap=['year','month','day','machine_id','item_id','mold_id','product_pa
 column_monthly_report=[
                 'year',
 				'month',
+                'date_day',
 				'day',
                 'mold_id',
 				'item_id',
@@ -194,17 +196,17 @@ col_rename={"product_name": "اسم المنتج","product_name":"اسم الم�
         ,"Items_patchsNumbers":"ارقام الباتشات بالاصناف","scrabe_standard":"معياري التوالف","part_id":"رقم الجزء",
         "mold_id":"رقم الاسطمبة","item_id":"رقم المنتج" }      # for recaull module to change english name to arabic
 
-columns_weight=["day","year","month","machine_id","product_name","product_code","standard_dry_weight",
+columns_weight=["day","year","month","f14machine_id","product_name","product_code","standard_dry_weight",
 "standard_dry_weight_from","standard_dry_weight_to",'shift1_dry_weight1','shift1_dry_weight2','shift1_dry_weight3',
         'shift1_dry_weight4','shift1_dry_weight5','shift2_dry_weight1','shift2_dry_weight2',
         'shift2_dry_weight3','shift2_dry_weight4','shift2_dry_weight5',"average_dry_weight","average_wet_weight"]
 
-columns_machine=["day","year","month","machine_id","product_name","product_code","scrabe_standard",
+columns_machine=["day","year","month","f14machine_id","product_name","product_code","scrabe_standard",
 "sum_scrabe_no_parts","number_scrab_by_item","gross_production",'scrap_percent_by_item'
-,"number_day_use","item_id","machine_type"]
+,"number_day_use","f11part_item_id","machine_type"]
 
-columns_cycle_time=["day","year","month","machine_id","mold_name","product_name","product_code","set","standard_rate_hour"
-,"c_t_standard_per_second",'shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2',"rat_actually","c_t_actually","number_day_use","mold_id",]
+columns_cycle_time=["day","year","month","f14machine_id","mold_name","product_name","product_code","set","standard_rate_hour"
+,"c_t_standard_per_second",'shift1_c_t1','shift1_c_t2','shift2_c_t1','shift2_c_t2',"rat_actually","c_t_actually","number_day_use","f12molds_id",]
 
 class Unique():
     def __init__(self,folder,readfile,readsheet,column1,column2,writefile,sheetwriter):
@@ -1080,7 +1082,7 @@ class Select():
         #new sheet
         
         wb = xl.load_workbook(self.readfile1)
-        ws2= wb.get_sheet_by_name('input_yearly')
+        ws2= wb.get_sheet_by_name('input_daily')
         
         ws=wb.copy_worksheet(ws2)   #copy new sheet
 
@@ -1135,7 +1137,7 @@ class Select():
         #to save excel sheet by columns original columns
         writer_report = pd.ExcelWriter("QC_molds_daily_yearly_v3.xlsx")
         writer_report.save()
-    def monthly_molds(self,writerFile,year,month,day,to_day,*args,monthly=True,daily=True):
+    def monthly_molds(self,writerFile,year,month,day,to_day,*args,monthly=True,daily=True,weekly=True):
         '''
         mold report for 
             1- to get summary report for each day
@@ -1169,18 +1171,22 @@ class Select():
         import datetime
         d = datetime.datetime(int(year), int(month), int(day))
         date_day=d.date()
-        daily_analysis1_bool=mold_analysis2["day"]==date_day
+        daily_analysis1_bool=mold_analysis2["date_day"]==date_day
         daily_analysis1=mold_analysis2[daily_analysis1_bool]
-        #validate input 
-
-        
+        #for week shout count 
+        if weekly:
+            #daily_analysis3_day=mold_analysis2["day"]<= int(day)
+            #daily_analysis3_bool=daily_analysis3_day["day"]>=int(to_day)
+            #daily_analysis_weekly=mold_analysis2[daily_analysis3_bool]
+            daily_analysis_weekly=mold_analysis2[mold_analysis2["day"]<= int(day)]
         #daily_analysis=daily_analysis[column_monthly_report]       
         if daily:
             daily_analysis=daily_analysis1
 
         elif monthly:
             daily_analysis=mold_analysis2
-        
+        elif weekly:
+            daily_analysis=daily_analysis_weekly
         else:
             daily_analysis=daily_analysis1
 
@@ -1204,18 +1210,18 @@ class Select():
         
         scrap["scrap_percent_by_item"]=scrap['number_scrab_by_item']/scrap['gross_production']
 
-        scrap_product_machine=scrap2.groupby(["product_name","product_code","machine_id","scrabe_standard"])['number_scrab_by_item',
+        scrap_product_machine=scrap2.groupby(["product_name","product_code","f14machine_id","scrabe_standard"])['number_scrab_by_item',
         "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
 
         scrap_product_machine["scrap_percent_by_item"]=scrap_product_machine['number_scrab_by_item']/scrap_product_machine['gross_production']
         
         print("_____scrap____",scrap_product_machine)
 
-        scrap_machine_product=scrap2.groupby(["machine_id","scrabe_standard","product_name","product_code"])['number_scrab_by_item',
+        scrap_machine_product=scrap2.groupby(["f14machine_id","scrabe_standard","product_name","product_code"])['number_scrab_by_item',
         "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
         scrap_machine_product["scrap_percent_by_item"]=scrap_machine_product['number_scrab_by_item']/scrap_machine_product['gross_production']
         
-        machines=scrap2.groupby(["machine_id","scrabe_standard","machine_type"])['number_scrab_by_item',
+        machines=scrap2.groupby(["f14machine_id","scrabe_standard","machine_type"])['number_scrab_by_item',
         'sum_scrabe_no_parts',"gross_production","number_day_use"].sum()
         machines["scrap_percent_by_item"]=machines['number_scrab_by_item']/machines['gross_production']
         scrap_bool2=scrap2["scrap_percent_by_item"]>scrap2["scrabe_standard"]
@@ -1235,15 +1241,18 @@ class Select():
         "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
         ,"c_t_standard_per_second"])["average_dry_weight","average_wet_weight","rat_actually","c_t_actually"].mean()
         
+        
         output_aggrigate=daily_analysis.groupby(["product_name","product_code","standard_dry_weight",
         "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
         ,"c_t_standard_per_second"])['number_scrab_by_item',
         "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
+        
+
         #removed "scrabe_standard" for error  'MergedCell' object attribute 'value' is read-only
+        output_average.append(output_aggrigate)
+        #output_mold.append(output_aggrigate)
         output_mold=output_average
-        output_mold.append(output_aggrigate)
-        #output_mold=output_average
-        #output.to_frame()
+        #output_mold=pd.DataFrame(index=True)
 #        output.unstack()
         #Convert the Groupby to a DataFrame with to_frame()
 
@@ -1313,7 +1322,7 @@ class Select():
         daily_analysis = daily_analysis.dropna(subset=['c_t_actually'])#drop And for remove all rows with NaNs in column x use dropna: 
         daily_analysis["c_t_actually"]=daily_analysis["c_t_actually"]#Last convert values to ints:
 
-        report_forCt=daily_analysis.groupby(["machine_id","mold_name"])["c_t_standard_per_second","standard_rate_hour","rat_actually","c_t_actually"].mean()
+        report_forCt=daily_analysis.groupby(["f14machine_id","mold_name"])["c_t_standard_per_second","standard_rate_hour","rat_actually","c_t_actually"].mean()
         
         
         print("___________daily_analysis   standard_dry_weight_from",mold_analysis2[["standard_dry_weight_from"]])
@@ -1343,12 +1352,12 @@ class Select():
         c_t_nonconfomity["ct_ok"]=ct_ok
         #weight report
        #fix whistespaces in column names
-        weight_cl=["machine_id","mold_name","standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"]
+        weight_cl=["f14machine_id","mold_name","standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"]
         wieght3=daily_analysis1[weight_cl]
         #new_data = pd.DataFrame()
         #new_data['tsneY'] = df['tsneY'].values.tolist()
         print('weight3',wieght3)
-        wieght2=daily_analysis.groupby(["machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
+        wieght2=daily_analysis.groupby(["f14machine_id","mold_name"])["standard_dry_weight_from","standard_dry_weight_to","average_dry_weight"].mean()
         print ("test_____________wieght2[standard_dry_weight_from",wieght2,wieght2.info())
 
         #filter low weithrs
@@ -1389,7 +1398,7 @@ class Select():
         ##screap report by parts##_________
                 #scap by parts
         #report=pd.DataFrame()
-        scrap5=daily_analysis1[["machine_type","machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"mold_name","scrap_weight_kg","production_weight_kg","product_name","scrabe_standard","average_dry_weight"]]
+        scrap5=daily_analysis1[["machine_type","f14machine_id",'number_scrab_by_item','gross_production','scrap_percent_by_item',"mold_name","scrap_weight_kg","production_weight_kg","product_name","scrabe_standard","average_dry_weight"]]
         
         #scrap5=report.append(scrap5)#we need fix rong calucate sacrap percent for 
         
@@ -1421,23 +1430,25 @@ class Select():
         scrap_nonconfomity_count=scrap["number_scrab_by_item"].count()        
         ##scrap for molds___________________
         '''must be in excel sheet (input) not showing null value for not mistacks in average result'''
-        scrap_molds=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
-        scrap_molds["gross_production"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['gross_production'].sum()
-        scrap_molds["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['scrap_weight_kg'].sum()
-        scrap_molds["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['production_weight_kg'].sum()
-        scrap_molds["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
+        scrap_molds=scrap5.groupby(["machine_type","f14machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
+        scrap_molds["gross_production"]=scrap5.groupby(["machine_type","f14machine_id","mold_name","scrabe_standard"])['gross_production'].sum()
+        scrap_molds["scrap_weight_kg"]=scrap5.groupby(["machine_type","f14machine_id","mold_name","scrabe_standard"])['scrap_weight_kg'].sum()
+        scrap_molds["production_weight_kg"]=scrap5.groupby(["machine_type","f14machine_id","mold_name","scrabe_standard"])['production_weight_kg'].sum()
+        scrap_molds["number_scrab_by_item"]=scrap5.groupby(["machine_type","f14machine_id","mold_name","scrabe_standard"])['number_scrab_by_item'].sum()
+
+        shoutcount_mold=scrap_molds
         production_set_molds=scrap_molds["gross_production"].sum()
         scrap_set_molds=scrap_molds["number_scrab_by_item"].sum()
         scrap_percent_molds=(scrap_set_molds.astype(int)/production_set_molds.astype(int))*100
         scrap_molds["percent"]=(scrap_molds["number_scrab_by_item"]/scrap_molds["gross_production"])*100
         ##scrap for items(as item master)___
-        scrap_items=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
+        scrap_items=scrap5.groupby(["machine_type","f14machine_id","product_name"])['number_scrab_by_item'].sum()
         
-        scrap_items["gross_production"]=scrap5.groupby(["machine_type","machine_id","product_name"])['gross_production'].sum()
-        #scrap_items["number_day_use"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_day_use'].mean()
-        scrap_items["scrap_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['scrap_weight_kg'].sum()
-        scrap_items["production_weight_kg"]=scrap5.groupby(["machine_type","machine_id","product_name"])['production_weight_kg'].sum()
-        scrap_items["number_scrab_by_item"]=scrap5.groupby(["machine_type","machine_id","product_name"])['number_scrab_by_item'].sum()
+        scrap_items["gross_production"]=scrap5.groupby(["machine_type","f14machine_id","product_name"])['gross_production'].sum()
+        #scrap_items["number_day_use"]=scrap5.groupby(["machine_type","f14machine_id","product_name"])['number_day_use'].mean()
+        scrap_items["scrap_weight_kg"]=scrap5.groupby(["machine_type","f14machine_id","product_name"])['scrap_weight_kg'].sum()
+        scrap_items["production_weight_kg"]=scrap5.groupby(["machine_type","f14machine_id","product_name"])['production_weight_kg'].sum()
+        scrap_items["number_scrab_by_item"]=scrap5.groupby(["machine_type","f14machine_id","product_name"])['number_scrab_by_item'].sum()
         scrap_items["percent"]=((scrap_items["number_scrab_by_item"])/(scrap_items["gross_production"]))*100
 
         scrap_percent_new=scrap_part_new/production_part_new * 100
@@ -1446,7 +1457,7 @@ class Select():
         
         if scrap_nonconfomity_count>0:  # for ignor impty index error
         #    scrap=pd.DataFrame(index=[0])
-            scrap_nonconfomity=scrap2.groupby(["machine_id","mold_name"])['number_scrab_by_item'].sum()
+            scrap_nonconfomity=scrap2.groupby(["f14machine_id","mold_name"])['number_scrab_by_item'].sum()
             #for ignor error when srcap is 0
             
             
@@ -1475,6 +1486,8 @@ class Select():
 #        wieght2.to_excel(writer,merge_cells=False)
         daily_analysis1.to_excel(writer,"input_molds", index=False)
         output_mold.to_excel(writer,"output_molds")
+        
+        shoutcount_mold.to_excel(writer,"shout_count")
         machines.to_excel(writer,"machines")
         writer.save()
         
@@ -1684,9 +1697,9 @@ class Select():
             daily_analysis=mold_analysis2
 
             print ("test monthly ___________________",output_mold)
-            '''
+            
             list_item_size=output_mold.shape[0]
-            ws2=wb["output"]
+            ws1=wb["output"]
             
             print("____________test_______",output_mold)    
             r = 3  # start at third row
@@ -1698,7 +1711,7 @@ class Select():
                     c += 1 # Column 'd'
                 c = 1
                 r += 1   
-            '''            
+            
             #filter on non conformity weights
                 #part one low weight
             list_item_size=weight_nonconfomity_low.shape[0]
@@ -1746,18 +1759,29 @@ class Select():
 
             ws7=wb["scrap_report"]
             list_item_size=scrap_nonconfomity.shape[0]
-            rows= scrap_nonconfomity
-            print("___TypeError: 'numpy.float64' object is not iterable___",scrap_nonconfomity)
-            r = 15  # start at 15th row
-            c = 1 # column 'a'
-            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                rows = scrap_nonconfomity.iloc[row]
-#                for item in rows:
-                    #ws1.cell(row=r, column=c).value = item
-                ws7.cell(row=r, column=c).value = row
- #                   c += 1 # Column 'd'
-                c = 1
-                r += 1   
+            if scrap_nonconfomity_count>=1:
+                rows = scrap_nonconfomity
+                r = 4  # start at 10th row
+                c = 3 # column 'c'
+                for row in range(0,list_item_size):       
+                    for item in range(0,row):
+                        ws7.cell(row=r, column=c).value = row
+                        c += 1 # Column 'd'
+                    c = 1
+                    r += 1
+            '''
+                rows= scrap_nonconfomity.index
+                print("___TypeError: 'numpy.float64' object is not iterable___",scrap_nonconfomity)
+                r = 15  # start at 15th row
+                c = 1 # column 'a'
+                for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+                    rows = scrap_nonconfomity.iloc[row]
+    #                for item in rows:
+                        #ws1.cell(row=r, column=c).value = item
+                    ws7.cell(row=r, column=c).value = row
+    #                   c += 1 # Column 'd'
+                    c = 1
+                    r += 1   
             '''
             #monthly machine report
             ws8=wb["scrap_machine"]
@@ -1772,9 +1796,8 @@ class Select():
                     c += 1 # Column 'd'
                 c = 1
                 r += 1   
-            '''                    
-        else:
-        
+            
+        else:    
             #monthly machine report
             ws8=wb["scrap_machine_yearly"]
             Block.show_machine_yearly_report(self,year,month)

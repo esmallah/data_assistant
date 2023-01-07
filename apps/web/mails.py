@@ -18,7 +18,7 @@ class Mails_management():
         self.column2=column2
         self.writefile=writefile
         self.sheetwriter=sheetwriter
-    def send_emails(itemSelection,attachment):
+    def send_emails(year,month,day,to_day,itemSelection,attachment):
         #os.chdir(folder)
         #print(folder)
         fllowup_topic='''
@@ -51,7 +51,7 @@ class Mails_management():
         test_subject='تجربة'
         test_topic='رسالة تجريبية'
 
-        fllowup_purchasing_to='mohamed.hamza@insutech-eg.com;ramy.ali@lge.com;mohamed.khater@cg-eg.com;Ismail.Mammon@insutech-eg.com']
+        fllowup_purchasing_to='mohamed.hamza@insutech-eg.com;ramy.ali@lge.com;mohamed.khater@cg-eg.com;Ismail.Mammon@insutech-eg.com'
         fllowup_purchasing_cc='Mohammed.Shawky@insutech-eg.com;ahmed.Elmetwaly@cg-eg.com;manal.elsayed@insutech-eg.com'
         fllowup_purchasing_subject='قائمة متابعة -ادارة المشتريات'
         fllowup_purchasing_topic=fllowup_topic
@@ -71,8 +71,8 @@ class Mails_management():
         fllowup_quality_subject='قائمة متابعة -ادارة الجودة'
         fllowup_quality_topic=fllowup_topic
 
-        fllowup_warehouse_to='Elhosaini Mohamed <elhosaini.mohamed@insutech-eg.com>; Ahmed Khaled <Block.RM@insutech-eg.com>; Alaa Mahdi <Block.SP@insutech-eg.com>'
-        fllowup_warehouse_cc='Mohammed Shawky <Mohammed.Shawky@insutech-eg.com>; Mostafa Abdelaziz <mostafa.abdelaziz@insutech-eg.com>; Hamada Elnaggar <hamada.elnaggar@insutech-eg.com>'
+        fllowup_warehouse_to='elhosaini.mohamed@insutech-eg.com;Block.RM@insutech-eg.com; Block.SP@insutech-eg.com'
+        fllowup_warehouse_cc='Mohammed.Shawky@insutech-eg.com; mostafa.abdelaziz@insutech-eg.com;hamada.elnaggar@insutech-eg.com'
         fllowup_warehouse_subject='قائمة متابعة -ادارة المخازن'
         fllowup_warehouse_topic=fllowup_topic
 
@@ -91,24 +91,6 @@ class Mails_management():
         fllowup_hr_subject='قائمة متابع الموارد البشرية'
         fllowup_hr_topic=fllowup_topic
 
-        #for data from Database
-        list=Select.monthly_molds
-
-        LIST_NAME=[shoutcoun_name,qc_molds_name,test_name,]
-        EMAIL_TO=[shoutcount_to,qc_molds_to,test_to,fllowup_purchasing_to,fllowup_maintenance_to,
-        fllowup_production_to,fllowup_quality_to,fllowup_warehouse_to,fllowup_october_to,
-        fllowup_safety_to,fllowup_hr_to]
-        EMAIL_CC=[shoutcount_cc,qc_molds_cc,test_cc,fllowup_purchasing_cc,fllowup_maintenance_cc,
-        fllowup_production_cc,fllowup_quality_cc,fllowup_warehouse_cc,fllowup_october_cc,
-        fllowup_safety_cc,fllowup_hr_cc]
-        LIST_SUBJECT=[shoutcount_subject,qc_molds_subject,test_subject,fllowup_purchasing_subject,fllowup_maintenance_subject,
-        fllowup_production_subject,fllowup_quality_subject,fllowup_warehouse_subject,fllowup_october_subject,
-        fllowup_safety_subject,fllowup_hr_subject]
-        LIST_TOPIC=[shoutcount_topic,qc_molds_topic,list,fllowup_purchasing_topic,fllowup_maintenance_topic,
-        fllowup_production_topic,fllowup_quality_topic,fllowup_warehouse_topic,fllowup_october_topic,
-        fllowup_safety_topic,fllowup_hr_topic]
-        
-
         '''
         mafdy_mail='mafdy.khalil@cg-eg.com'
         ihab='ehab.adel@cg-eg.com'
@@ -124,6 +106,23 @@ class Mails_management():
         ahmed_elsayed_report='<h2>dear Mr. Ahmed<br>good day<br> kindly send your montly report as following  <br>   -تسوية الخامة والكسر - <br> متابعه  خطه مبيعات وانتاج مصانع الفوم , <br></h2>'
         '''
 
+        #for data from Database
+        list=Select.monthly_molds(year,month,day,to_day,monthly=True,daily=True,weekly=True)
+
+        LIST_NAME=[shoutcoun_name,qc_molds_name,test_name,]
+        EMAIL_TO=[shoutcount_to,qc_molds_to,test_to,fllowup_purchasing_to,fllowup_maintenance_to,
+        fllowup_production_to,fllowup_quality_to,fllowup_warehouse_to,fllowup_october_to,
+        fllowup_safety_to,fllowup_hr_to]
+        EMAIL_CC=[shoutcount_cc,qc_molds_cc,test_cc,fllowup_purchasing_cc,fllowup_maintenance_cc,
+        fllowup_production_cc,fllowup_quality_cc,fllowup_warehouse_cc,fllowup_october_cc,
+        fllowup_safety_cc,fllowup_hr_cc]
+        LIST_SUBJECT=[shoutcount_subject,qc_molds_subject,test_subject,fllowup_purchasing_subject,fllowup_maintenance_subject,
+        fllowup_production_subject,fllowup_quality_subject,fllowup_warehouse_subject,fllowup_october_subject,
+        fllowup_safety_subject,fllowup_hr_subject]
+        LIST_TOPIC=[shoutcount_topic,qc_molds_topic,list,fllowup_purchasing_topic,fllowup_maintenance_topic,
+        fllowup_production_topic,fllowup_quality_topic,fllowup_warehouse_topic,fllowup_october_topic,
+        fllowup_safety_topic,fllowup_hr_topic]
+                
         item_name=LIST_NAME[itemSelection]
         item_to=EMAIL_TO[itemSelection]
         item_cc=EMAIL_CC[itemSelection]

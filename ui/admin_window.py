@@ -119,7 +119,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             #if self.ButWebEmail_sendDbReport.isChecked():
             #else:
 
-            self.ButWebMailSend.clicked.connect(lambda:Mails_management.send_emails(x,attachment_name))
+            self.ButWebMailSend.clicked.connect(lambda:Mails_management.send_emails(x,attachment_name,))#year,month,day,to_day))
     #__________________________control panel
     def restart(self):        
         if __name__ == "__main__":
@@ -177,7 +177,9 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         "LgWasherCover":28,
         "LgWasherAngels":29,
         "LgWasherBase":30,
-        "LgWasherBase_VIVACHE":31
+        "LgWasherBase_VIVACHE":31,
+
+        "lg_slides_50UQ75":32
         }
 
         #self.ButWebFilterFIllNames.clicked.disconnect()
@@ -537,8 +539,10 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             print("the monthly report has downloaded for month:",month,"and year:",year)
 
         if self.checkBox_analysis_DB_yearlyInput.isChecked():
-            git_database.export_report_daily_yearly(year,month,day,to_day)
-            print("the yearly input report has downloaded for day ",day," , month:",month,"and year:",year,monthly=False,daily=False)
+            #git_database.export_report_daily_yearly(year,month,day,to_day)
+            git_database.monthly_molds(monthlyReportName,year,month,day,to_day,monthly=False,daily=False)
+            print("the yearly report has downloaded for year:",year)
+
         if self.checkBox_analysis_DB_weekly.isChecked()==True:
             if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="quweekly production" : #for chose any type of files
                 git_database.export_report_daily_yearly(self,year,month,day,to_day)
@@ -546,7 +550,10 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="weekly defect" : 
                 git_database.export_report_daily_yearly(year,day,to_day)
                 print("download defects report from day:",day,"to day :",to_day," month:",month," year:",year)
-
+            if str(self.comboBox_analysisDb_weeklyChoices.currentText())=="shout_count" : 
+                git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=False,weekly=True)
+                
+                print("download shout count report from day:",day,"to day :",to_day," month:",month," year:",year)
         #____________________________________________________________________________________________
                             ##generate_data
         #capabilty study

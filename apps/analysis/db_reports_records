@@ -1,0 +1,228 @@
+from memory.database_postgrs import cursor,conn
+#from .database_sqlite import conn , cursor
+SQL_quality_records="""
+				year,
+				month
+                    """
+class RecordDb():
+	'''this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries'''		
+	def __init__(self,folder,table):
+		self.folder=folder
+		self.table=table	
+	def uninstall_reports(self):
+		#uninstall report first steps to uninistall database structures'''
+			
+			drop_v100items_molds_report=	'''drop view v100items_molds_report'''
+			cursor.execute(drop_v100items_molds_report)
+	def install_befor_reports_molds(self):	#for prepair data to get reports as mold list
+			create_view_qulaity_inspection_as_molds_list='''/* for collect quality_inspection as yv_parts_items  */
+				create view v106quality_inspection_molds as (select 
+									q.year, q.month ,q.day ,q.f12molds_id,q.f14machine_id,
+									round(sum(q.shift1_wet_weight1),1)as shift1_wet_weight1,
+									round(sum(q.shift1_wet_weight2),1)as shift1_wet_weight2,
+									round(sum(q.shift1_wet_weight3),1)as shift1_wet_weight3,
+									round(sum(q.shift1_wet_weight4),1)as shift1_wet_weight4,
+									round(sum(q.shift1_wet_weight5),1)as shift1_wet_weight5,
+									round(sum(q.shift1_dry_weight1),1)as shift1_dry_weight1,
+									round(sum(q.shift1_dry_weight2),1)as shift1_dry_weight2,
+									round(sum(q.shift1_dry_weight3),1)as shift1_dry_weight3,
+									round(sum(q.shift1_dry_weight4),1)as shift1_dry_weight4,
+									round(sum(q.shift1_dry_weight5),1)as shift1_dry_weight5,
+									round(avg(q.shift1_c_t1),0)as shift1_c_t1,
+									round(avg(q.shift1_c_t2),0) as shift1_c_t2,
+									round(sum(q.shift2_wet_weight1),1)as shift2_wet_weight1,
+									round(sum(q.shift2_wet_weight2),1)as shift2_wet_weight2,
+									round(sum(q.shift2_wet_weight3),1)as shift2_wet_weight3,
+									round(sum(q.shift2_wet_weight4),1)as shift2_wet_weight4,
+									round(sum(q.shift2_wet_weight5),1)as shift2_wet_weight5,				
+									round(sum(q.shift2_dry_weight1),1)as shift2_dry_weight1,
+									round(sum(q.shift2_dry_weight2),1)as shift2_dry_weight2,
+									round(sum(q.shift2_dry_weight3),1)as shift2_dry_weight3,
+									round(sum(q.shift2_dry_weight4),1)as shift2_dry_weight4,
+									round(sum(q.shift2_dry_weight5),1)as shift2_dry_weight5,
+									round(avg(q.shift2_c_t1),0)as shift2_c_t1,		
+									round(avg(q.shift2_c_t2),0)as shift2_c_t2,
+									round(sum(q.average_wet_weight ),1)as average_wet_weight ,
+									round(sum(q.average_dry_weight),1)as average_dry_weight,
+									
+									round(avg(q.rat_actually),0)as rat_actually ,
+									round(avg(q.rat_validation),0)as rat_validation,
+									round(avg(q.c_t_actually),0)c_t_actually,				
+									round(min(q.shift1_production_cards),0)as shift1_production_cards,
+									round(min(q.shift1_prod_page),0)as shift1_prod_page,
+									round(min(q.shift1_proper_production),0)as shift1_proper_production,
+									round(min(q.shift1_scrabe_shortage),0)as shift1_scrabe_shortage,
+									round(min(q.shift1_scrabe_roll),0)as shift1_scrabe_roll,
+									round(min(q.shift1_scrabe_broken),0)as shift1_scrabe_broken,
+									round(min(q.shift1_scrabe_curve),0)as shift1_scrabe_curve,
+									round(min(q.shift1_scrabe_shrinkage),0)as shift1_scrabe_shrinkage,
+									round(min(q.shift1_scrabe_dimentions),0)as shift1_scrabe_dimentions,
+									round(min(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
+									round(min(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
+									round(min(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
+									
+									round(min(q.shift2_production_cards),0)as shift2_production_cards,
+									round(min(q.shift2_prod_page),0)as shift2_prod_page,
+									round(min(q.shift2_proper_production),0)as shift2_proper_production,
+									round(min(q.shift2_scrabe_shortage),0)as shift2_scrabe_shortage,
+									round(min(q.shift2_scrabe_roll),0)as shift2_scrabe_roll,
+									round(min(q.shift2_scrabe_broken),0)as shift2_scrabe_broken,
+									round(min(q.shift2_scrabe_curve),0)as shift2_scrabe_curve,
+									round(min(q.shift2_scrabe_shrinkage),0)as shift2_scrabe_shrinkage,
+									round(min(q.shift2_scrabe_dimentions),0)as shift2_scrabe_dimentions,
+									round(min(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
+									round(min(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
+									round(min(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
+									
+									
+									s.density,
+									q.date_day
+									from v10quality_inpsection q
+									left join v96item_specifications s
+									on q.f12molds_id=s.f12molds_id
+									group by q.year, q.month ,q.day,q.date_day,q.f14machine_id,q.f12molds_id,s.density
+									
+									order by q.year, q.month  ,q.date_day ,q.f14machine_id)
+			'''
+			cursor.execute(create_view_qulaity_inspection_as_molds_list)
+			conn.commit()
+			print("complete  install view befor_reports_molds")		
+def install_reports(self):
+		create_view_quality_daily='''create view v101molds_report_daily as(select q.year, q.month ,q.day,q.f12molds_id,q.f11part_item_id,q.f14machine_id,
+								
+								p.product_name,p.product_code
+								,p.machine_size,p.set,p.no_on_set
+								,p.standard_dry_weight,p.standard_dry_weight_from,p.standard_dry_weight_to,
+								
+								/*weight and ct record*/									
+								round(avg(q.shift1_wet_weight1),0)as shift1_wet_weight1,
+								round(avg(q.shift1_wet_weight2),0)as shift1_wet_weight2,
+								round(avg(q.shift1_wet_weight3),0)as shift1_wet_weight3,
+								round(avg(q.shift1_wet_weight4),0)as shift1_wet_weight4,
+								round(avg(q.shift1_wet_weight5),0)as shift1_wet_weight5,
+								round(avg(q.shift1_dry_weight1),0)as shift1_dry_weight1,
+								round(avg(q.shift1_dry_weight2),0)as shift1_dry_weight2,
+								round(avg(q.shift1_dry_weight3),0)as shift1_dry_weight3,
+								round(avg(q.shift1_dry_weight4),0)as shift1_dry_weight4,
+								round(avg(q.shift1_dry_weight5),0)as shift1_dry_weight5,
+								round(avg(q.shift1_c_t1),0)as shift1_c_t1,
+								round(avg(q.shift1_c_t2),0)as shift1_c_t2,
+								round(avg(q.shift2_wet_weight1),0)as shift2_wet_weight1,
+								round(avg(q.shift2_wet_weight2),0)as shift2_wet_weight2,
+								round(avg(q.shift2_wet_weight3),0)as shift2_wet_weight3,
+								round(avg(q.shift2_wet_weight4),0)as shift2_wet_weight4,
+								round(avg(q.shift2_wet_weight5),0)as shift2_wet_weight5,
+								round(avg(q.shift2_dry_weight1),0)as shift2_dry_weight1,
+								round(avg(q.shift2_dry_weight2),0)as shift2_dry_weight2,
+								round(avg(q.shift2_dry_weight3),0)as shift2_dry_weight3,
+								round(avg(q.shift2_dry_weight4),0)as shift2_dry_weight4,
+								round(avg(q.shift2_dry_weight5),0)as shift2_dry_weight5,
+								round(avg(q.shift2_c_t1),0)as shift2_c_t1,
+								round(avg(q.shift2_c_t2),0)as shift2_c_t2,
+								round(avg(q.average_wet_weight),1)as average_wet_weight,
+								round(avg(q.average_dry_weight),1)as average_dry_weight,
+								p.standard_rate_hour,
+								p.c_t_standard_per_second,								
+								round(avg(q.rat_actually),0)as rat_actually,
+								round(avg(q.c_t_actually),0)as c_t_actually,
+								/*scrap record*/									
+								
+								round(sum(q.shift1_production_cards),0)as shift1_production_cards,
+								round(sum(q.shift1_prod_page),0)as shift1_prod_page,
+								round(sum(q.shift1_proper_production),0)as shift1_proper_production,
+
+								round(sum(q.shift1_scrabe_shortage),0)as shift1_scrabe_shortage,
+								round(sum(q.shift1_scrabe_roll),0)as shift1_scrabe_roll,
+								round(sum(q.shift1_scrabe_broken),0)as shift1_scrabe_broken,
+								round(sum(q.shift1_scrabe_curve),0)as shift1_scrabe_curve,
+								round(sum(q.shift1_scrabe_shrinkage),0)as shift1_scrabe_shrinkage,
+								round(sum(q.shift1_scrabe_dimentions),0)as shift1_scrabe_dimentions,
+								round(sum(q.shift1_scrabe_weight),0)as shift1_scrabe_weight,
+								round(sum(q.shift1_scrabe_dirty),0)as shift1_scrabe_dirty,
+								round(sum(q.shift1_scrabe_cloration),0)as shift1_scrabe_cloration,
+												
+								round(sum(q.shift2_production_cards),0)as shift2_production_cards,
+								round(sum(q.shift2_prod_page),0)as shift2_prod_page,
+								round(sum(q.shift2_proper_production),0)as shift2_proper_production,
+								round(sum(q.shift2_scrabe_shortage),0)as shift2_scrabe_shortage,
+								round(sum(q.shift2_scrabe_roll),0)as shift2_scrabe_roll,
+								round(sum(q.shift2_scrabe_broken),0)as shift2_scrabe_broken,
+								round(sum(q.shift2_scrabe_curve),0)as shift2_scrabe_curve,
+								round(sum(q.shift2_scrabe_shrinkage),0)as shift2_scrabe_shrinkage,
+								round(sum(q.shift2_scrabe_dimentions),0)as shift2_scrabe_dimentions,
+								round(sum(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
+								round(sum(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
+								round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
+								
+								
+								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
+								date_part('week', q.date_day::date) AS weeksNumbers,
+								p.mold_name,m.machine_type,m.scrabe_standard
+				from v105quality_inspection_items q
+							
+							left join v108items_master p
+							on q.f11part_item_id=p.item_id
+							left join insutech.t14machine m
+							on m.id=q.f14machine_id
+								group by q.factory,q.year, q.month ,q.day,q.date_day,q.f12molds_id,p.mold_name,
+								q.f14machine_id,p.machine_size,m.machine_type,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,
+								p.product_name_by_parts,p.product_parts,p.UOM,p.set,p.no_on_set,p.standard_dry_weight
+								,p.standard_dry_weight_from,p.standard_dry_weight_to,p.standard_rate_hour
+								,p.c_t_standard_per_second,p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers
+								
+							order by q.year, q.month,q.day,q.f14machine_id
+			)'''
+		cursor.execute(create_view_quality_daily)
+		create_monthly_report_view='''create view v102molds_report as (select 
+							q.year, q.month ,q.f12molds_id,s.mold_name
+							,s.c_t_standard_per_second,
+							round(avg(q.c_t_actually),0)as c_t_actually,
+							round(avg(q.rat_actually),0)as rat_actually,
+							
+							m.scrabe_standard
+							
+							
+							from v106quality_inspection_molds q
+							left join v12molds_list s
+							on q.f12molds_id=s.mold_id
+						left join insutech.t14machine m
+						on m.id=q.f14machine_id
+						
+							group by q.year, q.month ,m.scrabe_standard,q.f12molds_id,s.mold_name
+							,s.c_t_standard_per_second
+							
+						order by q.year, q.month )'''
+		cursor.execute(create_monthly_report_view)
+				
+
+		create_item_report_view='''create view v100items_molds_report as (select 
+								q.year ,q.month, q.f12molds_id,q.f11part_item_id,p.product_name
+								,p.product_code
+								,p.standard_dry_weight
+								,p.standard_dry_weight_from
+								,p.standard_dry_weight_to
+								,round(avg(q.average_wet_weight),1)as average_wet_weight
+								,round(avg(q.average_dry_weight),1)as average_dry_weight
+								,round((avg(average_wet_weight)-avg(p.standard_dry_weight))/avg(p.standard_dry_weight),1) as wet_average_percent
+								,p.standard_rate_hour as standard_rate_hour
+								,p.c_t_standard_per_second c_t_standard_per_second
+								,round(avg(q.rat_actually),0)as rat_actually
+								,round(avg(q.c_t_actually),0)as c_t_actually,
+								m.scrabe_standard,
+								p.customer_name,
+								p.item_name_customers,
+								p.item_code_customers
+								from v105quality_inspection_items q
+							left join v108items_master p
+							on q.f11part_item_id=p.item_id 
+							left join insutech.t14machine m
+							on m.id=q.f14machine_id
+							
+								group by q.year,q.month,p.customer_name, q.f12molds_id,q.f11part_item_id,p.product_name,p.item_name_customers,
+								p.item_code_customers,p.product_code,p.standard_dry_weight
+								,p.standard_dry_weight_from,p.standard_dry_weight_to,p.standard_rate_hour
+								,p.c_t_standard_per_second,m.scrabe_standard
+								
+							order by q.year)'''
+		cursor.execute(create_item_report_view)
+		conn.commit()
