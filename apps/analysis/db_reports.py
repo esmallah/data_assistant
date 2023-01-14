@@ -1084,7 +1084,7 @@ class Block():
 			print("complete install view befor_reports_Items")	
 	
 	def install_reports(self):
-		create_view_quality_daily='''create view v101molds_report_daily as(select q.year, q.month ,q.day,q.date_day,q.f12molds_id,q.f11part_item_id,q.f14machine_id,
+		create_view_quality_daily='''create view v101molds_report_daily as(select q.date_day,q.day,q.month,q.year,q.f12molds_id,q.f11part_item_id,q.f14machine_id,
 								
 								p.product_name,p.product_code
 								,p.machine_size,p.set,p.no_on_set
@@ -1722,7 +1722,7 @@ class Block():
 			cursor.execute(SQL2, month)	
 		else:
 			cursor.execute(SQL2, (month,))	
-	
+	# show yearly reports	
 	def yearly_report_ncr_weight(self,year,month):
 		SQL1='''with quary_molds_report as (select 
 									q.year,q.f12molds_id,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight
@@ -1822,7 +1822,7 @@ class Block():
 #		SQL3 = SQL1+' and mold_id = (%s)'
 #		cursor.execute(SQL3, (args, ))
 		
-	def get_daily_dataentry_items_yearly(self,year,month,day,to_day):
+	def get_daily_dataentry_items_yearly(self,year):
 		SQL1='''with quary_items_report as (select * from v101molds_report_daily
 									)
 							select * from quary_items_report where year=(%s)'''%year

@@ -24,7 +24,6 @@ source ../env/Scripts/activate
 
 or in conda
 
-
 conda init
 conda activate a1leader_pyqt
 

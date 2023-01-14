@@ -41,10 +41,11 @@ columns_parts=['part_id','product_code','product_name_by_parts','Weight_kg','sta
 #prepare data entering tables
     #3collecting tables ct,weight and scrap(yt_quality)
 #columns for data entry only
-columns_quality=['year',
-    'month',
-    'day',
+columns_quality=[
     'date_day',
+    'day',
+    'month',
+    'year',
     'f14machine_id',
     'f11part_item_id',
     'f12molds_id',
@@ -356,8 +357,9 @@ class Select():
         column_names = [desc[0] for desc in cursor.description]
         get_data = pd.DataFrame(get_data2,columns=column_names)
         
+        
         data=get_data[columns_quality]
-
+        
         #brebare data
         
         dry_weight_cl=[
@@ -494,7 +496,28 @@ class Select():
             'HoursScrap'])
         get_data.round(decimals)    
         return get_data
-
+    def analyser(self,data):
+        
+        index_columns=data["year","month","product_name","product_code","standard_dry_weight",
+        "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
+        ,"c_t_standard_per_second","f14machine_id"]
+        average_columns=data["average_dry_weight","average_wet_weight","rat_actually",
+        "c_t_actually",'shift1_dry_weight1', 'shift1_dry_weight2',
+         'shift1_dry_weight3', 'shift1_dry_weight4', 'shift1_dry_weight5',
+          'shift2_dry_weight1', 'shift2_dry_weight2', 'shift2_dry_weight3',
+           'shift2_dry_weight4', 'shift2_dry_weight5']
+        aggrigate_columns=data['number_scrab_by_item',
+        "sum_scrabe_no_parts","gross_production","number_day_use"]
+        output_average=data.groupby(index_columns)[average_columns].mean(axis=1)
+        
+        output_aggrigate=data.groupby(index_columns)[aggrigate_columns].sum(axis=1)
+        
+        df = pd.DataFrame(output_average, columns = index_columns)
+        #removed "scrabe_standard" for error  'MergedCell' object attribute 'value' is read-only
+        df.append(output_aggrigate)
+        print("______________data anlyser df",df)
+        data_outbut=df
+        return data_outbut
     def select_data(self,year,month,day,isday=True,monthly=True,yearly=True,masterData=True,quality_records=True):
         print("select data starts")  
         '''to convert excel file to csv for entering to database
@@ -524,7 +547,6 @@ class Select():
         #filter the time
         last_year=daily_data3["year"].max()
         
-
         daily_data2=daily_data3[daily_data3["year"]==last_year]
         daily_data_material2=material_data3[material_data3["year"]==last_year]
         last_month=daily_data2["month"].max()
@@ -631,512 +653,6 @@ class Select():
     
         conn.commit()
 
-    
-    def export_report_mothly(self,writerFile,year,month,day,to_day,*args,monthly=True):
-        '''
-        to get daily report and monthly repots ended by QC_molds_daily_archive_v3
-        '''
-        from apps import Block,cursor,conn
-
-        os.chdir(self.folder)
-        wb = xl.load_workbook(self.readfile1)
-        #__________________________________________________________________        
-
-        sql_query=Block.get_daily_dataentry_items(self,year,month,day)
-        get_data = self.load_data(sql_query)        
-
-        list_item_size=get_data.shape[0]
-        #get_data.shift1_all_production=sum(get_data.shift1_scrabe_shortage,get_data.shift1_scrabe_roll,get_data.shift1_scrabe_broken, get_data.shift1_scrabe_curve,  get_data.shift1_scrabe_shrinkage,get_data.shift1_scrabe_dimentions,get_data.shift1_scrabe_weight,get_data.shift1_scrabe_dirty)
-        
-        print('______________get data________________________',get_data['average_dry_weight'])
-        #__________________________________________________________________
-        #daily input
-
-        ws1=wb["input_daily"]
-        #create  the index sheet:
-        r = 4  # start at 4th row
-        c = 1 # column 'a'
-        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-            rows = get_data.iloc[row]
-            for item in rows:
-                ws1.cell(row=r, column=c).value = item
-                c += 1 # Column 'd'
-            c = 1
-            r += 1   
-        
-        #material by silo
-        ws_bach=wb["material_daily"]
-        Material.material_bySilo_daily(self,year,month,day,to_day)
-        get_data=cursor.fetchall()
-        rows=get_data      
-        r = 4  # start at fourd row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-            for item in row:
-                ws_bach.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-        #Bache input
-        ws_bach=wb["batches"]
-        Block.show_monthly_Baches(self,year,month)
-        
-#        sql_query=Block.show_monthly_Baches(self,year,month)
- #       get_data = self.load_data(sql_query)        
-
-        get_data=cursor.fetchall()
-        rows=get_data
-        #rows = get_data[columns_quality]
-        
-        r = 4  # start at fourd row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-            for item in row:
-                ws_bach.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-        #monthly scrap report by day
-        ws8=wb["scrap_type_machines"]
-        Block.show_scrap_monthly_report_type_machines(self,year,month)
-        #sql_query=Block.show_scrap_monthly_report_type_machines(self,year,month)
-        #get_data = self.load_data(sql_query)        
-
-        rows = cursor.fetchall()
-        r = 3  # start at 33th row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-        
-            for item in row:
-                ws8.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-            #monthly machine report
-        ws8=wb["scrap_days"]
-        Block.show_scrap_monthly_report_by_days(self,year,month)
-        #sql_query=Block.show_scrap_monthly_report_by_days(self,year,month)
-        #get_data = self.load_data(sql_query)        
-        rows = cursor.fetchall()
-        r = 3  # start at 33th row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-        
-            for item in row:
-                ws8.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1    
-        #water content report
-        ws1=wb["moisture_daily"]
-
-        Block.show_water_content_daily(self,year,month,day,to_day)
-        #sql_query=Block.show_water_content_daily(self,year,month,day,to_day)
-        #get_data = self.load_data(sql_query)        
-        get_data=cursor.fetchall()
-        #get_data.set_index("serial", inplace=True) #put index
-        
-        #get_data=pd.DataFrame(get_data["id"])
-        rows=get_data
-        #rows = get_data[columns_quality]
-        
-        r = 4  # start at fourd row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-            for item in row:
-                ws1.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-        #monthly output
-        if monthly:
-            ws2=wb["output"]
-            
-            sql_query=Block.show_monthly_report_ar(self,year,month,day,to_day)
-            get_data = self.load_data(sql_query)
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws2.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #______yearly report
-            #monthly mold report
-            
-            #filter on non conformity weights
-                #part one low weight
-            ws5=wb["wieght_report"]
-            Block.monthly_report_ncr_weight_low(self,year,month)
-            rows = cursor.fetchall()
-            r = 12  # start at 12 row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws5.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-                #part tow hight weight
-                ws5=wb["wieght_report"]
-            Block.monthly_report_ncr_weight_hight(self,year,month)
-            rows = cursor.fetchall()
-            r = 33  # start at 33th row
-            c = 1 # column 'a'
-            for row in rows:
-                
-                for item in row:
-                    ws5.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #filter on non conformity ct
-            ws6=wb["ct_report"]
-            Block.monthly_report_ncr_ct(self,year,month)
-            rows = cursor.fetchall()
-            r = 11  # start at 11th row
-            c = 1 # column 'a'
-            for row in rows:
-                
-                for item in row:
-                    ws6.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #filter on on conformity scrap
-            ws7=wb["scrap_report"]
-            Block.monthly_report_ncr_scrap(self,year,month)
-            rows= cursor.fetchall()
-            r = 15  # start at 15th row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws7.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #monthly machine report
-            ws8=wb["scrap_machine"]
-            Block.show_machine_monthly_report(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at 33th row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws8.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
-            
-            #monthly machine report
-            ws8=wb["scrap_machine_yearly"]
-            Block.show_machine_yearly_report(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at 33th row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws8.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
-        
-            ws2=wb["output_monthly"]
-            Block.show_yearly_report_itemsByMonths(self,year,args)
-            
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws2.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
-            ws3=wb["year"]
-            Block.show_machine_report_yearly(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws3.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #scrap monthly
-            ws3=wb["month"]
-            Block.show_monthly_report_view_month(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws3.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #yearly item report
-            ws2=wb["output_yearly"]
-            Block.items_report_arabic_custom_item(self,year,month,args)
-            
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws2.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
-            
-            #monthly mold report by molds not items
-            ws_output_molds=wb["output_molds"]
-            Block.show_mnthly_report_molds(self,year,month)
-
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-
-                for item in row:
-                    ws_output_molds.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-
-            ws_output_molds_yearly=wb["output_mold_monthly"]
-            Block.yearly_report_molds_byMonthes(self,year,args)
-
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-
-                for item in row:
-                    ws_output_molds_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-
-                #report for moldsy monthly
-            
-            ws_wieght_yearly=wb["output_molds_yearly"]
-            Block.show_yearly_report_molds(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at 3th row
-            c = 1 # column 'a'
-            for row in rows:
-                for item in row:
-                    ws_wieght_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
-                #report of hight weight
-            ws_wieght_yearly=wb["wieght_yearly"]
-            Block.yearly_report_ncr_weight(self,year,month)
-            rows = cursor.fetchall()
-            r = 10  # start at 10th row
-            c = 1 # column 'a'
-            for row in rows:
-                
-                for item in row:
-                    ws_wieght_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #filter on non conformity ct
-            ws_ct_yearly=wb["ct_yearly"]
-            Block.yearly_report_ncr_ct(self,year,month)
-            rows = cursor.fetchall()
-            r = 11  # start at 11th row
-            c = 1 # column 'a'
-            for row in rows:
-                
-                for item in row:
-                    ws_ct_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #filter on on conformity scrap
-            ws_scrap_yearly=wb["scrap_yearly"]
-            Block.yearly_report_ncr_scrap(self,year,month)
-            rows= cursor.fetchall()
-            r = 15  # start at 15th row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws_scrap_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #for material
-            ws1=wb["materials"]
-            Material.materialToPorduct(self,year)
-            get_data=cursor.fetchall()
-            #get_data.set_index("serial", inplace=True) #put index
-            
-            #get_data=pd.DataFrame(get_data["id"])
-            rows=get_data
-            #rows = get_data[columns_quality]
-            
-            r = 4  # start at fourd row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-                for item in row:
-                    ws1.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-
-            
-
-        wb.save(writerFile)
-    def molds_capabilty_study(self,mold,LSL,USL,eye_numbers,code,name,date):
-        os.chdir(self.folder)
-        
-        
-        Block.show_items(self)
-        get_data=cursor.fetchall()
-        #get_data.set_index("serial", inplace=True) #put index
-        get_data=pd.read_excel("QC_daily_v2 - Copy.xlsx","items_spec")
-        #get_data=pd.DataFrame(get_data["id"])
-        data2=get_data[get_data['mold_id']==mold]
-        data=data2
-        #data=data2.split(",")
-        director=data["mold_id"]
-        print("kindly weignt , the data is generating")
-        
-        wb = xl.load_workbook(self.readfile1)
-        ws2= wb.get_sheet_by_name('eye')
-        
-
-        #rows = get_data[columns_quality]
-#        for items in len(data):
-
-        #part=data[items]
-        #item=[data["part_id"]==part]
-        
-        #ws2['h2']=self.sheet1
-        
-        ws2['a2']=code
-        ws2['b2']=date
-        ws2['k2']=name
-        ws2['i9']=USL
-        ws2['i10']=LSL
-        for n in range(eye_numbers):
-            ws=wb.copy_worksheet(ws2)   #copy new sheet
-            r = 6  # row number
-            c = 2 # column 'a'
-            values=[]
-            for i in range(50):
-                
-                random_value = randint(LSL,USL)            
-                values.append(random_value)
-                
-                for item in values:
-                    item=str(random_value)
-                    ws.cell(row=r, column=c).value = item
-                c = 2
-                r += 1
-            ws.title=self.writesheet
-        wb.save(self.writefile)
-    
-    def export_report_daily_yearly(self,year,month,day,to_day,*args):
-        os.chdir(self.folder)
-        #new sheet
-        
-        wb = xl.load_workbook(self.readfile1)
-        ws2= wb.get_sheet_by_name('input_daily')
-        
-        ws=wb.copy_worksheet(ws2)   #copy new sheet
-
-        #splite day
-        
-        
-        ws.title="input"  #rename new sheet by the name
-        
-        
-        sql_query=Block.get_daily_dataentry_items_yearly(self,year,month,day,to_day)
-        get_data = self.load_data(sql_query)        
-
-        list_item_size=get_data.shape[0]
-        
-        ws1=wb["input"]
-        #create  the index sheet:
-        r = 4  # start at 4th row
-        c = 1 # column 'a'
-        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-            rows = get_data.iloc[row]
-            for item in rows:
-                ws1.cell(row=r, column=c).value = item
-                c += 1 # Column 'd'
-            c = 1
-            r += 1   
-            
-        
-        '''
-        #for week
-        ws1=wb["input-week"]
-        
-        Block.yearly_report_molds_byWeeks(self,year,month,day,to_day)
-        get_data=cursor.fetchall()
-        #get_data.set_index("serial", inplace=True) #put index
-        
-        #get_data=pd.DataFrame(get_data["id"])
-        rows=get_data
-        #rows = get_data[columns_quality]
-        
-        r = 4  # start at fourd row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-            for item in row:
-                ws1.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-
-        '''
-        wb.save(year+"-QC_molds_daily_yearly_v3.xlsx")
-        #to save excel sheet by columns original columns
-        writer_report = pd.ExcelWriter("QC_molds_daily_yearly_v3.xlsx")
-        writer_report.save()
     def monthly_molds(self,writerFile,year,month,day,to_day,*args,monthly=True,daily=True,weekly=True):
         '''
         mold report for 
@@ -1149,9 +665,15 @@ class Select():
         os.chdir(self.folder)
 
         wb = xl.load_workbook(self.readfile1)
-        
-        sql_query=Block.get_daily_dataentry_items(self,year,month,day)
-
+        if daily:
+            sql_query=Block.get_daily_dataentry_items(self,year,month,day)
+        elif monthly:
+            sql_query=Block.get_daily_dataentry_items(self,year,month,day)
+            #sql_query=Block.show_monthly_report_ar(self,year,month,day,to_day)
+        else :
+            sql_query=Block.get_daily_dataentry_items_yearly(self,year)
+            #Block.show_mnthly_report_molds(self,year,month)
+            #Block.items_report_arabic_custom_item(self,year,month,args)
         get_data = self.load_data(sql_query)        
         
         last_year=int(get_data["year"].max())
@@ -1182,16 +704,18 @@ class Select():
         #daily_analysis=daily_analysis[column_monthly_report]       
         if daily:
             daily_analysis=daily_analysis1
-
+            print("daily_analysis for day",day,daily_analysis)
+            print("date",year,month,day)
         elif monthly:
-            daily_analysis=mold_analysis2
+            #daily_analysis=mold_analysis2
+            daily_analysis = self.analyser(self,get_data)
+            print ("____________analyser_______",daily_analysis)
         elif weekly:
             daily_analysis=daily_analysis_weekly
         else:
-            daily_analysis=daily_analysis1
-
-        print("daily_analysis for day",day,daily_analysis)
-        print("date",year,month,day)
+            #daily_analysis=mold_analysis3
+            daily_analysis = self.analyser(self,get_data)
+        #select data
         dry_weight3=daily_analysis[columns_weight]
         dry_weight_bool=dry_weight3['average_dry_weight'].notnull()
         dry_weight2=dry_weight3[dry_weight_bool]
@@ -1237,28 +761,7 @@ class Select():
         "standard_dry_weight_from","standard_dry_weight_to"])["average_dry_weight","average_wet_weight"].mean()
        
         # export
-        output_average=daily_analysis.groupby(["product_name","product_code","standard_dry_weight",
-        "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
-        ,"c_t_standard_per_second"])["average_dry_weight","average_wet_weight","rat_actually","c_t_actually"].mean()
         
-        
-        output_aggrigate=daily_analysis.groupby(["product_name","product_code","standard_dry_weight",
-        "standard_dry_weight_from","standard_dry_weight_to","standard_rate_hour"
-        ,"c_t_standard_per_second"])['number_scrab_by_item',
-        "sum_scrabe_no_parts","gross_production","number_day_use"].sum()
-        
-
-        #removed "scrabe_standard" for error  'MergedCell' object attribute 'value' is read-only
-        output_average.append(output_aggrigate)
-        #output_mold.append(output_aggrigate)
-        output_mold=output_average
-        #output_mold=pd.DataFrame(index=True)
-#        output.unstack()
-        #Convert the Groupby to a DataFrame with to_frame()
-
-        #https://www.easytweaks.com/pandas-groupby-to-dataframe/
-        #validation data
-        #scap validation
         product_parts_input=daily_analysis["gross_production"].sum
         
         scrab_set_input=daily_analysis["number_scrab_by_item"].sum
@@ -1308,7 +811,7 @@ class Select():
         dry_weight.to_excel(writer,'weights', index=True)
         
         molds_rate.to_excel(writer,'c_t', index=True)
-        output_mold.to_excel(writer,"output_yearly",index=True)
+#        self.analyser.to_excel(writer,"output_yearly",index=True)
         #output_mold.to_excel(writer,"output",index=True)
         
         
@@ -1475,7 +978,7 @@ class Select():
         #there error IndexError: index 0 is out of bounds for axis 0 with size 0
         
             
-        weight_nonconfomity.to_excel(writer,"weight_ncr")
+#        weight_nonconfomity.to_excel(writer,"weight_ncr")
         
         c_t_nonconfomity.to_excel(writer,"c.t")
         scrap.to_excel(writer,"scrap")
@@ -1485,7 +988,7 @@ class Select():
 
 #        wieght2.to_excel(writer,merge_cells=False)
         daily_analysis1.to_excel(writer,"input_molds", index=False)
-        output_mold.to_excel(writer,"output_molds")
+        #self.analyser.to_excel(writer,"output_molds")
         
         shoutcount_mold.to_excel(writer,"shout_count")
         machines.to_excel(writer,"machines")
@@ -1587,396 +1090,317 @@ class Select():
                     r += 1
             
             wb_summary.save("QC_molds_daily_summary.xlsx")
+            
+        #extract excel sheet for days
+        list_item_size=get_data.shape[0]
+        ws1=wb["input_daily"]
+        #create  the index sheet:
+        r = 4  # start at 4th row
+        c = 1 # column 'a'
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = get_data.iloc[row]
+            for item in rows:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
         
-    #__________________________________merge
-#        sheets_daily=["input_daily"]
-#        sheets_monthly=["input_daily","output","wieght_report","ct_report","scrap_report"]
+        #material by silo
+        ws_bach=wb["input_materials"]
+        Material.material_bySilo_daily(self,year,month,day,to_day)
+        get_data=cursor.fetchall()
+        rows=get_data      
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws_bach.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #Bache input
+        ws_bach=wb["batches"]
+        Block.show_monthly_Baches(self,year,month)
+        
+#        sql_query=Block.show_monthly_Baches(self,year,month)
+#       get_data = self.load_data(sql_query)        
+
+        get_data=cursor.fetchall()
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws_bach.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #monthly scrap report by day
+        ws8=wb["scrap_type_machines"]
+
+        rows = scrap_machine_product
+        r = 3  # start at 33th row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+        
+            for item in row:
+                ws8.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+            #monthly machine report
+        ws8=wb["scrap_days"]
+        Block.show_scrap_monthly_report_by_days(self,year,month)
+        #sql_query=Block.show_scrap_monthly_report_by_days(self,year,month)
+        #get_data = self.load_data(sql_query)        
+        rows = cursor.fetchall()
+        r = 3  # start at 33th row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+        
+            for item in row:
+                ws8.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1    
+        #water content report
+        ws1=wb["moisture_daily"]
+
+        Block.show_water_content_daily(self,year,month,day,to_day)
+        #sql_query=Block.show_water_content_daily(self,year,month,day,to_day)
+        #get_data = self.load_data(sql_query)        
+        get_data=cursor.fetchall()
+        #get_data.set_index("serial", inplace=True) #put index
+        
+        #get_data=pd.DataFrame(get_data["id"])
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #monthly output
+        print ("test monthly ___________________",daily_analysis)
+        
+        list_item_size=daily_analysis.shape[0]
+        output_sheet='output'
+        ws1=wb[output_sheet]
+        
+        print("____________test_______",daily_analysis)    
+        r = 3  # start at third row
+        c = 1 # column 'a'
+        rows = daily_analysis
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            for item in rows:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
+        
+        #filter on non conformity weights
+            #part one low weight
+        list_item_size=weight_nonconfomity_low.shape[0]
+        ws5=wb["wieght_report"]
+        rows = weight_nonconfomity_low
+        r = 12  # start at 12 row
+        c = 1 # column 'a'
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = weight_nonconfomity_low.iloc[row]
+            for item in rows:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
     
-            list_item_size=get_data.shape[0]
-            ws1=wb["input_daily"]
-            #create  the index sheet:
-            r = 4  # start at 4th row
-            c = 1 # column 'a'
-            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                rows = get_data.iloc[row]
-                for item in rows:
-                    ws1.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 1
-                r += 1   
-            
-            #material by silo
-            ws_bach=wb["material_daily"]
-            Material.material_bySilo_daily(self,year,month,day,to_day)
-            get_data=cursor.fetchall()
-            rows=get_data      
-            r = 4  # start at fourd row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-                for item in row:
-                    ws_bach.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #Bache input
-            ws_bach=wb["batches"]
-            Block.show_monthly_Baches(self,year,month)
-            
-    #        sql_query=Block.show_monthly_Baches(self,year,month)
-    #       get_data = self.load_data(sql_query)        
-
-            get_data=cursor.fetchall()
-            rows=get_data
-            #rows = get_data[columns_quality]
-            
-            r = 4  # start at fourd row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-                for item in row:
-                    ws_bach.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #monthly scrap report by day
-            ws8=wb["scrap_type_machines"]
-
-            rows = scrap_machine_product
-            r = 3  # start at 33th row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws8.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-                #monthly machine report
-            ws8=wb["scrap_days"]
-            Block.show_scrap_monthly_report_by_days(self,year,month)
-            #sql_query=Block.show_scrap_monthly_report_by_days(self,year,month)
-            #get_data = self.load_data(sql_query)        
-            rows = cursor.fetchall()
-            r = 3  # start at 33th row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws8.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1    
-            #water content report
-            ws1=wb["moisture_daily"]
-
-            Block.show_water_content_daily(self,year,month,day,to_day)
-            #sql_query=Block.show_water_content_daily(self,year,month,day,to_day)
-            #get_data = self.load_data(sql_query)        
-            get_data=cursor.fetchall()
-            #get_data.set_index("serial", inplace=True) #put index
-            
-            #get_data=pd.DataFrame(get_data["id"])
-            rows=get_data
-            #rows = get_data[columns_quality]
-            
-            r = 4  # start at fourd row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-                for item in row:
-                    ws1.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #monthly output
-
-        elif monthly:
-            daily_analysis=mold_analysis2
-
-            print ("test monthly ___________________",output_mold)
-            
-            list_item_size=output_mold.shape[0]
-            ws1=wb["output"]
-            
-            print("____________test_______",output_mold)    
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            rows = output_mold
-            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                for item in rows:
-                    ws1.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 1
-                r += 1   
-            
-            #filter on non conformity weights
-                #part one low weight
-            list_item_size=weight_nonconfomity_low.shape[0]
-            ws5=wb["wieght_report"]
-            rows = weight_nonconfomity_low
-            r = 12  # start at 12 row
-            c = 1 # column 'a'
-            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                rows = weight_nonconfomity_low.iloc[row]
-                for item in rows:
-                    ws1.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 1
-                r += 1   
+            #part tow hight weight
+        ws5=wb["wieght_report"]
         
-                #part tow hight weight
-            ws5=wb["wieght_report"]
-            
-            list_item_size=weight_nonconfomity_high.shape[0]
-            rows = weight_nonconfomity_high
-            r = 33  # start at 33th row
-            c = 1 # column 'a'
-            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                rows = weight_nonconfomity_high.iloc[row]
-                for item in rows:
-                    ws5.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 1
-                r += 1   
-            
-            ws6=wb["ct_report"]
-            list_item_size=c_t_nonconfomity.shape[0]
-            rows = c_t_nonconfomity
-            r = 11  # start at 11th row
-            c = 1 # column 'a'
-            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                rows = c_t_nonconfomity.iloc[row]
-                for item in rows:
-                    ws6.cell(row=r, column=c).value = item
-                    c += 1 # Column 'd'
-                c = 1
-                r += 1   
-            
-            #filter on on conformity scrap
+        list_item_size=weight_nonconfomity_high.shape[0]
+        rows = weight_nonconfomity_high
+        r = 33  # start at 33th row
+        c = 1 # column 'a'
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = weight_nonconfomity_high.iloc[row]
+            for item in rows:
+                ws5.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
+        
+        ws6=wb["ct_report"]
+        list_item_size=c_t_nonconfomity.shape[0]
+        rows = c_t_nonconfomity
+        r = 11  # start at 11th row
+        c = 1 # column 'a'
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = c_t_nonconfomity.iloc[row]
+            for item in rows:
+                ws6.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
+        
+        #filter on on conformity scrap
 
-            ws7=wb["scrap_report"]
-            list_item_size=scrap_nonconfomity.shape[0]
-            if scrap_nonconfomity_count>=1:
-                rows = scrap_nonconfomity
-                r = 4  # start at 10th row
-                c = 3 # column 'c'
-                for row in range(0,list_item_size):       
-                    for item in range(0,row):
-                        ws7.cell(row=r, column=c).value = row
-                        c += 1 # Column 'd'
-                    c = 1
-                    r += 1
-            '''
-                rows= scrap_nonconfomity.index
-                print("___TypeError: 'numpy.float64' object is not iterable___",scrap_nonconfomity)
-                r = 15  # start at 15th row
-                c = 1 # column 'a'
-                for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                    rows = scrap_nonconfomity.iloc[row]
-    #                for item in rows:
-                        #ws1.cell(row=r, column=c).value = item
+        ws7=wb["scrap_report"]
+        list_item_size=scrap_nonconfomity.shape[0]
+        if scrap_nonconfomity_count>=1:
+            rows = scrap_nonconfomity
+            r = 4  # start at 10th row
+            c = 3 # column 'c'
+            for row in range(0,list_item_size):       
+                for item in range(0,row):
                     ws7.cell(row=r, column=c).value = row
-    #                   c += 1 # Column 'd'
-                    c = 1
-                    r += 1   
-            '''
-            #monthly machine report
-            ws8=wb["scrap_machine"]
-            list_item_size=machines.shape[0]
-            rows = machines
-            r = 3  # start at 33th row
-            c = 1 # column 'a'
-            for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                rows = machines.iloc[row]
-                for item in rows:
-                    ws1.cell(row=r, column=c).value = item
                     c += 1 # Column 'd'
                 c = 1
-                r += 1   
-            
-        else:    
+                r += 1
+
             #monthly machine report
-            ws8=wb["scrap_machine_yearly"]
-            Block.show_machine_yearly_report(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at 33th row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws8.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
+        ws8=wb["scrap_machine"]
+        list_item_size=machines.shape[0]
+        rows = machines
+        r = 3  # start at 33th row
+        c = 1 # column 'a'
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = machines.iloc[row]
+            for item in rows:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
         
-            ws2=wb["output_monthly"]
-            rows = yearly_output_product
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws2.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
-            ws3=wb["year"]
-            Block.show_machine_report_yearly(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws3.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #scrap monthly
-            ws3=wb["month"]
-            Block.show_monthly_report_view_month(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws3.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #yearly item report
-            ws2=wb["output_yearly"]
-            Block.items_report_arabic_custom_item(self,year,month,args)
-            
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws2.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
-            
-            #monthly mold report by molds not items
-            ws_output_molds=wb["output_molds"]
-            Block.show_mnthly_report_molds(self,year,month)
-
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-
-                for item in row:
-                    ws_output_molds.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-
-            ws_output_molds_yearly=wb["output_mold_monthly"]
-            Block.yearly_report_molds_byMonthes(self,year,args)
-
-            rows = cursor.fetchall()
-            r = 3  # start at third row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-
-                for item in row:
-                    ws_output_molds_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-
-                #report for moldsy monthly
-            
-            ws_wieght_yearly=wb["output_molds_yearly"]
-            Block.show_yearly_report_molds(self,year,month)
-            rows = cursor.fetchall()
-            r = 3  # start at 3th row
-            c = 1 # column 'a'
-            for row in rows:
-                for item in row:
-                    ws_wieght_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            
-                #report of hight weight
-            ws_wieght_yearly=wb["wieght_yearly"]
-            Block.yearly_report_ncr_weight(self,year,month)
-            rows = cursor.fetchall()
-            r = 10  # start at 10th row
-            c = 1 # column 'a'
-            for row in rows:
-                
-                for item in row:
-                    ws_wieght_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #filter on non conformity ct
-            ws_ct_yearly=wb["ct_yearly"]
-            Block.yearly_report_ncr_ct(self,year,month)
-            rows = cursor.fetchall()
-            r = 11  # start at 11th row
-            c = 1 # column 'a'
-            for row in rows:
-                
-                for item in row:
-                    ws_ct_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #filter on on conformity scrap
-            ws_scrap_yearly=wb["scrap_yearly"]
-            Block.yearly_report_ncr_scrap(self,year,month)
-            rows= cursor.fetchall()
-            r = 15  # start at 15th row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-            
-                for item in row:
-                    ws_scrap_yearly.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
-            #for material
-            ws1=wb["materials"]
-            Material.materialToPorduct(self,year)
-            get_data=cursor.fetchall()
-            #get_data.set_index("serial", inplace=True) #put index
-            
-            #get_data=pd.DataFrame(get_data["id"])
-            rows=get_data
-            #rows = get_data[columns_quality]
-            
-            r = 4  # start at fourd row
-            c = 1 # column 'a'
-            for row in rows:
-                #print(row)
-                for item in row:
-                    ws1.cell(row=r, column=c).value = item
-                    c += 1 # Column 'b'
-                c = 1
-                r += 1
         
+        #monthly machine report
+        ws8=wb["scrap_type_machines"]
+        Block.show_machine_yearly_report(self,year,month)
+        rows = cursor.fetchall()
+        r = 3  # start at 33th row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+        
+            for item in row:
+                ws8.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        
+    
+        ws2=wb["output_monthly"]
+        rows = yearly_output_product
+        r = 3  # start at third row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            #for item in row:
+            ws2.cell(row=r, column=c).value = item
+            #c += 1 # Column 'b'
+            c = 1
+            r += 1
+        
+        ws3=wb["year"]
+        Block.show_machine_report_yearly(self,year,month)
+        rows = cursor.fetchall()
+        r = 3  # start at third row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+        
+            for item in row:
+                ws3.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #scrap monthly
+        ws3=wb["month"]
+        Block.show_monthly_report_view_month(self,year,month)
+        rows = cursor.fetchall()
+        r = 3  # start at third row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+        
+            for item in row:
+                ws3.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #yearly item report
+        #monthly mold report by molds not items
+        ws_output_molds=wb["output_molds"]
+        
+        print("____________test_______",daily_analysis)    
+        r = 3  # start at third row
+        c = 1 # column 'a'
+        rows = daily_analysis
+        for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            for item in rows:
+                ws_output_molds.cell(row=r, column=c).value = item
+                c += 1 # Column 'd'
+            c = 1
+            r += 1   
+
+        ws_output_molds_yearly=wb["output_mold_monthly"]
+        Block.yearly_report_molds_byMonthes(self,year,args)
+
+        rows = cursor.fetchall()
+        r = 3  # start at third row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+
+            for item in row:
+                ws_output_molds_yearly.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+
+            #report for moldsy monthly
+        
+        ws_wieght_yearly=wb["output_molds"]
+        Block.show_yearly_report_molds(self,year,month)
+        rows = cursor.fetchall()
+        r = 3  # start at 3th row
+        c = 1 # column 'a'
+        for row in rows:
+            for item in row:
+                ws_wieght_yearly.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        ws1=wb["materials"]
+        Material.materialToPorduct(self,year)
+        get_data=cursor.fetchall()
+        #get_data.set_index("serial", inplace=True) #put index
+        
+        #get_data=pd.DataFrame(get_data["id"])
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+    
         wb.save(writerFile)
         #to outbut list send by email
         output=scrap_nonconfomity.index
         return output
+        

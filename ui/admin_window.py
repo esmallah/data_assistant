@@ -437,7 +437,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
 
         #select date                
         dailyReportName=str(year)+"-"+str(month)+"QC_molds_daily_archive_v3.xlsx"
-        monthlyReportName=str(year)+"-"+str(month)+"QC_molds_monthly_v2.xlsx"
+        monthlyReportName=str(year)+"-"+str(month)+"QC_molds_monthly_v3.xlsx"
+        yearlyReportName=str(year)+"QC_molds_yearly_v3.xlsx"
         format_path = os.path.join(BASE_DIR, os.path.normpath(r".\data_assistant\apps\analysis\formats"))
         #______________________________________________________________________________________
         #to send emails from db to outlook
@@ -458,7 +459,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         print ("format path",format_path)
         #format_path = os.path.join(format_path2, )
         
-        git_database=Select(format_path,"formatQC_molds_monthly.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
+        git_database=Select(format_path,"formatQC_molds_monthly_v3.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
         
                     #import data
         #import database on share
@@ -540,7 +541,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
 
         if self.checkBox_analysis_DB_yearlyInput.isChecked():
             #git_database.export_report_daily_yearly(year,month,day,to_day)
-            git_database.monthly_molds(monthlyReportName,year,month,day,to_day,monthly=False,daily=False)
+            git_database.monthly_molds(yearlyReportName,year,month,day,to_day,monthly=False,daily=False)
             print("the yearly report has downloaded for year:",year)
 
         if self.checkBox_analysis_DB_weekly.isChecked()==True:
