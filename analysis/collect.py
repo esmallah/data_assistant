@@ -12,7 +12,7 @@ import numpy as np
 import glob
 
 #import database_postgrsql as database
-from apps.analysis.db_reports import Block,cursor,conn,Material
+from analysis.db_reports import Block,cursor,conn,Material
 from random import randint,seed
 
 #master data
@@ -350,7 +350,7 @@ class Select():
         self.writefile=writefile
         self.writesheet=writesheet
     def load_data(self,sql_query):
-        from apps import cursor
+        from config.memory import cursor
         sql_query
         get_data2=cursor.fetchall()
         #__________________________________________________________________        

@@ -1,4 +1,4 @@
-from memory.database_postgrs import conn , cursor
+from config.memory.database_postgrs import conn , cursor
 #from .database_sqlite import conn , cursor					
 class MoldsQuality():
 	'''

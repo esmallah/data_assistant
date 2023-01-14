@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication
 
 import sys
 
-from ui.login import Login #for developing mode only
+from config.ui.login import Login #for developing mode only
 
 def main():
     app = QApplication(sys.argv)

@@ -1,4 +1,4 @@
-from memory.database_postgrs import cursor,conn
+from config.memory.database_postgrs import cursor,conn
 #from .database_sqlite import conn , cursor
 SQL_quality_records="""
 				year,
