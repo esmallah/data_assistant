@@ -141,7 +141,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     #@QtCore.pyqtSlot()    
     
     def clickedList(self):
-        from apps import AutomatedFilling
+        from web import AutomatedFilling
         print("___________________test interface______________")
         switcher = {
         "LG43UJ63":0,
@@ -595,7 +595,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         test_scrab_input_baches.test_analysis_scrap()
     def files_control(self):
         '''for contorl to operating system and its contents from files and sub filess'''
-        from apps import Files_control
+        from files import Files_control
         #path=r"E:\work\contact_group\QHSE\block"
         #outputpath=r"E:\work\contact_group\QHSE_activation\QES general\document control"
         path=self.FileLocationInputLineEdit.text()
@@ -606,7 +606,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
             else:
                 Files_control.get_Files_names(path,outputpath)
         #______________________for convert files to pdf
-        from apps import Convert
+        from files import Convert
         #_________________________________pdf convertor_____________
         #_________________________warning___________________________
         #you must be copy your file to backup file becase any mistack you can't reback your files
@@ -624,11 +624,11 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         #
         #documentation.delete_files()
         #_______________________for rename excel sheets inside workbook
-        from apps import Names 
+        from files import Names 
 
         qc_names=Names(r'D:\2work\programing\2data_analysis\files\master_data','master_names.xlsx','sheets','new_names.xlsx','sheet1')
         #______________________for  merge tow files 
-        from apps import Merge
+        from files import Merge
         import os
         #for vlookup to connect tow sheets by one variable
         scrab=Merge(r"D:\2work\programing\data_analysis\files\yearly_report","id_specification",'item_specifications_v1.xlsx',"items_spec",'2018QC_molds_yearly_input2.xlsx',"scrap_input",'scrap_2018_2.xlsx','scrap_input')

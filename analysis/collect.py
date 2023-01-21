@@ -669,26 +669,27 @@ class Select():
             sql_query=Block.get_daily_dataentry_items(self,year,month,day)
         elif monthly:
             sql_query=Block.get_daily_dataentry_items(self,year,month,day)
-            #sql_query=Block.show_monthly_report_ar(self,year,month,day,to_day)
+        elif weekly:
+            sql_query=Block.get_daily_dataentry_items(self,year,month,day)
         else :
             sql_query=Block.get_daily_dataentry_items_yearly(self,year)
-            #Block.show_mnthly_report_molds(self,year,month)
-            #Block.items_report_arabic_custom_item(self,year,month,args)
+            
         get_data = self.load_data(sql_query)        
         
         last_year=int(get_data["year"].max())
         print("_________daily report___________for year________",last_year,type(last_year))       
-        mold_analysis_bool4=get_data["year"]==last_year
+        mold_analysis_bool4=get_data["year"]==int(year)
         mold_analysis3=get_data[mold_analysis_bool4]
 
         #____________________________________________________monthes report section________________
-        last_month=int(mold_analysis3["month"].max())
-        mold_analysis_bool3=mold_analysis3["month"]==last_month
+        #last_month=int(mold_analysis3["month"].max())
+        
+        mold_analysis_bool3=mold_analysis3["month"]==int(month)
         mold_analysis2=mold_analysis3[mold_analysis_bool3]
         mold_days=mold_analysis2["day"].count()
         
         #dateDay3=mold_analysis2['date_day'].tail(1)
-        print("_________daily report___________for month________",last_month,type(last_month))       
+        #print("_________daily report___________for month________",last_month,type(last_month))       
         
         import datetime
         d = datetime.datetime(int(year), int(month), int(day))
@@ -707,14 +708,14 @@ class Select():
             print("daily_analysis for day",day,daily_analysis)
             print("date",year,month,day)
         elif monthly:
-            #daily_analysis=mold_analysis2
-            daily_analysis = self.analyser(self,get_data)
+            daily_analysis=mold_analysis2
+            #daily_analysis = self.analyser(get_data)
             print ("____________analyser_______",daily_analysis)
         elif weekly:
             daily_analysis=daily_analysis_weekly
         else:
-            #daily_analysis=mold_analysis3
-            daily_analysis = self.analyser(self,get_data)
+            daily_analysis=mold_analysis3
+            #daily_analysis = self.analyser(get_data)
         #select data
         dry_weight3=daily_analysis[columns_weight]
         dry_weight_bool=dry_weight3['average_dry_weight'].notnull()
@@ -988,7 +989,7 @@ class Select():
 
 #        wieght2.to_excel(writer,merge_cells=False)
         daily_analysis1.to_excel(writer,"input_molds", index=False)
-        #self.analyser.to_excel(writer,"output_molds")
+        daily_analysis.to_excel(writer,"output_molds")
         
         shoutcount_mold.to_excel(writer,"shout_count")
         machines.to_excel(writer,"machines")
@@ -1011,7 +1012,7 @@ class Select():
                     
             # Data can be assigned directly to cells
             ws['b1'] = day            #day for molds report
-            ws['c1'] = last_month    #month for molds report
+            ws['c1'] = int(month)    #month for molds report
             ws['d1'] = last_year    #year for molds report
             ws['A4'] = scrap_percent           #scrap on all machie
             ws['B4'] = scrap_percent_new    #scrap on new macine
@@ -1139,21 +1140,6 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1
-        #monthly scrap report by day
-        ws8=wb["scrap_type_machines"]
-
-        rows = scrap_machine_product
-        r = 3  # start at 33th row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-        
-            for item in row:
-                ws8.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-            #monthly machine report
         ws8=wb["scrap_days"]
         Block.show_scrap_monthly_report_by_days(self,year,month)
         #sql_query=Block.show_scrap_monthly_report_by_days(self,year,month)
@@ -1201,8 +1187,9 @@ class Select():
         print("____________test_______",daily_analysis)    
         r = 3  # start at third row
         c = 1 # column 'a'
-        rows = daily_analysis
+        
         for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
+            rows = daily_analysis
             for item in rows:
                 ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'd'
@@ -1213,11 +1200,12 @@ class Select():
             #part one low weight
         list_item_size=weight_nonconfomity_low.shape[0]
         ws5=wb["wieght_report"]
-        rows = weight_nonconfomity_low
+        
         r = 12  # start at 12 row
         c = 1 # column 'a'
         for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-            rows = weight_nonconfomity_low.iloc[row]
+            rows = weight_nonconfomity_low
+            #rows = weight_nonconfomity_low.iloc[row]
             for item in rows:
                 ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'd'
@@ -1228,11 +1216,12 @@ class Select():
         ws5=wb["wieght_report"]
         
         list_item_size=weight_nonconfomity_high.shape[0]
-        rows = weight_nonconfomity_high
+        
         r = 33  # start at 33th row
         c = 1 # column 'a'
         for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-            rows = weight_nonconfomity_high.iloc[row]
+            rows = weight_nonconfomity_high
+            #rows = weight_nonconfomity_high.iloc[row]
             for item in rows:
                 ws5.cell(row=r, column=c).value = item
                 c += 1 # Column 'd'
@@ -1241,11 +1230,12 @@ class Select():
         
         ws6=wb["ct_report"]
         list_item_size=c_t_nonconfomity.shape[0]
-        rows = c_t_nonconfomity
+        
         r = 11  # start at 11th row
         c = 1 # column 'a'
         for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-            rows = c_t_nonconfomity.iloc[row]
+            #rows = c_t_nonconfomity.iloc[row]
+            rows = c_t_nonconfomity
             for item in rows:
                 ws6.cell(row=r, column=c).value = item
                 c += 1 # Column 'd'
@@ -1257,20 +1247,24 @@ class Select():
         ws7=wb["scrap_report"]
         list_item_size=scrap_nonconfomity.shape[0]
         if scrap_nonconfomity_count>=1:
-            rows = scrap_nonconfomity
+            
             r = 4  # start at 10th row
             c = 3 # column 'c'
             for row in range(0,list_item_size):       
-                for item in range(0,row):
+                rows = scrap_nonconfomity
+                #for item in range(0,row):
+                for item in rows:
                     ws7.cell(row=r, column=c).value = row
                     c += 1 # Column 'd'
                 c = 1
                 r += 1
 
             #monthly machine report
+            #_____________
+            
+            #_____________
         ws8=wb["scrap_machine"]
         list_item_size=machines.shape[0]
-        rows = machines
         r = 3  # start at 33th row
         c = 1 # column 'a'
         for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
@@ -1282,22 +1276,6 @@ class Select():
             r += 1   
         
         
-        #monthly machine report
-        ws8=wb["scrap_type_machines"]
-        Block.show_machine_yearly_report(self,year,month)
-        rows = cursor.fetchall()
-        r = 3  # start at 33th row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-        
-            for item in row:
-                ws8.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-        
-    
         ws2=wb["output_monthly"]
         rows = yearly_output_product
         r = 3  # start at third row
