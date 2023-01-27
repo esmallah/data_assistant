@@ -1,5 +1,6 @@
 from config.memory.database_postgrs import cursor,conn
 #from .database_sqlite import conn , cursor
+#t22records_reports
 SQL_quality_records="""
 				year,
 				month,
@@ -256,7 +257,51 @@ veiw_quality_daily='''
 				q.shift1_denisty,
 				q.shift2_denisty
 					'''
-
+veiw_customer_complaints='''
+				f112partners_id,
+				date,
+				attachment_name,
+				f121risk_id,
+				type,
+				f5channel_id,
+				f11part_item_id,
+				date_request_in,
+				receiver,
+				verification_details,
+				validation_details,
+				cause_details,
+				f74problems_id_layer0,
+				f74problems_id_layer1,
+				f74problems_id_layer2,
+				f74problems_id,
+				nondescovery_cause,
+				field_stringlong,
+				corrective_action_details,
+				problem_summary,
+				verification_result,
+				date_request_out,
+				status,
+				date_closing,
+				year,
+				month,
+				requester,
+				'''
+product_return_column='''
+			t22.field_integer,
+			q.f11part_item_id,
+			t22.f112partners_id,
+			t22.date,
+			t22.year,
+			t22.month,
+			t22.f127means_id,
+			t22.f121risk_id,
+			t10.return_quantity,
+			t10.number_delivery,
+			t10.return_good,
+			t10.return_downgrade,
+			t10.return_scrap
+			
+				'''
 
 class Block():
 	'''this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries'''		
@@ -1250,6 +1295,128 @@ class Block():
 							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
 							order by q.year,q.month,t2.material,p.product_name)'''
 		cursor.execute(create_material_daily_view)
+		#______________________________________t22records_reports___________________________________________
+		#____________________________________________________________________________________________
+		
+		customercomplaints_view='''create view v103material_product_daily as(select
+							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
+							,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
+							p.c_t_standard_per_second,
+							round(avg(q.rat_actually),0)as rat_actually,
+							round(avg(q.c_t_actually),0)as c_t_actually,			
+							m.scrabe_standard,
+				 			q.density
+							
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+								
+				 				left join insutech.t14machine m
+								on m.id=q.f14machine_id
+							
+							left join t22records t2
+							on q.density = t2.density and q.date_day = t2.date_day
+							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
+							order by q.year,q.month,t2.material,p.product_name)'''
+#		cursor.execute(customercomplaints_view)
+
+		suppliers_complaints_view='''create view v103material_product_daily as(select
+							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
+							,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
+							p.c_t_standard_per_second,
+							round(avg(q.rat_actually),0)as rat_actually,
+							round(avg(q.c_t_actually),0)as c_t_actually,			
+							m.scrabe_standard,
+				 			q.density
+							
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+								
+				 				left join insutech.t14machine m
+								on m.id=q.f14machine_id
+							
+							left join t22records t2
+							on q.density = t2.density and q.date_day = t2.date_day
+							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
+							order by q.year,q.month,t2.material,p.product_name)'''
+#		cursor.execute(suppliers_complaints_view)
+		return_products_view='''create view v103material_product_daily as(select
+							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
+							,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
+							p.c_t_standard_per_second,
+							round(avg(q.rat_actually),0)as rat_actually,
+							round(avg(q.c_t_actually),0)as c_t_actually,			
+							m.scrabe_standard,
+				 			q.density
+							
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+								
+				 				left join insutech.t14machine m
+								on m.id=q.f14machine_id
+							
+							left join t22records t2
+							on q.density = t2.density and q.date_day = t2.date_day
+							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
+							order by q.year,q.month,t2.material,p.product_name)'''
+#		cursor.execute(return_products_view)
+
+		customercomplaints_view='''create view v103material_product_daily as(select
+							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
+							,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
+							p.c_t_standard_per_second,
+							round(avg(q.rat_actually),0)as rat_actually,
+							round(avg(q.c_t_actually),0)as c_t_actually,			
+							m.scrabe_standard,
+				 			q.density
+							
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+								
+				 				left join insutech.t14machine m
+								on m.id=q.f14machine_id
+							
+							left join t22records t2
+							on q.density = t2.density and q.date_day = t2.date_day
+							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
+							order by q.year,q.month,t2.material,p.product_name)'''
+#		cursor.execute(customercomplaints_view)
+
+		material_inspection_view='''create view v103material_product_daily as(select
+							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
+							,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
+							p.c_t_standard_per_second,
+							round(avg(q.rat_actually),0)as rat_actually,
+							round(avg(q.c_t_actually),0)as c_t_actually,			
+							m.scrabe_standard,
+				 			q.density
+							
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+								
+				 				left join insutech.t14machine m
+								on m.id=q.f14machine_id
+							
+							left join t22records t2
+							on q.density = t2.density and q.date_day = t2.date_day
+							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
+							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
+							order by q.year,q.month,t2.material,p.product_name)'''
+#		cursor.execute(material_inspection_view)
+
 
 		conn.commit()
 		print("complete install reports")		
@@ -1983,41 +2150,25 @@ class Block():
 		else:
 			cursor.execute(SQL2, (month,))	
 	
-	def deliveryToCustomers_week(self,year):#report depend of mold structure
+	def returnProducts(self,year,month):#report depend of mold structure
 			#report depend of mold structure
-		SQL1='''with material_product as (select
+		SQL1='''select
+							 %s,p.Product_name,p.product_code
+							,t127.name
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
 							
-							year,
-							month,
-							weeksNumbers,
-							permission_number,
-							product_code,
-							product_name,
-							unit,
-							warehouse_type,
-							gross_quantity,
-							customer_code,
-							customer_name,
-							sale_order,
-							invoice_numbers,
-							driver_name,
-							freighter,
-							deliverad_place,
-							planned_date,
-							date_date
-							
-				
-							from delivery_to_customers
-							
-							group by year, month,material,scrabe_standard,item_id,product_name,product_code,standard_dry_weight_from,standard_dry_weight_to
-							,standard_rate_hour,c_t_standard_per_second,density
-							)
-							select distinct t1.* 
-							from material_product t1
-							
-							where year = (%s)
-							order by year , month  , material,product_name'''%year
+							left join insutech.t22records t22
+							on q.f22records_id = t22.record_id 
+							left join t127means t127
+							on t127.means_id=t22.f127means_id
+							order by q.year,q.month,p.product_name'''%product_return_column
 		
+		SQL2 = SQL1+' and month =(%s);'
+		
+		if type(month) == tuple:   
+			cursor.execute(SQL2, month)
 		if type(year) == tuple:   
 			cursor.execute(SQL1, year)	
 		else:

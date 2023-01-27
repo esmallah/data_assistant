@@ -697,12 +697,10 @@ class Select():
         daily_analysis1_bool=mold_analysis2["date_day"]==date_day
         daily_analysis1=mold_analysis2[daily_analysis1_bool]
         #for week shout count 
-        if weekly:
-            #daily_analysis3_day=mold_analysis2["day"]<= int(day)
-            #daily_analysis3_bool=daily_analysis3_day["day"]>=int(to_day)
-            #daily_analysis_weekly=mold_analysis2[daily_analysis3_bool]
-            daily_analysis_weekly=mold_analysis2[mold_analysis2["day"]<= int(day)]
-        #daily_analysis=daily_analysis[column_monthly_report]       
+        #if weekly:
+            
+            
+        
         if daily:
             daily_analysis=daily_analysis1
             print("daily_analysis for day",day,daily_analysis)
@@ -712,6 +710,7 @@ class Select():
             #daily_analysis = self.analyser(get_data)
             print ("____________analyser_______",daily_analysis)
         elif weekly:
+            daily_analysis_weekly=mold_analysis2[mold_analysis2["day"]<= int(day)]
             daily_analysis=daily_analysis_weekly
         else:
             daily_analysis=mold_analysis3
@@ -1376,6 +1375,25 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1
+        ws_return=wb["returns_products"]
+        Block.returnProducts(self,year,month)
+        get_data=cursor.fetchall()
+        #get_data.set_index("serial", inplace=True) #put index
+        
+        #get_data=pd.DataFrame(get_data["id"])
+        rows=get_data
+        #rows = get_data[columns_quality]
+        
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+            
     
         wb.save(writerFile)
         #to outbut list send by email

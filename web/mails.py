@@ -4,7 +4,7 @@ import win32com.client as win32
 import pandas as pd
 import openpyxl as xl
 from openpyxl import load_workbook
-from apps.analysis.collect import Select
+from analysis.collect import Select
 import os
 
 outlook = win32.Dispatch('outlook.application')

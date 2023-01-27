@@ -568,8 +568,12 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         print ("analysis Output",analysisOutput)
     
         if self.checkBox_analysis_returnReport.isChecked():           
+            if str(self.comboBox_analysisDb_returnReportChoices.currentText())=="monthly" : #from database
+                git_database.returnProducts(self,year,month)
+                print("download return report from  month:",month," year:",year)
+            if str(self.comboBox_analysisDb_returnReportChoices.currentText())=="yearly" : #from excel sheets
             #sales_quality.returns_report()
-            sales_quality.return_crosstab(year)
+                sales_quality.return_crosstab(year)
 
         #append multy sheets in same workbooks
         if self.checkBox_analysis_yearlyReport.isChecked():
