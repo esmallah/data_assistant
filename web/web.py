@@ -214,15 +214,15 @@ class AutomatedFilling():
         #set
         #
         OLED55CS_set="mfz66237601"#OLED55CS_set
-        OLED55CS_set_high=[1330,192,265,616.89,1330,178,244,491.58]
-        OLED55CS_set_low=[1323,187,260,542.01,1323,173,239,431.91]
+        OLED55CS_set_high=[1330,192,265,627.84,1330,177,244,499.22]
+        OLED55CS_set_low=[1323,187,260,552.96,1323,174,239,439.68]
         mfz66237601=[OLED55CS_set_high,OLED55CS_set_low]
 
         #side
         #mfz66237602
         OLED55CS_side="mfz66237602"#OLED55CS_side
-        OLED55CS_side_high=[229,186,118,148.86]
-        OLED55CS_side_low=[224,182,114,130.79]
+        OLED55CS_side_high=[283,186,117,151.51]
+        OLED55CS_side_low=[280,182,117,133.44]
         mfz66237602=[OLED55CS_side_high,OLED55CS_side_low]
             # "mmf" classification
         LG_cover="3920EZ2058A"# LGwasher machine cover
@@ -234,8 +234,8 @@ class AutomatedFilling():
         lG_angels_low=[50.76,182.3,537.5]
         LG_3920FZ3114C=[lG_angels_high,lG_angels_low]
         lg_kaeda="AGG76599801"#LGwasher machine-base
-        lg_kaeda_high=[276,640,645,100]
-        lg_kaeda_low=[267,637.5,642.5,98.9]
+        lg_kaeda_high=[276,640,100,645]
+        lg_kaeda_low=[267,637.5,98.9,642.5]
         AGG76599801=[lg_kaeda_high,lg_kaeda_low]
 
         lg_base_VIV="AGG76599802"#LGwasher machine base VIVACHE
@@ -284,7 +284,6 @@ class AutomatedFilling():
             for s in range(lg_range):
                 #i=1
                 for i in range(printRange):
-                    
                     #distribution=specification_no_high[s]
                     low_value=int(round(specification_no_low[s],0))+1 #approximat to higher value and convert to in
                     high_value=int(specification_no_high[s])
@@ -300,7 +299,7 @@ class AutomatedFilling():
                     else:
                         pyautogui.typewrite(['tab'])
                 #for move to next posision
-                for i in range(4):
+                for i in range(3):
                     pyautogui.typewrite(['tab'])
         if insert_name:
             items=[LG43UJ63,LG49UJ63,LG55UK630,LGLG32LM55,LGLG43LM63,lg_43LM63FRONT,lg_43LM55FRONT,

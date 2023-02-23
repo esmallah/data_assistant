@@ -1,5 +1,5 @@
-from config.memory.database_postgrs import cursor,conn
-#from .database_sqlite import conn , cursor
+
+from ..db import cursor,conn
 #t22records_reports
 SQL_quality_records="""
 				year,
@@ -248,6 +248,7 @@ veiw_quality_daily='''
 				
 				q.f11part_id,
 				q.factory,
+				
 				q.shift1_tall_mm,
 				q.shift1_width_mm,
 				q.shift1_deepth_mm,
@@ -255,7 +256,18 @@ veiw_quality_daily='''
 				q.shift2_width_mm,
 				q.shift2_deepth_mm,
 				q.shift1_denisty,
-				q.shift2_denisty
+				q.shift2_denisty,
+				q.number_delivery,
+				q.return_quantity,
+				q.return_good,
+				q.return_downgrade,
+				q.return_scrap,
+				q.f39mother_id,
+				q.f127means_id,
+				q.f22record_id,
+				q.f121risk_id,
+				q.f71workflow_id
+				
 					'''
 veiw_customer_complaints='''
 				f112partners_id,
@@ -287,21 +299,36 @@ veiw_customer_complaints='''
 				requester,
 				'''
 product_return_column='''
+			
+			t22.year,			
 			t22.field_integer,
-			q.f11part_item_id,
-			t22.f112partners_id,
 			t22.date,
-			t22.year,
 			t22.month,
-			t22.f127means_id,
-			t22.f121risk_id,
-			t10.return_quantity,
-			t10.number_delivery,
-			t10.return_good,
-			t10.return_downgrade,
-			t10.return_scrap
+			q.number_delivery,
+			q.return_quantity,
+			q.return_good,
+			q.return_downgrade,
+			q.return_scrap
+			
 			
 				'''
+customer_complaints_column='''
+			
+			t22.year,			
+			t22.serials,			
+			t22.field_integer,
+			t22.date,
+			t22.month,
+			t22.attachment_name,
+			t22.verification_details,
+			t22.validation_details,
+			t22.corrective_action_details,
+			t22.verification_result,
+			t22.f39mother_id,
+			t22.f11part_id,
+			t22.f11part_item_id
+			
+					'''
 
 class Block():
 	'''this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries'''		
@@ -409,8 +436,8 @@ class Block():
 			print("complete uninistall quality records")
 	def uninstall_maretial(self):
 			#for uninstall records tables
-			drop_t13material_mixed=	'''drop table insutech.t13material_mixed''' 
-#			cursor.execute(drop_t13material_mixed)
+			drop_t13materials=	'''drop table insutech.t13materials''' 
+#			cursor.execute(drop_t13materials)
 #			conn.commit()
 			print("complete uninistall material record")
 					
@@ -786,7 +813,7 @@ class Block():
 
 	def install_records_material(self):
 			create_table_material='''
-				create table insutech.t13material_mixed (
+				create table insutech.t13materials (
 				id serial primary key,
 				year int,
 				month int,
@@ -1039,7 +1066,7 @@ class Block():
 			create_view_qulaity_inspection_as_items_master='''/* for collect quality_inspection as v108items_master  */
 								create view v105quality_inspection_items as (select 
 								q.year, q.month ,q.date_day ,q.day,q.f12molds_id ,s.No_on_Set,q.f11part_item_id ,q.f14machine_id,q.factory,
-	
+								
 								round(sum(q.shift1_wet_weight1),1)as shift1_wet_weight1,
 								round(sum(q.shift1_wet_weight2),1)as shift1_wet_weight2,
 								round(sum(q.shift1_wet_weight3),1)as shift1_wet_weight3,
@@ -1097,14 +1124,19 @@ class Block():
 								round(sum(q.shift2_scrabe_weight),0)as shift2_scrabe_weight,
 								round(sum(q.shift2_scrabe_dirty),0)as shift2_scrabe_dirty,
 								round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
+
+								sum(q.number_delivery) as number_delivery,
+								sum(q.return_quantity) as return_quantity,
+								sum(q.return_good) as return_good,
+								sum(q.return_downgrade) as return_downgrade,
+								sum(q.return_scrap) as return_scrap,
 								
-								
-								s.density
+								s.density,q.f22record_id,q.f127means_id,q.f71workflow_id,q.f39mother_id,q.f121risk_id
 								from v10quality_inpsection q
 								left join v108items_master s
 								on q.f11part_item_id=s.item_id
 						
-								group by q.factory,q.year, q.month ,q.day,q.date_day ,q.f12molds_id,s.No_on_Set,q.f11part_item_id,q.f14machine_id,s.density
+								group by q.factory,q.year, q.month ,q.day,q.date_day ,q.f12molds_id,s.No_on_Set,q.f11part_item_id,q.f14machine_id,s.density,q.f22record_id,q.f127means_id,q.f71workflow_id,q.f39mother_id,q.f121risk_id
 								
 								order by q.year, q.month ,q.f14machine_id
 										
@@ -1118,7 +1150,7 @@ class Block():
 			create_view_qulaity_inspection_as_items_master='''/* for collect material unique used ber day as v104material_daily_used  */
 								create view v104material_daily_used as (select year ,month ,day ,date_day ,material ,sum(quantity) ,density 
 								
-								from insutech.t13material_mixed q
+								from insutech.t13materials q
 								
 								group by year, month ,day,date_day ,density,material
 								
@@ -1196,9 +1228,10 @@ class Block():
 								round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
 								
 								
-								p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers,
+								p.customer_name,p.company_of_customer,p.item_code_customers
+								,p.item_classification_customers,
 								date_part('week', q.date_day::date) AS weeksNumbers,
-								p.mold_name,m.machine_type,m.scrabe_standard
+								p.mold_name,m.machine_type,m.scrabe_standard,q.f22record_id,q.f127means_id,q.f39mother_id
 				from v105quality_inspection_items q
 							
 							left join v108items_master p
@@ -1210,6 +1243,7 @@ class Block():
 								p.product_name_by_parts,p.product_parts,p.UOM,p.set,p.no_on_set,p.standard_dry_weight
 								,p.standard_dry_weight_from,p.standard_dry_weight_to,p.standard_rate_hour
 								,p.c_t_standard_per_second,p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers
+								,q.f22record_id,q.f127means_id,q.f39mother_id
 								
 							order by q.year, q.month,q.day,q.f14machine_id
 			)'''
@@ -1295,129 +1329,8 @@ class Block():
 							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
 							order by q.year,q.month,t2.material,p.product_name)'''
 		cursor.execute(create_material_daily_view)
-		#______________________________________t22records_reports___________________________________________
-		#____________________________________________________________________________________________
 		
-		customercomplaints_view='''create view v103material_product_daily as(select
-							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
-							,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
-							p.c_t_standard_per_second,
-							round(avg(q.rat_actually),0)as rat_actually,
-							round(avg(q.c_t_actually),0)as c_t_actually,			
-							m.scrabe_standard,
-				 			q.density
-							
-							from v105quality_inspection_items q
-							left join v108items_master p
-								on q.f11part_item_id=p.item_id
-								
-				 				left join insutech.t14machine m
-								on m.id=q.f14machine_id
-							
-							left join t22records t2
-							on q.density = t2.density and q.date_day = t2.date_day
-							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
-							order by q.year,q.month,t2.material,p.product_name)'''
-#		cursor.execute(customercomplaints_view)
-
-		suppliers_complaints_view='''create view v103material_product_daily as(select
-							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
-							,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
-							p.c_t_standard_per_second,
-							round(avg(q.rat_actually),0)as rat_actually,
-							round(avg(q.c_t_actually),0)as c_t_actually,			
-							m.scrabe_standard,
-				 			q.density
-							
-							from v105quality_inspection_items q
-							left join v108items_master p
-								on q.f11part_item_id=p.item_id
-								
-				 				left join insutech.t14machine m
-								on m.id=q.f14machine_id
-							
-							left join t22records t2
-							on q.density = t2.density and q.date_day = t2.date_day
-							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
-							order by q.year,q.month,t2.material,p.product_name)'''
-#		cursor.execute(suppliers_complaints_view)
-		return_products_view='''create view v103material_product_daily as(select
-							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
-							,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
-							p.c_t_standard_per_second,
-							round(avg(q.rat_actually),0)as rat_actually,
-							round(avg(q.c_t_actually),0)as c_t_actually,			
-							m.scrabe_standard,
-				 			q.density
-							
-							from v105quality_inspection_items q
-							left join v108items_master p
-								on q.f11part_item_id=p.item_id
-								
-				 				left join insutech.t14machine m
-								on m.id=q.f14machine_id
-							
-							left join t22records t2
-							on q.density = t2.density and q.date_day = t2.date_day
-							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
-							order by q.year,q.month,t2.material,p.product_name)'''
-#		cursor.execute(return_products_view)
-
-		customercomplaints_view='''create view v103material_product_daily as(select
-							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
-							,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
-							p.c_t_standard_per_second,
-							round(avg(q.rat_actually),0)as rat_actually,
-							round(avg(q.c_t_actually),0)as c_t_actually,			
-							m.scrabe_standard,
-				 			q.density
-							
-							from v105quality_inspection_items q
-							left join v108items_master p
-								on q.f11part_item_id=p.item_id
-								
-				 				left join insutech.t14machine m
-								on m.id=q.f14machine_id
-							
-							left join t22records t2
-							on q.density = t2.density and q.date_day = t2.date_day
-							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
-							order by q.year,q.month,t2.material,p.product_name)'''
-#		cursor.execute(customercomplaints_view)
-
-		material_inspection_view='''create view v103material_product_daily as(select
-							q.year, q.month ,q.day,t2.material,q.f11part_item_id,p.Product_name,p.product_code
-							,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,round(avg(q.average_dry_weight),1)as average_dry_weight,p.standard_rate_hour,
-							p.c_t_standard_per_second,
-							round(avg(q.rat_actually),0)as rat_actually,
-							round(avg(q.c_t_actually),0)as c_t_actually,			
-							m.scrabe_standard,
-				 			q.density
-							
-							from v105quality_inspection_items q
-							left join v108items_master p
-								on q.f11part_item_id=p.item_id
-								
-				 				left join insutech.t14machine m
-								on m.id=q.f14machine_id
-							
-							left join t22records t2
-							on q.density = t2.density and q.date_day = t2.date_day
-							group by q.year, q.month,q.day,t2.material,m.scrabe_standard,q.f11part_item_id,p.product_name,p.product_code,p.standard_dry_weight_from,p.standard_dry_weight_to
-							,p.standard_rate_hour,p.c_t_standard_per_second,q.density	
-							order by q.year,q.month,t2.material,p.product_name)'''
-#		cursor.execute(material_inspection_view)
-
-
+		
 		conn.commit()
 		print("complete install reports")		
 
@@ -1547,7 +1460,7 @@ class Block():
 
 		conn.commit()
 	def import_material_records(self):
-		SQL1='''copy insutech.t13material_mixed(
+		SQL1='''copy insutech.t13materials(
 			year,
 			month,
 			day,
@@ -2153,27 +2066,103 @@ class Block():
 	def returnProducts(self,year,month):#report depend of mold structure
 			#report depend of mold structure
 		SQL1='''select
-							 %s,p.Product_name,p.product_code
-							,t127.name
+							 %s,p.Product_name,p.product_code,t112.name
+							,t127.means,t121.name,t71.step_details
 							from v105quality_inspection_items q
 							left join v108items_master p
 								on q.f11part_item_id=p.item_id
 							
-							left join insutech.t22records t22
-							on q.f22records_id = t22.record_id 
+							left join insutech.t22record t22
+							on q.f22record_id = t22.record_id 
 							left join t127means t127
 							on t127.means_id=t22.f127means_id
-							order by q.year,q.month,p.product_name'''%product_return_column
-		
-		SQL2 = SQL1+' and month =(%s);'
-		
-		if type(month) == tuple:   
-			cursor.execute(SQL2, month)
-		if type(year) == tuple:   
-			cursor.execute(SQL1, year)	
-		else:
-			cursor.execute(SQL1, (year,))	
-	
+							left join insutech.t121risk t121
+							on t121.risk_id=t22.f121risk_id
+							left join insutech.t71workflow t71
+							on t71.id_workflow=t22.f71workflow_id
+							left join insutech.t112partners t112
+							on t112.partner_id=t22.f112partners_id
+							'''%product_return_column
+			
+		SQL = SQL1+''' where t22.f39mother_id=107 '''
+		cursor.execute(SQL,)	
+		#SQL2 = SQL1+''' where year = %s '''
+		#SQL3 = SQL2+''' and month = %s '''
+		#SQL4=SQL3+" and t22.f39mother_id=107  order by q.year,q.month,p.product_name"
+		#SQL5=SQL2+" and t22.f39mother_id=107 order by q.year,q.month,p.product_name"
+		#if type(month) == tuple:   
+			
+		#	cursor.execute(SQL3, month)
+		#if type(year) == tuple:   
+	#		cursor.execute(SQL5, year)	
+	#	else:
+	#		cursor.execute(SQL5, (year,))	
+	def customerComplaintsLocal(self,year,month):#report depend of mold structure
+			#report depend of mold structure
+		SQL1='''select
+							 %s,p.Product_name,p.product_code,t112.name
+							,t127.means,t121.name,t71.step_details
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+							
+							left join insutech.t22record t22
+							on q.f22record_id = t22.record_id 
+							left join t127means t127
+							on t127.means_id=t22.f127means_id
+							left join insutech.t121risk t121
+							on t121.risk_id=t22.f121risk_id
+							left join insutech.t71workflow t71
+							on t71.id_workflow=t22.f71workflow_id
+							left join insutech.t112partners t112
+							on t112.partner_id=t22.f112partners_id
+							'''%customer_complaints_column
+		SQL = SQL1+''' '''
+		cursor.execute(SQL,)	
+		#SQL2 = SQL1+''' where year = %s '''
+		#SQL3 = SQL2+''' and month = %s '''
+		#SQL4=SQL3+" and t22.f39mother_id=107  order by q.year,q.month,p.product_name"
+		#SQL5=SQL2+" and t22.f39mother_id=107 order by q.year,q.month,p.product_name"
+		#if type(month) == tuple:   
+			
+		#	cursor.execute(SQL3, month)
+		#if type(year) == tuple:   
+		#		cursor.execute(SQL5, year)	
+		#	else:
+		#		cursor.execute(SQL5, (year,))		
+	def sublierComplaints(self,year,month):#report depend of mold structure
+			#report depend of mold structure
+		SQL1='''select
+							 %s,p.Product_name,p.product_code,t112.name
+							,t127.means,t121.name,t71.step_details
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+							
+							left join insutech.t22record t22
+							on q.f22record_id = t22.record_id 
+							left join t127means t127
+							on t127.means_id=t22.f127means_id
+							left join insutech.t121risk t121
+							on t121.risk_id=t22.f121risk_id
+							left join insutech.t71workflow t71
+							on t71.id_workflow=t22.f71workflow_id
+							left join insutech.t112partners t112
+							on t112.partner_id=t22.f112partners_id
+							'''%customer_complaints_column
+		SQL = SQL1+''' where t22.f39mother_id=108 '''
+		cursor.execute(SQL,)	
+		#SQL2 = SQL1+''' where year = %s '''
+		#SQL3 = SQL2+''' and month = %s '''
+		#SQL4=SQL3+" and t22.f39mother_id=107  order by q.year,q.month,p.product_name"
+		#SQL5=SQL2+" and t22.f39mother_id=107 order by q.year,q.month,p.product_name"
+		#if type(month) == tuple:   
+			
+		#	cursor.execute(SQL3, month)
+		#if type(year) == tuple:   
+		#		cursor.execute(SQL5, year)	
+		#	else:
+		#		cursor.execute(SQL5, (year,))		
 	def show_water_content_daily(self,year,month,day,to_day):#report depend of mold structure
 			SQL1='''select %s '''%sql_quality_water_content
 			sql2=SQL1+''' from v101molds_report_daily 
@@ -2196,7 +2185,7 @@ class Material():
 	def material_bySilo_daily(self,year,month,day,to_day):#report depend of mold structure
 			#report depend of mold structure
 		SQL0='''select %s  '''%sql_material_daily
-		SQL1=SQL0+''' from insutech.t13material_mixed q where year = (%s)'''%year
+		SQL1=SQL0+''' from insutech.t13materials q where year = (%s)'''%year
 		SQL2=SQL1+'''and month= (%s) '''%month
 		SQL3=SQL2+'''and day=(%s) order by date_day,shift,silo_number,material
 				 '''%day

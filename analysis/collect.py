@@ -12,7 +12,7 @@ import numpy as np
 import glob
 
 #import database_postgrsql as database
-from analysis.db_reports import Block,cursor,conn,Material
+from .db_reports import Block,cursor,conn,Material
 from random import randint,seed
 
 #master data
@@ -350,7 +350,7 @@ class Select():
         self.writefile=writefile
         self.writesheet=writesheet
     def load_data(self,sql_query):
-        from config.memory import cursor
+        from db import cursor
         sql_query
         get_data2=cursor.fetchall()
         #__________________________________________________________________        
@@ -1105,8 +1105,82 @@ class Select():
             c = 1
             r += 1   
         
+        ws1=wb["returns_products"]
+        Block.returnProducts(self,year,month)
+        get_data=cursor.fetchall()
+        rows=get_data
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #complaints_local
+        ws1=wb["customer_complaint_local"]
+        Block.customerComplaintsLocal(self,year,month)
+        get_data=cursor.fetchall()
+        rows=get_data
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #complaints_export
+        
+        ws1=wb["customer_complaint_export"]
+        Block.customerComplaintsLocal(self,year,month)
+        get_data=cursor.fetchall()
+        rows=get_data
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        #complaints_export
+        '''
+        ws1=wb["customer_comments"]
+        Block.customerComplaintsLocal(self,year,month)
+        get_data=cursor.fetchall()
+        
+        rows=get_data
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        '''
+        #supplier complaints
+        ws1=wb["supplier_complaints"]
+        Block.sublierComplaints(self,year,month)
+        get_data=cursor.fetchall()
+        rows=get_data
+        r = 4  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        
         #material by silo
-        ws_bach=wb["input_materials"]
+        ws1=wb["input_materials"]
         Material.material_bySilo_daily(self,year,month,day,to_day)
         get_data=cursor.fetchall()
         rows=get_data      
@@ -1115,12 +1189,12 @@ class Select():
         for row in rows:
             #print(row)
             for item in row:
-                ws_bach.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'b'
             c = 1
             r += 1
         #Bache input
-        ws_bach=wb["batches"]
+        ws1=wb["batches"]
         Block.show_monthly_Baches(self,year,month)
         
 #        sql_query=Block.show_monthly_Baches(self,year,month)
@@ -1135,11 +1209,11 @@ class Select():
         for row in rows:
             #print(row)
             for item in row:
-                ws_bach.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'b'
             c = 1
             r += 1
-        ws8=wb["scrap_days"]
+        ws1=wb["scrap_days"]
         Block.show_scrap_monthly_report_by_days(self,year,month)
         #sql_query=Block.show_scrap_monthly_report_by_days(self,year,month)
         #get_data = self.load_data(sql_query)        
@@ -1150,7 +1224,7 @@ class Select():
             #print(row)
         
             for item in row:
-                ws8.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'b'
             c = 1
             r += 1    
@@ -1198,7 +1272,7 @@ class Select():
         #filter on non conformity weights
             #part one low weight
         list_item_size=weight_nonconfomity_low.shape[0]
-        ws5=wb["wieght_report"]
+        ws1=wb["wieght_report"]
         
         r = 12  # start at 12 row
         c = 1 # column 'a'
@@ -1212,7 +1286,7 @@ class Select():
             r += 1   
     
             #part tow hight weight
-        ws5=wb["wieght_report"]
+        ws1=wb["wieght_report"]
         
         list_item_size=weight_nonconfomity_high.shape[0]
         
@@ -1222,12 +1296,12 @@ class Select():
             rows = weight_nonconfomity_high
             #rows = weight_nonconfomity_high.iloc[row]
             for item in rows:
-                ws5.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'd'
             c = 1
             r += 1   
         
-        ws6=wb["ct_report"]
+        ws1=wb["ct_report"]
         list_item_size=c_t_nonconfomity.shape[0]
         
         r = 11  # start at 11th row
@@ -1236,14 +1310,14 @@ class Select():
             #rows = c_t_nonconfomity.iloc[row]
             rows = c_t_nonconfomity
             for item in rows:
-                ws6.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'd'
             c = 1
             r += 1   
         
         #filter on on conformity scrap
 
-        ws7=wb["scrap_report"]
+        ws1=wb["scrap_report"]
         list_item_size=scrap_nonconfomity.shape[0]
         if scrap_nonconfomity_count>=1:
             
@@ -1253,7 +1327,7 @@ class Select():
                 rows = scrap_nonconfomity
                 #for item in range(0,row):
                 for item in rows:
-                    ws7.cell(row=r, column=c).value = row
+                    ws1.cell(row=r, column=c).value = row
                     c += 1 # Column 'd'
                 c = 1
                 r += 1
@@ -1262,7 +1336,7 @@ class Select():
             #_____________
             
             #_____________
-        ws8=wb["scrap_machine"]
+        ws1=wb["scrap_machine"]
         list_item_size=machines.shape[0]
         r = 3  # start at 33th row
         c = 1 # column 'a'
@@ -1275,19 +1349,19 @@ class Select():
             r += 1   
         
         
-        ws2=wb["output_monthly"]
+        ws1=wb["output_monthly"]
         rows = yearly_output_product
         r = 3  # start at third row
         c = 1 # column 'a'
         for row in rows:
             #print(row)
             #for item in row:
-            ws2.cell(row=r, column=c).value = item
+            ws1.cell(row=r, column=c).value = item
             #c += 1 # Column 'b'
             c = 1
             r += 1
         
-        ws3=wb["year"]
+        ws1=wb["year"]
         Block.show_machine_report_yearly(self,year,month)
         rows = cursor.fetchall()
         r = 3  # start at third row
@@ -1296,12 +1370,12 @@ class Select():
             #print(row)
         
             for item in row:
-                ws3.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'b'
             c = 1
             r += 1
         #scrap monthly
-        ws3=wb["month"]
+        ws1=wb["month"]
         Block.show_monthly_report_view_month(self,year,month)
         rows = cursor.fetchall()
         r = 3  # start at third row
@@ -1310,13 +1384,13 @@ class Select():
             #print(row)
         
             for item in row:
-                ws3.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'b'
             c = 1
             r += 1
         #yearly item report
         #monthly mold report by molds not items
-        ws_output_molds=wb["output_molds"]
+        ws1=wb["output_molds"]
         
         print("____________test_______",daily_analysis)    
         r = 3  # start at third row
@@ -1324,12 +1398,12 @@ class Select():
         rows = daily_analysis
         for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
             for item in rows:
-                ws_output_molds.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'd'
             c = 1
             r += 1   
 
-        ws_output_molds_yearly=wb["output_mold_monthly"]
+        ws1=wb["output_mold_monthly"]
         Block.yearly_report_molds_byMonthes(self,year,args)
 
         rows = cursor.fetchall()
@@ -1339,44 +1413,26 @@ class Select():
             #print(row)
 
             for item in row:
-                ws_output_molds_yearly.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'b'
             c = 1
             r += 1
 
             #report for moldsy monthly
         
-        ws_wieght_yearly=wb["output_molds"]
+        ws1=wb["output_molds"]
         Block.show_yearly_report_molds(self,year,month)
         rows = cursor.fetchall()
         r = 3  # start at 3th row
         c = 1 # column 'a'
         for row in rows:
             for item in row:
-                ws_wieght_yearly.cell(row=r, column=c).value = item
+                ws1.cell(row=r, column=c).value = item
                 c += 1 # Column 'b'
             c = 1
             r += 1
         ws1=wb["materials"]
         Material.materialToPorduct(self,year)
-        get_data=cursor.fetchall()
-        #get_data.set_index("serial", inplace=True) #put index
-        
-        #get_data=pd.DataFrame(get_data["id"])
-        rows=get_data
-        #rows = get_data[columns_quality]
-        
-        r = 4  # start at fourd row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-            for item in row:
-                ws1.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-        ws_return=wb["returns_products"]
-        Block.returnProducts(self,year,month)
         get_data=cursor.fetchall()
         #get_data.set_index("serial", inplace=True) #put index
         
