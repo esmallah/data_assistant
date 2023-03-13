@@ -1,4 +1,5 @@
-from ..db import conn , cursor
+#from ..db import conn , cursor
+from db import conn , cursor
 #from .database_sqlite import conn , cursor					
 class MoldsQuality():
 	'''

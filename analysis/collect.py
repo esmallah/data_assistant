@@ -1132,6 +1132,7 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1
+        '''
         #complaints_export
         
         ws1=wb["customer_complaint_export"]
@@ -1148,7 +1149,7 @@ class Select():
             c = 1
             r += 1
         #complaints_export
-        '''
+        
         ws1=wb["customer_comments"]
         Block.customerComplaintsLocal(self,year,month)
         get_data=cursor.fetchall()

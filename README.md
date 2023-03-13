@@ -16,6 +16,8 @@ road map:
 for create ui and design it
 pip3 install PyQt5-tools
 for convert xml to ptyhon 
+
+cd config_pyqt
 pyuic5 interface2.ui > interface2.py
 pyrcc5 maps.qrc -o maps_rc.py
 
@@ -32,7 +34,7 @@ python main.py
 if not activate conda restart your texteditor as adminstrator
 #_____for backup enviroment ( or run as adminstrator)
 
-you can start alone by install
+you can start alpone by install
 pip install PyInstaller
 then
 pyinstaller -w main.py

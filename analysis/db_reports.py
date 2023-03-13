@@ -1,5 +1,6 @@
 
-from ..db import cursor,conn
+#from ..db import cursor,conn
+from db import cursor,conn
 #t22records_reports
 SQL_quality_records="""
 				year,
@@ -303,14 +304,13 @@ product_return_column='''
 			t22.year,			
 			t22.field_integer,
 			t22.date,
-			t22.month,
+			q.month,
 			q.number_delivery,
 			q.return_quantity,
 			q.return_good,
 			q.return_downgrade,
 			q.return_scrap
-			
-			
+					
 				'''
 customer_complaints_column='''
 			
@@ -318,7 +318,7 @@ customer_complaints_column='''
 			t22.serials,			
 			t22.field_integer,
 			t22.date,
-			t22.month,
+			q.month,
 			t22.attachment_name,
 			t22.verification_details,
 			t22.validation_details,
@@ -326,7 +326,8 @@ customer_complaints_column='''
 			t22.verification_result,
 			t22.f39mother_id,
 			t22.f11part_id,
-			t22.f11part_item_id
+			t22.f11part_item_id,
+			t22.groups
 			
 					'''
 
@@ -2106,7 +2107,7 @@ class Block():
 							left join v108items_master p
 								on q.f11part_item_id=p.item_id
 							
-							left join insutech.t22record t22
+							right join insutech.t22record t22
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
 							on t127.means_id=t22.f127means_id
@@ -2117,12 +2118,17 @@ class Block():
 							left join insutech.t112partners t112
 							on t112.partner_id=t22.f112partners_id
 							'''%customer_complaints_column
-		SQL = SQL1+''' '''
+		#SQL = SQL1+''' '''
+		#cursor.execute(SQL,)	
+
+		SQL = SQL1+''' where t22.f39mother_id=108 '''
 		cursor.execute(SQL,)	
-		#SQL2 = SQL1+''' where year = %s '''
+
+		#SQL2 = SQL1+''' where year = %s '''%year
 		#SQL3 = SQL2+''' and month = %s '''
 		#SQL4=SQL3+" and t22.f39mother_id=107  order by q.year,q.month,p.product_name"
 		#SQL5=SQL2+" and t22.f39mother_id=107 order by q.year,q.month,p.product_name"
+		#cursor.execute(SQL5,month)	
 		#if type(month) == tuple:   
 			
 		#	cursor.execute(SQL3, month)

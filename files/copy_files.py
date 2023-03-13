@@ -16,7 +16,8 @@ class Direcories():
         self.folder_to=folder_to
         self.file_from=file_from
         self.file_to=file_to
-    def mkdir(path):
+    def mkdir(self):
+        path = (self.folder_from)
         if not os.path.exists(path):
             os.makedirs(path)
     def copy_files(self,src, dst):

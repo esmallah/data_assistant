@@ -604,18 +604,23 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         #outputpath=r"E:\work\contact_group\QHSE_activation\QES general\document control"
         path=self.FileLocationInputLineEdit.text()
         outputpath=self.FileLocationOutputLineEdit.text()
+        if self.checkBox_FileControl_createfolders.isChecked():
+            Files_control.creatfolders(self,path,outputpath)
+
         if self.checkBox_FileControl_getfilesNames.isChecked():
             if str(self.comboBox_FileControl_output_type.currentText())=="folders and sub files" : #for chose any type of files
                 Files_control.get_folders_list(path,outputpath)
             else:
                 Files_control.get_Files_names(path,outputpath)
         #______________________for convert files to pdf
+        
         from files import Convert
         #_________________________________pdf convertor_____________
         #_________________________warning___________________________
         #you must be copy your file to backup file becase any mistack you can't reback your files
         documentation=Convert(self.FileLocationInputLineEdit.text(),self.FileLocationOutputLineEdit.text())
         png=Convert(self.FileLocationInputLineEdit.text(),self.FileLocationOutputLineEdit.text())
+        
         if self.checkBox_FileControl_Topdf.isChecked():
             documentation.convert_excel()
             documentation.convert_word()

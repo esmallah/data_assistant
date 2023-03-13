@@ -67,3 +67,8 @@ class Files_control():
                     imResize.save(f + ' resized.jpg', 'JPEG', quality=90)
 
         resize()
+    def creatfolders(self,path,outputpath):
+        os.chdir(outputpath)
+        
+        if not os.path.exists(path):
+            os.makedirs(path)
