@@ -1245,7 +1245,7 @@ class Block():
 								,p.standard_dry_weight_from,p.standard_dry_weight_to,p.standard_rate_hour
 								,p.c_t_standard_per_second,p.customer_name,p.company_of_customer,p.item_code_customers,p.item_classification_customers
 								,q.f22record_id,q.f127means_id,q.f39mother_id
-								
+							
 							order by q.year, q.month,q.day,q.f14machine_id
 			)'''
 		cursor.execute(create_view_quality_daily)
@@ -1892,7 +1892,7 @@ class Block():
 	def get_daily_dataentry_items(self,year,month,*args):
 		SQL1='''with quary_molds_report as (select * from v101molds_report_daily 	
 									)
-							select * from quary_molds_report where year=(%s)'''%year
+							select * from quary_molds_report where f39mother_id=75 and year=(%s)'''%year
 		
 		SQL2 = SQL1+' and month = (%s)'
 		
@@ -1906,7 +1906,7 @@ class Block():
 	def get_daily_dataentry_items_yearly(self,year):
 		SQL1='''with quary_items_report as (select * from v101molds_report_daily
 									)
-							select * from quary_items_report where year=(%s)'''%year
+							select * from quary_items_report where f39mother_id=75 and year=(%s)'''%year
 	
 		cursor.execute(SQL1)	
 	def yearly_report_molds_byWeeks(self,year,month,day,to_day):

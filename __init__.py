@@ -3,7 +3,7 @@
 #from App_Inicio import App_inicioSesion
 #from qt.ui.login import Login
 
-
+from .config_pyqt import *
 from .analysis import *
 from .files import *
 from .photo import *
