@@ -1,6 +1,5 @@
-#from ..db import conn , cursor
-from db import conn , cursor
-#from .database_sqlite import conn , cursor					
+from ..db import conn , cursor
+#from db import conn , cursor	#pyqt
 class MoldsQuality():
 	'''
 		this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries

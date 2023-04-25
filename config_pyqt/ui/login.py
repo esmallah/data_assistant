@@ -66,7 +66,7 @@ class Login(QtWidgets.QWidget):
         
     @pyqtSlot()
     def buttonWindow3_onClick(self):
-        from ui import Window_qc
+        from .qc_molds import Window_qc
         self.cams = Window_qc(self.lineEdit2.text()) 
         self.cams.show()
         self.close()

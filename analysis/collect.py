@@ -350,7 +350,8 @@ class Select():
         self.writefile=writefile
         self.writesheet=writesheet
     def load_data(self,sql_query):
-        from db import cursor
+        from ..db import cursor
+        #from db import cursor #from pyqt
         sql_query
         get_data2=cursor.fetchall()
         #__________________________________________________________________        
@@ -1123,7 +1124,7 @@ class Select():
         Block.customerComplaintsLocal(self,year,month)
         get_data=cursor.fetchall()
         rows=get_data
-        r = 4  # start at fourd row
+        r = 5  # start at fourd row
         c = 1 # column 'a'
         for row in rows:
             #print(row)
@@ -1132,14 +1133,14 @@ class Select():
                 c += 1 # Column 'b'
             c = 1
             r += 1
-        '''
-        #complaints_export
         
+        #complaints_export
+        '''
         ws1=wb["customer_complaint_export"]
-        Block.customerComplaintsLocal(self,year,month)
+        Block.customerComplaintsExport(self,year,month)
         get_data=cursor.fetchall()
         rows=get_data
-        r = 4  # start at fourd row
+        r = 5  # start at fourd row
         c = 1 # column 'a'
         for row in rows:
             #print(row)
@@ -1151,11 +1152,26 @@ class Select():
         #complaints_export
         
         ws1=wb["customer_comments"]
-        Block.customerComplaintsLocal(self,year,month)
+        Block.customerComplaintsCommint(self,year,month)
         get_data=cursor.fetchall()
         
         rows=get_data
-        r = 4  # start at fourd row
+        r = 5  # start at fourd row
+        c = 1 # column 'a'
+        for row in rows:
+            #print(row)
+            for item in row:
+                ws1.cell(row=r, column=c).value = item
+                c += 1 # Column 'b'
+            c = 1
+            r += 1
+        
+        #supplier complaints
+        ws1=wb["supplier_complaints"]
+        Block.sublierComplaints(self,year,month)
+        get_data=cursor.fetchall()
+        rows=get_data
+        r = 5  # start at fourd row
         c = 1 # column 'a'
         for row in rows:
             #print(row)
@@ -1165,21 +1181,6 @@ class Select():
             c = 1
             r += 1
         '''
-        #supplier complaints
-        ws1=wb["supplier_complaints"]
-        Block.sublierComplaints(self,year,month)
-        get_data=cursor.fetchall()
-        rows=get_data
-        r = 4  # start at fourd row
-        c = 1 # column 'a'
-        for row in rows:
-            #print(row)
-            for item in row:
-                ws1.cell(row=r, column=c).value = item
-                c += 1 # Column 'b'
-            c = 1
-            r += 1
-        
         #material by silo
         ws1=wb["input_materials"]
         Material.material_bySilo_daily(self,year,month,day,to_day)

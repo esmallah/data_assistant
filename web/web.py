@@ -244,17 +244,97 @@ class AutomatedFilling():
         AGG76599802=[lg_base_VIV_h,lg_base_VIV_l]
 
         lg_slides_50UQ75="MFZ67452601"#LGwasher machine base VIVACHE
-        lg_slides_50UQ75_h=[1164.00,312,196,162,127.5,206,24]
-        lg_slides_50UQ75_l=[1156,308,194,158,112.03,204,22]
+        lg_slides_50UQ75_h=[1164.00,312,196,162,206,24,127.5]
+        lg_slides_50UQ75_l=[1156,308,194,158,204,22,112.03]
         MFZ67452601=[lg_slides_50UQ75_h,lg_slides_50UQ75_l]
         
-        #second version
-        #time recorded for fill     30minint    #the time not accurecy because intenet speed defirince between time to time
+        LG55QNED81_up="MFZ67418502"
+        LG55QNED81_up_h=[1344,171,317,480.879]
+        LG55QNED81_up_l=[1399,168,314,422.509]
+        MFZ67418502=[LG55QNED81_up_h,LG55QNED81_up_l]
         
+        LG55QNED81_bottom="MFZ67418501"
+        LG55QNED81_bottom_h=[1344,171,280,440.181]
+        LG55QNED81_bottom_l=[1399,168,278,386.751]
+        MFZ67418501=[LG55QNED81_bottom_h,LG55QNED81_bottom_l]
         
+        LG55QNED81_left="MFZ67418503"
+        LG55QNED81_left_h=[187.8,165,105,31.059]
+        LG55QNED81_left_l=[184.8,162,103,27.289]
+        MFZ67418503=[LG55QNED81_left_h,LG55QNED81_left_l]
+
+        LG55QNED81_right="MFZ67418504"
+        LG55QNED81_right_h=[187.8,165,105,31.059]
+        LG55QNED81_right_l=[184.8,162,103,27.289]
+        MFZ67418504=[LG55QNED81_right_h,LG55QNED81_right_l]
+
+        LG55QNED81_front="MFZ67418701"
+        LG55QNED81_front_h=[1097,183,34.3,57.171]
+        LG55QNED81_front_l=[1089,180,32.3,47.991]
+        MFZ67418701=[LG55QNED81_front_h,LG55QNED81_front_l]
+
+        LGLG65QNED81_up="MFZ67419302"
+        LGLG65QNED81_up_h=[1584,187,302,785.04]
+        LGLG65QNED81_up_l=[1578,184,298,689.75]
+        MFZ67419302=[LGLG65QNED81_up_h,LGLG65QNED81_up_l]
+
+        LG65QNED81_bottom="MFZ67419301"
+        LG65QNED81_bottom_h=[1584,173,256,665.09]
+        LG65QNED81_bottom_l=[1578,170,253,584.36]
+        MFZ67419301=[LG65QNED81_bottom_h,LG65QNED81_bottom_l]
+
+        LG65QNED81_right="MFZ67419303"
+        LG65QNED81_right_h=[393,181,250,198.13]
+        LG65QNED81_right_l=[389,178,247,174.08]
+        MFZ67419303=[LG65QNED81_right_h,LG65QNED81_right_l]
         
-        #s=slice(items.lengh(),int(itemSelection))
-        #item=items[int(itemSelection)]#type the varibale item______________________________
+
+        LG65QNED81_left="MFZ67419304"
+        LG65QNED81_left_h=[393,181,250,174.57]
+        LG65QNED81_left_l=[389,178,247,153.38]
+        MFZ67419304=[LG65QNED81_left_h,LG65QNED81_left_l]
+        
+        LG65QNED81_front="MFZ67419501"
+        LG65QNED81_front_h=[1048,388,45,82.46]
+        LG65QNED81_front_l=[1043,384,43,72.45]
+        MFZ67419501=[LG65QNED81_front_h,LG65QNED81_front_l]
+
+        LG75QNED81_up_r="MFZ67413704"
+        LG75QNED81_up_r_h=[901.5,212,350,555.85]
+        LG75QNED81_up_r_l=[896.5,209,346,488.38]
+        MFZ67413704=[LG75QNED81_up_r_h,LG75QNED81_up_r_l]
+
+        LG75QNED81_up_L="MFZ67413703"
+        LG75QNED81_up_L_h=[901.5,212,350,533.36]
+        LG75QNED81_up_L_l=[896.5,209,346,468.62]
+        MFZ67413703=[LG75QNED81_up_L_h,LG75QNED81_up_L_l]
+
+        LG75QNED81_bottom_r="MFZ67413702"
+        LG75QNED81_bottom_r_h=[901.5,198,315,432.68]
+        LG75QNED81_bottom_r_l=[896.5,195,311,380.16]
+        MFZ67413702=[LG75QNED81_bottom_r_h,LG75QNED81_bottom_r_l]
+
+        LG75QNED81_bottom_L="MFZ67413701"
+        LG75QNED81_bottom_L_h=[901.5,198,315,456.25]
+        LG75QNED81_bottom_L_l=[896.5,195,311,400.87]
+        MFZ67413701=[LG75QNED81_bottom_L_h,LG75QNED81_bottom_L_l]
+
+        LG75QNED81_R="MFZ67413706"
+        LG75QNED81_R_h=[580.8,206,270,279.53]
+        LG75QNED81_R_l=[575.8,203,267,245.6]
+        MFZ67413706=[LG75QNED81_R_h,LG75QNED81_R_l]
+
+        LG75QNED81_L="MFZ67413705"
+        LG75QNED81_L_h=[580.8,206,270,294.53]
+        LG75QNED81_L_l=[575.8,203,267,258.78]
+        MFZ67413705=[LG75QNED81_L_h,LG75QNED81_L_l]
+
+        LG75QNED81_FRONT="MFZ67413801"
+        LG75QNED81_FRONT_h=[1228,516,61,170.29]
+        LG75QNED81_FRONT_l=[1223,512,59,149.62]
+        MFZ67413801=[LG75QNED81_FRONT_h,LG75QNED81_FRONT_l]
+
+
         if fill_data:
             items=[MFZ65333701,MFZ65333801,MFZ65914801,MFZ66333001,mfz66236501,MFZ65262201,
                 MFZ66151901,MFZ66236701,MFZ66236702,MFZ67209801,MFZ67225101,
@@ -276,6 +356,7 @@ class AutomatedFilling():
                 printRange=lg_range
             else:
                 printRange=5
+            nullrange=1
             #git id_javascript
 
             #pyautogui.getWindow("music").maximize()
@@ -299,15 +380,18 @@ class AutomatedFilling():
                     else:
                         pyautogui.typewrite(['tab'])
                 #for move to next posision
-                for i in range(3):
+                for i in range(nullrange):
                     pyautogui.typewrite(['tab'])
+                
         if insert_name:
             items=[LG43UJ63,LG49UJ63,LG55UK630,LGLG32LM55,LGLG43LM63,lg_43LM63FRONT,lg_43LM55FRONT,
                     LG65UM73up,LG65UM73LR,LG43UP77,LG65UP775Front,LG65UP77set,LG65UP81set,
                     LG65UP81Side,LG75UP77FRONT,LG75UP77Set,LG75UP77Side,LG43UP81,
                     LGNano80set,LGNano80side,LGOLED65A26LA_set,OLED65A26LAside,lg70UQ980updown,lg70UQ980sides
                     ,lg_OLED65CS_set,lg_OLED65CS_sides,OLED55CS_set,OLED55CS_side
-                    ,LG_cover,lG_angels,lg_kaeda,lg_base_VIV,lg_slides_50UQ75]
+                    ,LG_cover,lG_angels,lg_kaeda,lg_base_VIV,lg_slides_50UQ75,MFZ67418502,MFZ67418501,MFZ67418503
+                    ,MFZ67418504,MFZ67418701,MFZ67419302,MFZ67419301,MFZ67419303,MFZ67419304,MFZ67419501,MFZ67413704
+                    ,MFZ67413703,MFZ67413702,MFZ67413701,MFZ67413706,MFZ67413705,MFZ67413801]
             
             item=items[itemSelection]
             print(item)

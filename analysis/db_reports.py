@@ -1,6 +1,6 @@
 
-#from ..db import cursor,conn
-from db import cursor,conn
+from ..db import cursor,conn
+#from db import cursor,conn	#for pyqt
 #t22records_reports
 SQL_quality_records="""
 				year,
@@ -258,7 +258,9 @@ veiw_quality_daily='''
 				q.shift2_deepth_mm,
 				q.shift1_denisty,
 				q.shift2_denisty,
+				
 				q.number_delivery,
+				
 				q.return_quantity,
 				q.return_good,
 				q.return_downgrade,
@@ -267,8 +269,10 @@ veiw_quality_daily='''
 				q.f127means_id,
 				q.f22record_id,
 				q.f121risk_id,
-				q.f71workflow_id
-				
+				q.f71workflow_id,
+				q.field_date1,
+				q.field_date2,
+				q.complaints_rejected
 					'''
 veiw_customer_complaints='''
 				f112partners_id,
@@ -300,7 +304,6 @@ veiw_customer_complaints='''
 				requester,
 				'''
 product_return_column='''
-			
 			t22.year,			
 			t22.field_integer,
 			t22.date,
@@ -309,27 +312,38 @@ product_return_column='''
 			q.return_quantity,
 			q.return_good,
 			q.return_downgrade,
-			q.return_scrap
-					
-				'''
+			q.return_scrap		
+			'''
 customer_complaints_column='''
-			
-			t22.year,			
+				
 			t22.serials,			
-			t22.field_integer,
-			t22.date,
+			t22.id_ncr,
 			q.month,
+			t22.date,
+			t112.name,
+			t22.field_string,
+			p.Product_name,
+			
+			q.field_date1,
+			q.field_date2,
+			q.number_delivery,
+			
+			q.complaints_rejected,
 			t22.attachment_name,
+
 			t22.verification_details,
-			t22.validation_details,
-			t22.corrective_action_details,
 			t22.verification_result,
-			t22.f39mother_id,
-			t22.f11part_id,
-			t22.f11part_item_id,
+			t74.type,
+			t22.cause_details,
+			t22.corrective_action_details,
+			t22.status,
+			t22.date_closing,
+			p.product_code,t127.means,
+			t74.badness,
 			t22.groups
 			
-					'''
+			
+			'''
 
 class Block():
 	'''this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries'''		
@@ -1127,17 +1141,20 @@ class Block():
 								round(sum(q.shift2_scrabe_cloration),0)as shift2_scrabe_cloration,
 
 								sum(q.number_delivery) as number_delivery,
+								sum(q.complaints_rejected) as complaints_rejected,
 								sum(q.return_quantity) as return_quantity,
 								sum(q.return_good) as return_good,
 								sum(q.return_downgrade) as return_downgrade,
 								sum(q.return_scrap) as return_scrap,
 								
-								s.density,q.f22record_id,q.f127means_id,q.f71workflow_id,q.f39mother_id,q.f121risk_id
+								s.density,q.f22record_id,q.f127means_id,q.f71workflow_id,q.f39mother_id,
+								q.f121risk_id,q.field_date1,q.field_date2
 								from v10quality_inpsection q
 								left join v108items_master s
 								on q.f11part_item_id=s.item_id
 						
-								group by q.factory,q.year, q.month ,q.day,q.date_day ,q.f12molds_id,s.No_on_Set,q.f11part_item_id,q.f14machine_id,s.density,q.f22record_id,q.f127means_id,q.f71workflow_id,q.f39mother_id,q.f121risk_id
+								group by q.factory,q.year, q.month ,q.day,q.date_day ,q.f12molds_id,s.No_on_Set,q.f11part_item_id,q.f14machine_id,s.density,q.f22record_id,q.f127means_id,q.f71workflow_id
+								,q.f39mother_id,q.f121risk_id,q.field_date1,q.field_date2
 								
 								order by q.year, q.month ,q.f14machine_id
 										
@@ -2076,7 +2093,7 @@ class Block():
 							left join insutech.t22record t22
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
-							on t127.means_id=t22.f127means_id
+							on t127.means_id=q.f127means_id
 							left join insutech.t121risk t121
 							on t121.risk_id=t22.f121risk_id
 							left join insutech.t71workflow t71
@@ -2101,8 +2118,7 @@ class Block():
 	def customerComplaintsLocal(self,year,month):#report depend of mold structure
 			#report depend of mold structure
 		SQL1='''select
-							 %s,p.Product_name,p.product_code,t112.name
-							,t127.means,t121.name,t71.step_details
+							 %s
 							from v105quality_inspection_items q
 							left join v108items_master p
 								on q.f11part_item_id=p.item_id
@@ -2110,21 +2126,26 @@ class Block():
 							right join insutech.t22record t22
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
-							on t127.means_id=t22.f127means_id
+							on t127.means_id=q.f127means_id
 							left join insutech.t121risk t121
 							on t121.risk_id=t22.f121risk_id
 							left join insutech.t71workflow t71
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
 							on t112.partner_id=t22.f112partners_id
+							left join insutech.t74problems t74
+							on t74.problem_id=t22.f74problems_id
+							
 							'''%customer_complaints_column
+				
 		#SQL = SQL1+''' '''
 		#cursor.execute(SQL,)	
 
 		SQL = SQL1+''' where t22.f39mother_id=108 '''
 		cursor.execute(SQL,)	
 
-		#SQL2 = SQL1+''' where year = %s '''%year
+#		SQL2 = SQL1+''' and year = %s '''%year
+#		cursor.execute(SQL2,)	
 		#SQL3 = SQL2+''' and month = %s '''
 		#SQL4=SQL3+" and t22.f39mother_id=107  order by q.year,q.month,p.product_name"
 		#SQL5=SQL2+" and t22.f39mother_id=107 order by q.year,q.month,p.product_name"
@@ -2136,6 +2157,57 @@ class Block():
 		#		cursor.execute(SQL5, year)	
 		#	else:
 		#		cursor.execute(SQL5, (year,))		
+	def customerComplaintsExport(self,year,month):#report depend of mold structure
+			#report depend of mold structure
+		SQL1='''select
+							 %s,p.Product_name,p.product_code,t112.name
+							,t127.means,t121.name,t71.step_details
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+							
+							right join insutech.t22record t22
+							on q.f22record_id = t22.record_id 
+							left join t127means t127
+							on t127.means_id=q.f127means_id
+							left join insutech.t121risk t121
+							on t121.risk_id=t22.f121risk_id
+							left join insutech.t71workflow t71
+							on t71.id_workflow=t22.f71workflow_id
+							left join insutech.t112partners t112
+							on t112.partner_id=t22.f112partners_id
+							'''%customer_complaints_column
+		#SQL = SQL1+''' '''
+		#cursor.execute(SQL,)	
+
+		SQL = SQL1+''' where t22.f39mother_id=108 and t22.product_complaints == 1'''
+		cursor.execute(SQL,)	
+	def customerComplaintsCommint(self,year,month):#report depend of mold structure
+			#report depend of mold structure
+		SQL1='''select
+							 %s,p.Product_name,p.product_code,t112.name
+							,t127.means,t121.name,t71.step_details
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+							
+							right join insutech.t22record t22
+							on q.f22record_id = t22.record_id 
+							left join t127means t127
+							on t127.means_id=q.f127means_id
+							left join insutech.t121risk t121
+							on t121.risk_id=t22.f121risk_id
+							left join insutech.t71workflow t71
+							on t71.id_workflow=t22.f71workflow_id
+							left join insutech.t112partners t112
+							on t112.partner_id=t22.f112partners_id
+							'''%customer_complaints_column
+		#SQL = SQL1+''' '''
+		#cursor.execute(SQL,)	
+
+		SQL = SQL1+''' where t22.f39mother_id=108 and t22.sales_comment ==1'''
+		cursor.execute(SQL,)	
+
 	def sublierComplaints(self,year,month):#report depend of mold structure
 			#report depend of mold structure
 		SQL1='''select
@@ -2148,7 +2220,7 @@ class Block():
 							left join insutech.t22record t22
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
-							on t127.means_id=t22.f127means_id
+							on t127.means_id=q.f127means_id
 							left join insutech.t121risk t121
 							on t121.risk_id=t22.f121risk_id
 							left join insutech.t71workflow t71
@@ -2156,7 +2228,7 @@ class Block():
 							left join insutech.t112partners t112
 							on t112.partner_id=t22.f112partners_id
 							'''%customer_complaints_column
-		SQL = SQL1+''' where t22.f39mother_id=108 '''
+		SQL = SQL1+''' where t22.f39mother_id_type=279 '''
 		cursor.execute(SQL,)	
 		#SQL2 = SQL1+''' where year = %s '''
 		#SQL3 = SQL2+''' and month = %s '''

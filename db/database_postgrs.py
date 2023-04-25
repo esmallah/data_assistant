@@ -28,19 +28,14 @@ table="yt_quality"
 # print the connection string we will use to connect
 
 import psycopg2
-#import sqlalchemy
-#from sqlalchemy import create_engine
+
 
 
 conn = None
-params = config(filename=BASE_DIR+r'\\db\database.ini', section="postgresql_network_server")
+params = config(filename=BASE_DIR+r'\\db\database.ini', section="postgresql_remote_server")
 print ("Connecting to database\n	->%s" % params)
 conn = psycopg2.connect(**params)
 cursor = conn.cursor()
-
-#conntect by sqlalchemy
-#cn_sqlalchemy = create_engine(**params).connect()
-#con=cn_sqlalchemy
 
 '''
 except psycopg2.DatabaseError, e:

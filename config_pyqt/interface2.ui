@@ -53,7 +53,7 @@ gridline-color: rgb(255, 255, 255,0%);
 </string>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="tab_AI_leader">
      <property name="accessibleName">
@@ -3521,7 +3521,7 @@ color: rgb(255, 255, 255);</string>
         <string notr="true"/>
        </property>
        <property name="text">
-        <string/>
+        <string>D:\qhserp\current\andalosy_files\insutech\</string>
        </property>
       </widget>
       <widget class="QPushButton" name="ButWebFilterOpensites_2">
@@ -4373,6 +4373,91 @@ color: rgb(255, 255, 255);</string>
            <item>
             <property name="text">
              <string>lg_slides_50UQ75</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG55QNED81_up</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG55QNED81_bottom</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG55QNED81_left</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG55QNED81_right</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG55QNED81_front</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LGLG65QNED81_up</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG65QNED81_bottom</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG65QNED81_right</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG65QNED81_left</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG65QNED81_front</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG75QNED81_up_r</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG75QNED81_up_L</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG75QNED81_bottom_r</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG75QNED81_bottom_L</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG75QNED81_R</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG75QNED81_L</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>LG75QNED81_FRONT</string>
             </property>
            </item>
           </widget>

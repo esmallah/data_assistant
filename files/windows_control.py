@@ -68,7 +68,7 @@ class Files_control():
 
         resize()
     def creatfolders(self,path,outputpath):
-        os.chdir(outputpath)
+        os.chdir(path)
         
-        if not os.path.exists(path):
-            os.makedirs(path)
+        if not os.path.exists(outputpath):
+            os.makedirs(outputpath)
