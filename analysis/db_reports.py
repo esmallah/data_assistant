@@ -1,3 +1,6 @@
+import pandas as pd
+from itertools import permutations
+from itertools import product
 
 from ..db import cursor,conn
 #from db import cursor,conn	#for pyqt
@@ -272,7 +275,10 @@ veiw_quality_daily='''
 				q.f71workflow_id,
 				q.field_date1,
 				q.field_date2,
-				q.complaints_rejected
+				q.complaints_rejected,
+				q.tall_mm,
+				q.width_mm,
+				q.deepth_mm
 					'''
 veiw_customer_complaints='''
 				f112partners_id,
@@ -303,17 +309,6 @@ veiw_customer_complaints='''
 				month,
 				requester,
 				'''
-product_return_column='''
-			t22.year,			
-			t22.field_integer,
-			t22.date,
-			q.month,
-			q.number_delivery,
-			q.return_quantity,
-			q.return_good,
-			q.return_downgrade,
-			q.return_scrap		
-			'''
 customer_complaints_column='''
 				
 			t22.serials,			
@@ -343,6 +338,32 @@ customer_complaints_column='''
 			t22.groups
 			
 			
+			'''
+product_return_column='''
+			t22.year,			
+			t22.field_integer,
+			t22.date,
+			q.month,
+			q.number_delivery,
+			q.return_quantity,
+			q.return_good,
+			q.return_downgrade,
+			q.return_scrap,
+			q.tall_mm,
+			q.width_mm,
+			q.deepth_mm,
+			q.density
+			'''
+product_ncrs_column='''
+			t22.year,			
+			t22.field_integer,
+			t22.date,
+			q.month,
+			q.number_delivery,
+			q.return_quantity,
+			q.return_good,
+			q.return_downgrade,
+			q.return_scrap		
 			'''
 
 class Block():
@@ -653,7 +674,7 @@ class Block():
 							on p.f12molds_id=M.mold_id
 							left join insutech.t112partners h
 							on h.partner_id=M.f112partners_id_customer
-							where p.view_items=1)'''
+							where p.view_items=-1)'''
 			cursor.execute(create_view_item_master)
 			conn.commit()
 			print("complete install master data")
@@ -1146,9 +1167,14 @@ class Block():
 								sum(q.return_good) as return_good,
 								sum(q.return_downgrade) as return_downgrade,
 								sum(q.return_scrap) as return_scrap,
+
 								
 								s.density,q.f22record_id,q.f127means_id,q.f71workflow_id,q.f39mother_id,
-								q.f121risk_id,q.field_date1,q.field_date2
+								q.f121risk_id,q.field_date1,q.field_date2,
+								round(avg(q.tall_mm),0) as tall_mm,
+								round(avg(q.width_mm),0) as width_mm,
+								round(avg(q.deepth_mm),0) as deepth_mm
+								
 								from v10quality_inpsection q
 								left join v108items_master s
 								on q.f11part_item_id=s.item_id
@@ -2093,7 +2119,7 @@ class Block():
 							left join insutech.t22record t22
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
-							on t127.means_id=q.f127means_id
+							on t127.means_id=p.f127means_id
 							left join insutech.t121risk t121
 							on t121.risk_id=t22.f121risk_id
 							left join insutech.t71workflow t71
@@ -2309,25 +2335,9 @@ class Material():
 		else:
 			cursor.execute(SQL1, (year,))	
 
-def mold_shout_count_weekly(self,year,month,day,to_day):#report depend of mold structure
-			SQL1='''select %s '''%sql_quality_water_content
-			sql2=SQL1+''' from v101molds_report_daily 
-			
-			 where year = %s  ''' %year 
-			sql3=sql2+'''and month =%s 
-						group by year ,month,day,f14machine_id,f12molds_id,f11part_item_id,product_code,
-						product_name,standard_dry_weight,standard_dry_weight_from,
-						standard_dry_weight_to order by day'''  %month
-
-			if type(month) == tuple:   
-				cursor.execute(sql3, month)	
-			else:
-				cursor.execute(sql3,(month,))
-
 class PgAccess():
 	'''
 		this class for manage data base structre
-		
 	'''		
 	def __init__(self,folder,table):
 		self.folder=folder
@@ -2424,7 +2434,53 @@ class PgAccess():
 		cursor.execute(SQL2)	
 		conn.commit()
 		print("drop column "+str(column_name) ,"in table name "+str(table))
-
-class ORM():
 	move_table_to_schema=	'''ALTER TABLE yksus1
-    			SET SCHEMA firma1;'''
+					SET SCHEMA firma1;'''
+class Data_db():
+	
+	def table_data(self,table_name,col1):
+		
+		#for get last year and month and day form loaded database
+		SQL='''select %s , date ''' %col1
+		SQL1=SQL+'''from  insutech.%s'''%table_name
+		cursor.execute(SQL)
+		
+		rows = cursor.fetchall()
+		#rows = cursor.fetchone()
+		array_length= len(rows)
+		print("__________array_length:____________",array_length)
+		#data_items = pd.DataFrame()
+		data_items = pd.DataFrame(rows)
+
+		#for row in rows:
+		#	for col in row:
+		#		data_items.append(col)
+		#data_items = pd.DataFrame(
+#			[x for x in permutations(rows.attachment_name, 2)],
+		 #   filter(lambda x: x[0]!=x[1], product(rows.attachment_name, rows.attachment_name)), 
+
+		#	columns=['light_maitenance', 'date'])		
+		return data_items
+	def server_test(self,year,month):
+		#select by varible
+		table_name="insutech.t10inventory"
+					
+		SQL1 = 'SELECT * FROM %s' %table_name
+		SQL2 = SQL1+' where year=2019 and month =(%s);'
+		
+		if type(month) == tuple:   
+			cursor.execute(SQL2, month)	
+		else:
+			cursor.execute(SQL2, (month,))	
+
+		#source code
+		#SQL1 = 'SELECT * FROM %s' %table_name
+		#SQL2 = SQL1+' WHERE created_on < date (%s);'
+		#cursor.execute(SQL2, (time_from, ))
+		#https://stackoverflow.com/questions/31760183/psycopg2-cursor-execute-pass-in-variable-table-names-and-items
+		# fro test the connection
+		
+		rows = cursor.fetchall()
+		
+		for row in rows:
+			print(row)

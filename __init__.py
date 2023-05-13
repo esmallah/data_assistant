@@ -3,10 +3,10 @@
 #from App_Inicio import App_inicioSesion
 #from qt.ui.login import Login
 
-from .config_pyqt import *
-from .analysis import *
-from .files import *
-from .photo import *
-from .web import *
-from .leader import *
-from .db import *
+#from .config_pyqt import *
+#from .analysis import *
+#from .files import *
+#from .photo import *
+#from .web import *
+#from .leader import *
+#from .db import *

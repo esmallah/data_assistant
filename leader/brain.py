@@ -18,38 +18,30 @@ import torch.nn.functional as F
 #from local library
 from .utiliy import get_batches
 #Load and prepare the data
-class Ai_thinking():    
-    def __init__(self,folder,readfile,readsheet,column1,column2,writefile,sheetwriter):
-        #self.folder=folder
+class Thinking():    
+    def __init__(self,folder,output):
+        self.show_data
         self.folder=folder
-        self.readfile=readfile
-        self.readsheet=readsheet
-        self.column1=column1
-        self.column2=column2
-        self.writefile=writefile
-        self.sheetwriter=sheetwriter
-        
-    def show_data(self):
-        os.chdir(self.folder)
-        reader=pd.read_excel(self.readfile,self.readsheet)
-        reader_filter=reader[reader["category"]=="products_items"]
-        reader_item=reader_filter[[self.column1 , self.column2]]
-        #reader_item["id_inside_cagegory"]=reader_item[self.column2]
-        #https://towardsdatascience.com/multi-class-text-classification-with-lstm-1590bee1bd17
-        print("Info",reader_item.info())
-        print("reader_item",reader_item[:10])
-        print("reader_item[""names]",reader_item["names"][:10])
+        self.output=output
+    def show_data(self,table_name,col1):
+        from ..analysis import Select,Data_db
 
-        print("reader_item.id_inside_cagegory",reader_item.id_inside_cagegory[:10])
-       
-        ## split by new lines and spaces
+        os.chdir(self.folder)
+        
+        connection_type=Data_db()
+        reader_item=connection_type.table_data(table_name,col1)
+        #https://towardsdatascience.com/multi-class-text-classification-with-lstm-1590bee1bd17
+        #print("Info",reader_item.info())
+        print("reader_item",reader_item[:10])
+        print("reader_item[""col1]",reader_item[col1][:10])
+ ## split by new lines and spaces
         #reviews_split = all_text.split('\n')
         #all_text = ' '.join(reviews_split)
 
         ## create a list of words
         #words = all_text.split()
 
-        reader_names=reader_item.names.value_counts()
+        reader_names=reader_item.col1.value_counts()
         print("______names categories________",reader_names[5])
 
         reader_id=reader_item.id_inside_cagegory.value_counts()
@@ -89,24 +81,24 @@ class Ai_thinking():
         for id in reader_id.value_counts():
             reader_item_filter=reader_item[reader_item["id_inside_cagegory"]==id]
             names_items=[]
-            for i in reader_item_filter.names:
-                names_items.append(reader_item_filter.names)
-                names.append(names_items)
-            #return names
-        print("names",names)
+            for i in reader_item_filter.col1:
+                col1_items.append(reader_item_filter.col1)
+                col1.append(col1_items)
+            #return col1
+        print(col1,col1)
         writer = pd.ExcelWriter(self.writefile)
-        names_df=pd.DataFrame(names)
-        names_df.to_excel(writer,"data")
+        col1_df=pd.DataFrame(col1)
+        col1_df.to_excel(writer,"data")
         
         writer.save()
 
-        chars_id = tuple(set(reader_names))
+        chars_id = tuple(set(reader_col1))
         int2char_name = dict(enumerate(chars_id))
         char2int_name = {ch: ii for ii, ch in int2char_name.items()}
         
         
         ## encode the text
-        encoded_id = np.array([char2int_name[ch] for ch in reader_names])
+        encoded_id = np.array([char2int_name[ch] for ch in reader_col1])
         print("encoded_id categories",encoded_id)
 
         #Pre-processing the data¶
@@ -139,7 +131,7 @@ class Ai_thinking():
         print('\ny\n', self.y[:10, :10])
 
 
-        self.batches_name = get_batches(encoded_names, 8, 50)
+        self.batches_name = get_batches(encoded_col1, 8, 50)
         self.z, self.t = next(self.batches_name)
         # printing out the first 10 items in a sequence
         print('z\n', self.z[:10, :10])
@@ -155,7 +147,7 @@ class Ai_thinking():
         n_hidden=512
         n_layers=2
 
-        #net = Model(chars_names, n_hidden, n_layers)
+        #net = Model(chars_col1, n_hidden, n_layers)
         net = Model(chars_id, n_hidden, n_layers)
         print(net)
         batch_size = 128
@@ -163,7 +155,7 @@ class Ai_thinking():
         n_epochs =  20 # start small if you are just testing initial behavior
 
         # train the model
-        #TexTrainer(net, encoded_names, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
+        #TexTrainer(net, encoded_col1, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
         TexTrainer.train(net, encoded_id, epochs=n_epochs, batch_size=batch_size, seq_length=seq_length, lr=0.001, print_every=10)
 
         ## change the name, for saving multiple files

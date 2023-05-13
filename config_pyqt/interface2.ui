@@ -6105,6 +6105,91 @@ border-color: rgb(255, 255, 255,0%) ;
          <string>30</string>
         </property>
        </row>
+       <row>
+        <property name="text">
+         <string>31</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>32</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>33</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>34</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>35</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>36</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>37</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>38</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>39</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>40</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>41</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>42</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>43</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>44</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>45</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>46</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>47</string>
+        </property>
+       </row>
        <column>
         <property name="text">
          <string>items_name</string>
@@ -6599,6 +6684,288 @@ border-color: rgb(255, 255, 255,0%) ;
        <item row="30" column="2">
         <property name="text">
          <string>AGG76599802</string>
+        </property>
+       </item>
+       <item row="31" column="0">
+        <property name="text">
+         <string>شرائح LG 50UQ75
+</string>
+        </property>
+       </item>
+       <item row="31" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="31" column="2">
+        <property name="text">
+         <string>MFZ67418502</string>
+        </property>
+       </item>
+       <item row="32" column="0">
+        <property name="text">
+         <string>55QNED81 bottom
+</string>
+        </property>
+       </item>
+       <item row="32" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="32" column="2">
+        <property name="text">
+         <string>MFZ67418501
+</string>
+        </property>
+       </item>
+       <item row="33" column="0">
+        <property name="text">
+         <string>55QNED81 left 
+</string>
+        </property>
+       </item>
+       <item row="33" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="33" column="2">
+        <property name="text">
+         <string>MFZ67418503
+</string>
+        </property>
+       </item>
+       <item row="34" column="0">
+        <property name="text">
+         <string>55QNED81 right 
+</string>
+        </property>
+       </item>
+       <item row="34" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="34" column="2">
+        <property name="text">
+         <string>MFZ67418504
+</string>
+        </property>
+       </item>
+       <item row="35" column="0">
+        <property name="text">
+         <string>55QNED81 front 
+</string>
+        </property>
+       </item>
+       <item row="35" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="35" column="2">
+        <property name="text">
+         <string>MFZ67418701
+</string>
+        </property>
+       </item>
+       <item row="36" column="0">
+        <property name="text">
+         <string>65QNED81  -up 
+</string>
+        </property>
+       </item>
+       <item row="36" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="36" column="2">
+        <property name="text">
+         <string>MFZ67419302
+</string>
+        </property>
+       </item>
+       <item row="37" column="0">
+        <property name="text">
+         <string>65QNED81  -bottom 
+</string>
+        </property>
+       </item>
+       <item row="37" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="37" column="2">
+        <property name="text">
+         <string>MFZ67419301
+</string>
+        </property>
+       </item>
+       <item row="38" column="0">
+        <property name="text">
+         <string>65QNED81  - right 
+</string>
+        </property>
+       </item>
+       <item row="38" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="38" column="2">
+        <property name="text">
+         <string>MFZ67419303
+</string>
+        </property>
+       </item>
+       <item row="39" column="0">
+        <property name="text">
+         <string>65QNED81  - left 
+</string>
+        </property>
+       </item>
+       <item row="39" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="39" column="2">
+        <property name="text">
+         <string>MFZ67419304
+</string>
+        </property>
+       </item>
+       <item row="40" column="0">
+        <property name="text">
+         <string>65QNED81  - front 
+</string>
+        </property>
+       </item>
+       <item row="40" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="40" column="2">
+        <property name="text">
+         <string>MFZ67419501
+</string>
+        </property>
+       </item>
+       <item row="41" column="0">
+        <property name="text">
+         <string>75QNED81  - up r 
+</string>
+        </property>
+       </item>
+       <item row="41" column="1">
+        <property name="text">
+         <string>mma </string>
+        </property>
+       </item>
+       <item row="41" column="2">
+        <property name="text">
+         <string>MFZ67413704
+</string>
+        </property>
+       </item>
+       <item row="42" column="0">
+        <property name="text">
+         <string>75QNED81  -upleft 
+</string>
+        </property>
+       </item>
+       <item row="42" column="1">
+        <property name="text">
+         <string>mma</string>
+        </property>
+       </item>
+       <item row="42" column="2">
+        <property name="text">
+         <string>MFZ67413703</string>
+        </property>
+       </item>
+       <item row="43" column="0">
+        <property name="text">
+         <string>75QNED81  -bottom r 
+</string>
+        </property>
+       </item>
+       <item row="43" column="1">
+        <property name="text">
+         <string>mma</string>
+        </property>
+       </item>
+       <item row="43" column="2">
+        <property name="text">
+         <string>MFZ67413702</string>
+        </property>
+       </item>
+       <item row="44" column="0">
+        <property name="text">
+         <string>75QNED81  -bottom L 
+</string>
+        </property>
+       </item>
+       <item row="44" column="1">
+        <property name="text">
+         <string>mma</string>
+        </property>
+       </item>
+       <item row="44" column="2">
+        <property name="text">
+         <string>MFZ67413701</string>
+        </property>
+       </item>
+       <item row="45" column="0">
+        <property name="text">
+         <string>75QNED81  - R  
+</string>
+        </property>
+       </item>
+       <item row="45" column="1">
+        <property name="text">
+         <string>mma</string>
+        </property>
+       </item>
+       <item row="45" column="2">
+        <property name="text">
+         <string>MFZ67413706</string>
+        </property>
+       </item>
+       <item row="46" column="0">
+        <property name="text">
+         <string>75QNED81  - L 
+</string>
+        </property>
+       </item>
+       <item row="46" column="1">
+        <property name="text">
+         <string>mma</string>
+        </property>
+       </item>
+       <item row="46" column="2">
+        <property name="text">
+         <string>MFZ67413705</string>
+        </property>
+       </item>
+       <item row="47" column="0">
+        <property name="text">
+         <string>75QNED81  FRONT - جزء امامى 
+</string>
+        </property>
+       </item>
+       <item row="47" column="1">
+        <property name="text">
+         <string>mma</string>
+        </property>
+       </item>
+       <item row="47" column="2">
+        <property name="text">
+         <string>MFZ67413801</string>
         </property>
        </item>
       </widget>

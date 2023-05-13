@@ -4,9 +4,10 @@ import win32com.client as win32
 import pandas as pd
 import openpyxl as xl
 from openpyxl import load_workbook
-from analysis.collect import Select
+#from analysis.collect import Select
+from ..analysis.collect import Select
 import os
-
+from server.config.settings_cross import *
 outlook = win32.Dispatch('outlook.application')
 class Mails_management():
     def __init__(self,folder,readfile,readsheet,column1,column2,writefile,sheetwriter):
@@ -107,7 +108,12 @@ class Mails_management():
         '''
 
         #for data from Database
-        list=Select.monthly_molds(year,month,day,to_day,monthly=True,daily=True,weekly=True)
+        
+
+
+        git_database=Select(format_path,"formatQC_report_monthly_v3.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
+
+        list=git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=True)
 
         LIST_NAME=[shoutcoun_name,qc_molds_name,test_name,]
         EMAIL_TO=[shoutcount_to,qc_molds_to,test_to,fllowup_purchasing_to,fllowup_maintenance_to,

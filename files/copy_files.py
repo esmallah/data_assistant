@@ -2,7 +2,7 @@ import shutil
 import os
 import openpyxl as xl
 import pandas as pd
-
+from server.config.settings_base import BASE_DIR
 class Direcories():
     '''
     for organize files in computer for waste time and updata all related 
@@ -20,13 +20,36 @@ class Direcories():
         path = (self.folder_from)
         if not os.path.exists(path):
             os.makedirs(path)
-    def copy_files(self,src, dst):
+    def copy_dir(self):
+        print("Before copying file:") 
+        path=BASE_DIR
+        print(os.listdir(path)) 
+        
+        # Source path 
+        src = self.folder_from
+        
+        # Destination path 
+        dest = self.folder_to
+        
+        # Copy the content of 
+        # source to destination 
+        destination = shutil.copytree(src, dest) 
+        
+        # List files and directories 
+        # in "C:/Users / Rajnish / Desktop / GeeksforGeeks" 
+        print("After copying file:") 
+        print(os.listdir(path)) 
+        
+        # Print path of newly 
+        # created file 
+        print("Destination path:", destination)
+    def copy_files(self):
         path = (self.folder_from)
         path2= (self.folder_to)
         root_src_dir = os.path.join(path,'source')
         root_target_dir = os.path.join(path2,'target')
 
-        operation= 'copy' # 'copy' or 'move'
+        operation = 'copy' # 'copy' or 'move'
 
         for src_dir, dirs, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_target_dir)
@@ -37,11 +60,11 @@ class Direcories():
                 dst_file = os.path2.join(dst_dir, file_)
                 if os.path.exists(dst_file):
                     os.remove(dst_file)
-                if operation is 'copy':
+                if operation == 'copy':
                     shutil.copy(src_file, dst_dir)
-                elif operation is 'move':
+                elif operation == 'move':
                     shutil.move(src_file, dst_dir)
-
+        print(operation,"from ",root_src_dir,"to ",root_target_dir)
     def copy_rename(old_file_name, new_file_name):      #work fine
         src_dir= os.curdir
         dst_dir= os.path.join(os.curdir , "subfolder")

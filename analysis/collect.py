@@ -6,13 +6,12 @@ from statistics import mean
 import pandas as pd
 import openpyxl as xl
 from openpyxl import load_workbook
-
 import os
 import numpy as np
 import glob
 
 #import database_postgrsql as database
-from .db_reports import Block,cursor,conn,Material
+from .db_reports import Block,cursor,conn,Material,Data_db
 from random import randint,seed
 
 #master data
@@ -1030,11 +1029,16 @@ class Select():
             
             #else:
             #    ws['b25'] =0
-            ws['a35'] = weight_nonconfomity.iloc[0][6]             #weight pass 
-            
+            if weight_nonconfomity_count>1:
+                ws['a35'] = weight_nonconfomity.iloc[0][6]             #weight pass 
+                ws['b35'] =weight_nonconfomity.iloc[0][5]            #weights hig not acceptable
+
+            else:
+                ws['a35'] = 0
+                ws['b35'] = 0
             #if weight_nonconfomity_high>=1:  # for ignor impty index error        
-            ws['b35'] =weight_nonconfomity.iloc[0][5]            #weights hig not acceptable
             #else:
+
             #    ws['b35'] =0           #weights hig not acceptable
             
             if scrap_nonconfomity_count>=1:
@@ -1457,4 +1461,5 @@ class Select():
         #to outbut list send by email
         output=scrap_nonconfomity.index
         return output
-        
+    
+    
