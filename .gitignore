@@ -16,4 +16,4 @@ apps/pyqt_sqlite/pyqt-sqlite.py
 interface2.
 Lib
 
-db\database.ini
+db
