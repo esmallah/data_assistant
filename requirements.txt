@@ -5,18 +5,16 @@ matplotlib==3.7.1
 numpy==1.24.2
 
 openpyxl==3.1.1
-pandas==1.5.3
+pandas==2.0.2
 
 psycopg2==2.9.5
 PyAutoGUI==0.9.53
 
 pyinstaller==5.8
 
-PyQt5==5.15.2
+PyQt5==5.15.9
 
-pywin32==0.2.0
+torch==2.0.1
 
-torch==1.13.1
-
-xlrd==2.0.1
-XlsxWriter==3.0
+xlrd==2.01
+XlsxWriter==3.1.2

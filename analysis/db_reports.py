@@ -1,8 +1,8 @@
 import pandas as pd
 from itertools import permutations
 from itertools import product
+from server.config.database_postgrs import cursor,conn
 
-from ..db import cursor,conn
 #from db import cursor,conn	#for pyqt
 #t22records_reports
 SQL_quality_records="""
@@ -333,11 +333,10 @@ customer_complaints_column='''
 			t22.corrective_action_details,
 			t22.status,
 			t22.date_closing,
-			p.product_code,t127.means,
+			p.product_code,
+			t127.means,
 			t74.badness,
 			t22.groups
-			
-			
 			'''
 product_return_column='''
 			t22.year,			
@@ -365,7 +364,17 @@ product_ncrs_column='''
 			q.return_downgrade,
 			q.return_scrap		
 			'''
-
+follow_up_columns='''
+			t22.year,			
+			t22.field_integer,
+			t22.date,
+			t22.attachment_name,
+			t22.responsible,
+			q.return_quantity,
+			q.return_good,
+			q.return_downgrade,
+			q.return_scrap		
+			'''
 class Block():
 	'''this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries'''		
 	def __init__(self,folder,table):
@@ -2110,8 +2119,8 @@ class Block():
 	def returnProducts(self,year,month):#report depend of mold structure
 			#report depend of mold structure
 		SQL1='''select
-							 %s,p.Product_name,p.product_code,t112.name
-							,t127.means,t121.name,t71.step_details
+							p.product_code,p.Product_name,t112.name
+							,%s,t127.argument,t121.name,t71.step_details
 							from v105quality_inspection_items q
 							left join v108items_master p
 								on q.f11part_item_id=p.item_id
@@ -2141,6 +2150,41 @@ class Block():
 	#		cursor.execute(SQL5, year)	
 	#	else:
 	#		cursor.execute(SQL5, (year,))	
+	def f22ncrslist(self,year,month):#report depend of mold structure
+			#report depend of mold structure
+		SQL1='''select
+							 %s,p.Product_name,p.product_code,t112.name
+							,t127.means,t121.name,t71.step_details
+							from v105quality_inspection_items q
+							left join v108items_master p
+								on q.f11part_item_id=p.item_id
+							
+							left join insutech.t22record t22
+							on q.f22record_id = t22.record_id 
+							left join t127means t127
+							on t127.means_id=p.f127means_id
+							left join insutech.t121risk t121
+							on t121.risk_id=t22.f121risk_id
+							left join insutech.t71workflow t71
+							on t71.id_workflow=t22.f71workflow_id
+							left join insutech.t112partners t112
+							on t112.partner_id=t22.f112partners_id
+							'''%product_ncrs_column
+			
+		SQL = SQL1+''' where t22.f39mother_id=107 '''
+		cursor.execute(SQL,)	
+		#SQL2 = SQL1+''' where year = %s '''
+		#SQL3 = SQL2+''' and month = %s '''
+		#SQL4=SQL3+" and t22.f39mother_id=107  order by q.year,q.month,p.product_name"
+		#SQL5=SQL2+" and t22.f39mother_id=107 order by q.year,q.month,p.product_name"
+		#if type(month) == tuple:   
+			
+		#	cursor.execute(SQL3, month)
+		#if type(year) == tuple:   
+	#		cursor.execute(SQL5, year)	
+	#	else:
+	#		cursor.execute(SQL5, (year,))	
+	
 	def customerComplaintsLocal(self,year,month):#report depend of mold structure
 			#report depend of mold structure
 		SQL1='''select
@@ -2202,11 +2246,14 @@ class Block():
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
 							on t112.partner_id=t22.f112partners_id
+							left join insutech.t74problems t74
+							on t74.problem_id=t22.f74problems_id
+							
 							'''%customer_complaints_column
 		#SQL = SQL1+''' '''
 		#cursor.execute(SQL,)	
 
-		SQL = SQL1+''' where t22.f39mother_id=108 and t22.product_complaints == 1'''
+		SQL = SQL1+''' where t22.f39mother_id=108 and t22.product_complaints=True'''
 		cursor.execute(SQL,)	
 	def customerComplaintsCommint(self,year,month):#report depend of mold structure
 			#report depend of mold structure
@@ -2227,11 +2274,14 @@ class Block():
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
 							on t112.partner_id=t22.f112partners_id
+							left join insutech.t74problems t74
+							on t74.problem_id=t22.f74problems_id
+							
 							'''%customer_complaints_column
 		#SQL = SQL1+''' '''
 		#cursor.execute(SQL,)	
 
-		SQL = SQL1+''' where t22.f39mother_id=108 and t22.sales_comment ==1'''
+		SQL = SQL1+''' where t22.f39mother_id=108 and t22.sales_comment=True'''
 		cursor.execute(SQL,)	
 
 	def sublierComplaints(self,year,month):#report depend of mold structure
@@ -2253,6 +2303,9 @@ class Block():
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
 							on t112.partner_id=t22.f112partners_id
+							left join insutech.t74problems t74
+							on t74.problem_id=t22.f74problems_id
+							
 							'''%customer_complaints_column
 		SQL = SQL1+''' where t22.f39mother_id_type=279 '''
 		cursor.execute(SQL,)	
@@ -2437,13 +2490,19 @@ class PgAccess():
 	move_table_to_schema=	'''ALTER TABLE yksus1
 					SET SCHEMA firma1;'''
 class Data_db():
+	'''
+		this class for manage data base structre
+	'''		
+	def __init__(self):
+		pass
 	
-	def table_data(self,table_name,col1):
-		
+	def forein_key_sql(self,table_name,column):
+		print("____request____Data_db_forign.table_data",table_name,column)
 		#for get last year and month and day form loaded database
-		SQL='''select %s , date ''' %col1
+
+		SQL='''select %s  ''' %column
 		SQL1=SQL+'''from  insutech.%s'''%table_name
-		cursor.execute(SQL)
+		cursor.execute(SQL1)
 		
 		rows = cursor.fetchall()
 		#rows = cursor.fetchone()
@@ -2451,7 +2510,36 @@ class Data_db():
 		print("__________array_length:____________",array_length)
 		#data_items = pd.DataFrame()
 		data_items = pd.DataFrame(rows)
+		return  data_items
+	def table_data(self,schema,table_name,args):
+		print("____request____Data_db.table_data",table_name,args)
+		#for get last year and month and day form loaded database
+		
+		# Python3 code to convert a tuple
+		
+		# Driver code
+		#values = ''.join(str(v) for v in args)
+		values=args
+		
+		print(*values)
+		SQL='''select %s  ''' %str(values)
+		SQL1=SQL+'''from  %s.'''%str(schema)
+		SQL2=SQL1+''' %s'''%str(table_name)
 
+		cursor.execute(SQL2)
+
+		rows = cursor.fetchall()
+		#rows = cursor.fetchone()
+		 #to get columns name with the columns
+		column_names = [desc[0] for desc in cursor.description]
+		get_data = pd.DataFrame(rows,columns=column_names)
+
+		array_length= len(rows)
+		
+		print("__________array_length:____________",array_length)
+		#data_items = pd.DataFrame()
+		data_items = pd.DataFrame(get_data)
+		print("__________return:____________",data_items)
 		#for row in rows:
 		#	for col in row:
 		#		data_items.append(col)
@@ -2484,3 +2572,29 @@ class Data_db():
 		
 		for row in rows:
 			print(row)
+	def f22followup(self,year,month):#report depend of mold structure
+			#report depend of mold structure
+		SQL1='''select %s '''%follow_up_columns
+			
+		#SQL = SQL1+''' where t22.f39mother_id=107 '''
+		#cursor.execute(SQL,)	
+		SQL2 = SQL1+''' where year = %s '''
+		#SQL3 = SQL2+''' and month = %s '''
+		#SQL4=SQL3+" and t22.f39mother_id=107  order by q.year,q.month,p.product_name"
+		#SQL5=SQL2+" and t22.f39mother_id=107 order by q.year,q.month,p.product_name"
+		#if type(month) == tuple:   
+			
+		#	cursor.execute(SQL3, month)
+		if type(year) == tuple:   
+			cursor.execute(SQL2, year)	
+		else:
+			cursor.execute(SQL2, (year,))	
+		rows = cursor.fetchall()
+		#rows = cursor.fetchone()
+		array_length= len(rows)
+		print("__________array_length:____________",array_length)
+
+		data_items = pd.DataFrame(rows)
+
+		
+		return data_items

@@ -5,7 +5,6 @@ import pandas as pd
 import openpyxl as xl
 from openpyxl import load_workbook
 #from analysis.collect import Select
-from ..analysis.collect import Select
 import os
 from server.config.settings_cross import *
 outlook = win32.Dispatch('outlook.application')
@@ -19,7 +18,7 @@ class Mails_management():
         self.column2=column2
         self.writefile=writefile
         self.sheetwriter=sheetwriter
-    def send_emails(year,month,day,to_day,itemSelection,attachment):
+    def send_emails(year,month,day,to_day,itemSelection,attachment,conn_db=True):
         #os.chdir(folder)
         #print(folder)
         fllowup_topic='''
@@ -109,12 +108,26 @@ class Mails_management():
 
         #for data from Database
         
-
-
-        git_database=Select(format_path,"formatQC_report_monthly_v3.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
-
-        list=git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=True)
-
+        if conn_db:
+            from ..analysis.collect import Select,Data_db
+            git_database=Select(format_path,"formatQC_report_monthly_v3.xlsx","output",year,month,'QC_molds_monthly_v2.xlsx',"Sheet1")
+            fuNgetDailyReport=git_database.monthly_molds(dailyReportName,year,month,day,to_day,monthly=False,daily=True)
+            fuNgetFollowUp=Data_db.f22followup()
+            
+        else:
+            fuNgetDailyReport=[]
+            funShoutCount=[]
+            funTest=[]
+            fuNgetFollowUp=[]
+        #_____list data by run functions____________
+        
+        
+        
+        
+        functions_getdata=[funShoutCount,fuNgetDailyReport,funTest,fuNgetFollowUp]
+        list_reports=functions_getdata[itemSelection]
+        
+        #_____list email data by manual____________
         LIST_NAME=[shoutcoun_name,qc_molds_name,test_name,]
         EMAIL_TO=[shoutcount_to,qc_molds_to,test_to,fllowup_purchasing_to,fllowup_maintenance_to,
         fllowup_production_to,fllowup_quality_to,fllowup_warehouse_to,fllowup_october_to,
@@ -125,7 +138,7 @@ class Mails_management():
         LIST_SUBJECT=[shoutcount_subject,qc_molds_subject,test_subject,fllowup_purchasing_subject,fllowup_maintenance_subject,
         fllowup_production_subject,fllowup_quality_subject,fllowup_warehouse_subject,fllowup_october_subject,
         fllowup_safety_subject,fllowup_hr_subject]
-        LIST_TOPIC=[shoutcount_topic,qc_molds_topic,list,fllowup_purchasing_topic,fllowup_maintenance_topic,
+        LIST_TOPIC=[shoutcount_topic,qc_molds_topic,list_reports,fllowup_purchasing_topic,fllowup_maintenance_topic,
         fllowup_production_topic,fllowup_quality_topic,fllowup_warehouse_topic,fllowup_october_topic,
         fllowup_safety_topic,fllowup_hr_topic]
                 
@@ -148,12 +161,12 @@ class Mails_management():
         print ("mail was send to with attachmed ",attachment,"located in ",itemSelection)
 
         #attachment  = folder+"v129molds_shoutcount.xlsx"
-        print(attachment)
-        mail.Attachments.Add(attachment)
+        print("_______attachments____________",attachment)
+
+        #mail.Attachments.Add(attachment)
         mail.Send()
         
     import win32com.client
-
 
     def extract(count):
         """Get emails from outlook."""

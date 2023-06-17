@@ -28,11 +28,11 @@ table="yt_quality"
 # print the connection string we will use to connect
 
 import psycopg2
-
-
-
+server='postgresql_remote_server'
+#server='postgresql_network_server'
+#server='postgresql_pc__a1'
 conn = None
-params = config(filename=BASE_DIR+r'\\secrets\database.ini', section="postgresql_remote_server")
+params = config(filename=BASE_DIR+r'\\secrets\database.ini', section=server)
 print ("Connecting to database\n	->%s" % params)
 conn = psycopg2.connect(**params)
 cursor = conn.cursor()

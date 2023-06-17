@@ -178,8 +178,24 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         "LgWasherAngels":29,
         "LgWasherBase":30,
         "LgWasherBase_VIVACHE":31,
-
-        "lg_slides_50UQ75":32
+        "lg_slides_50UQ75":32,
+        "LG55QNED81_up":33,
+        "LG55QNED81_bottom":34,
+        "LG55QNED81_left":35,
+        "LG55QNED81_right":36,
+        "LG55QNED81_front":37,
+        "LGLG65QNED81_up":38,
+        "LG65QNED81_bottom":39,
+        "LG65QNED81_right":40,
+        "LG65QNED81_left":41,
+        "LG65QNED81_front":42,
+        "LG75QNED81_up_r":43,
+        "LG75QNED81_up_L":44,
+        "LG75QNED81_bottom_r":45,
+        "LG75QNED81_bottom_L":46,
+        "LG75QNED81_R":47,
+        "LG75QNED81_L":48,
+        "LG75QNED81_FRONT":49
         }
 
         #self.ButWebFilterFIllNames.clicked.disconnect()

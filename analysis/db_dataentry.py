@@ -1,4 +1,4 @@
-from ..db import conn , cursor
+from server.config.database_postgrs import cursor,conn
 #from db import conn , cursor	#pyqt
 class MoldsQuality():
 	'''

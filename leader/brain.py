@@ -23,90 +23,81 @@ class Thinking():
         self.show_data
         self.folder=folder
         self.output=output
-    def show_data(self,table_name,col1):
+    def show_data(self,schema,table_name,*args,word=True,sentince=True):
         from ..analysis import Select,Data_db
-
+        #self.show_data.__init__(self, list(args))
         os.chdir(self.folder)
         
         connection_type=Data_db()
-        reader_item=connection_type.table_data(table_name,col1)
+        reader_item=connection_type.table_data(schema,table_name,*args)
         #https://towardsdatascience.com/multi-class-text-classification-with-lstm-1590bee1bd17
         #print("Info",reader_item.info())
         print("reader_item",reader_item[:10])
-        print("reader_item[""col1]",reader_item[col1][:10])
- ## split by new lines and spaces
-        #reviews_split = all_text.split('\n')
-        #all_text = ' '.join(reviews_split)
+        col1=0
+        col=list(args)
+        col=col[col1]
+        cols=col.split(",")
+        
+        col_name=cols[0]
+        col_id=cols[1]
 
-        ## create a list of words
-        #words = all_text.split()
 
-        reader_names=reader_item.col1.value_counts()
-        print("______names categories________",reader_names[5])
+        counts_names=reader_item[col_name].value_counts()
+        print("______names categories________",counts_names[5])
 
-        reader_id=reader_item.id_inside_cagegory.value_counts()
-        print("______id categories________",reader_id)
-
+        counts_id=reader_item[col_id].value_counts()
+        print("______id categories________",counts_id)
+        print("reader_item col_name",col_name,reader_item[col_name])
         #reader_inside_category=reader_item.reader_inside_category.value_counts()
         # encode the text and map each character to an integer and vice versa
 
-        # we create two dictionaries:
-            #first deictionaries for id
-        chars_id = tuple(set(reader_id))
-        int2char = dict(enumerate(chars_id))
-        char2int = {ch: ii for ii, ch in int2char.items()}
-        
-        ## encode the text
-        encoded_id = np.array([char2int[ch] for ch in reader_id])
-        
-        
-        #========================================
-
+        if word:
+            # we create two dictionaries:
+                    #data pre-process for names
+            chars_names = tuple(set(counts_names))
+            int2char_name = dict(enumerate(counts_names))
+            char2int_name = {ch: ii for ii, ch in int2char_name.items()}
+            encoded_names= np.array([int2char_name[ch] for ch in counts_names])
+            #========================================
+                #first deictionaries for id
+            chars_id = tuple(set(counts_id))
+            int2char = dict(enumerate(chars_id))
+            char2int = {ch: ii for ii, ch in int2char.items()}
+            
+            ## encode the text
+            encoded_id = np.array([char2int[ch] for ch in counts_id])
+            
+        if sentince:
+            #transfere dataframe to list
+            # معايير تحديد الجمل الاسمية والفعلية            
+            tow_words=reader_item.split("و")
+            print("test___________ tow_words",tow_words.head(5))
+            #data pre-process for names
+            chars_names = tuple(set(counts_names))
+            int2char_name = dict(enumerate(counts_names))
+            char2int_name = {ch: ii for ii, ch in int2char_name.items()}
+            encoded_names= np.array([int2char_name[ch] for ch in counts_names])
+            #========================================
+            # create id
+                #first deictionaries for id
+            chars_id = tuple(set(counts_id))
+            int2char = dict(enumerate(chars_id))
+            char2int = {ch: ii for ii, ch in int2char.items()}
+            
+            ## encode the text
+            encoded_id = np.array([char2int[ch] for ch in counts_id])        
         print("encoded_id categories",encoded_id)
-        #data pre-process for names
-        chars_names = tuple(set(reader_names))
-        int2char_id = dict(enumerate(chars_id))
-        char2int_id = {ch: ii for ii, ch in int2char.items()}
-        print("____________ reader_name categories",reader_names)
+
+        print("____________ char2int_name ",char2int_name)
         ## encode the text
-        encoded_names= np.array([char2int[ch] for ch in reader_names])
+
         print("encoded_name categories",encoded_names)
 
-        
-           #second deictionaries for name
-        #filter names by id
-        #list_id=list(reader_item["id_inside_cagegory"])
-        print("reader_id",reader_names.value_counts())
-        names=[]
-        for id in reader_id.value_counts():
-            reader_item_filter=reader_item[reader_item["id_inside_cagegory"]==id]
-            names_items=[]
-            for i in reader_item_filter.col1:
-                col1_items.append(reader_item_filter.col1)
-                col1.append(col1_items)
-            #return col1
-        print(col1,col1)
-        writer = pd.ExcelWriter(self.writefile)
-        col1_df=pd.DataFrame(col1)
-        col1_df.to_excel(writer,"data")
-        
-        writer.save()
-
-        chars_id = tuple(set(reader_col1))
-        int2char_name = dict(enumerate(chars_id))
-        char2int_name = {ch: ii for ii, ch in int2char_name.items()}
-        
-        
-        ## encode the text
-        encoded_id = np.array([char2int_name[ch] for ch in reader_col1])
-        print("encoded_id categories",encoded_id)
-
-        #Pre-processing the data¶
         def one_hot_encode(self,arr, n_labels):
             '''
-             LSTM expects an input that is one-hot encoded_id meaning that each character 
-             is converted into an integer (via our created dictionary) 
-             and then converted into a column vector where only it's corresponding integer index will have the value of 1 and the rest of the vector will be filled with 0's. Since we're one-hot encoding the data
+            LSTM expects an input that is one-hot encoded_id meaning that each character 
+            is converted into an integer (via our created dictionary) 
+            and then converted into a column vector where only it's corresponding integer index will have the value of 1 and the rest of the vector will be filled with 0's. Since we're one-hot encoding the data
             '''
             # Initialize the the encoded_id array
             one_hot = np.zeros((np.multiply(*arr.shape), n_labels), dtype=np.float32)
@@ -125,11 +116,11 @@ class Thinking():
         print("____one_hot____",one_hot)
         
         self.batches = get_batches(encoded_id, 8, 50)
+        print("____fast test_____ counts_id.self.batches()",self.batches)
         self.x, self.y = next(self.batches)
         # printing out the first 10 items in a sequence
         print('x\n', self.x[:10, :10])
         print('\ny\n', self.y[:10, :10])
-
 
         self.batches_name = get_batches(encoded_col1, 8, 50)
         self.z, self.t = next(self.batches_name)
