@@ -28,6 +28,7 @@ table="yt_quality"
 # print the connection string we will use to connect
 
 import psycopg2
+format_path = os.path.join(BASE_DIR, os.path.normpath(r".\libs\andlsy\analysis\formats"))
 server='postgresql_remote_server'
 #server='postgresql_network_server'
 #server='postgresql_pc__a1'
@@ -38,6 +39,7 @@ conn = psycopg2.connect(**params)
 cursor = conn.cursor()
 
 '''
+
 except psycopg2.DatabaseError, e:
 	print ('Error %s' % e)
 	sys.exit(1)

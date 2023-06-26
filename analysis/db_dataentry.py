@@ -1,5 +1,5 @@
-from server.config.database_postgrs import cursor,conn
-#from db import conn , cursor	#pyqt
+#from server.config.database_postgrs import cursor,conn
+from db import conn , cursor	#pyqt
 class MoldsQuality():
 	'''
 		this class for manage data base on sahrenetowrk or cpanel to mold categories in foam industries
@@ -7,7 +7,6 @@ class MoldsQuality():
 	def __init__(self,folder,table):
 		self.folder=folder
 		self.table=table
-
 	def uninstall_dataentry_reports(self):
 		#uninstall report first steps to uninistall database structures'''			
 		drop_yv_items_molds_report=	'drop view yv_load_machine'

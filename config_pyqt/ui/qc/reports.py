@@ -4,7 +4,7 @@ class QC_reports(QFrame):
 
     def __init__(self, parent=None, db=None):
         super().__init__(parent)
-        self.title = 'PyQt5 layout - pythonspot.com'
+        self.title = 'PyQt6 layout - pythonspot.com'
         self.initUI()
 
     def initUI(self):

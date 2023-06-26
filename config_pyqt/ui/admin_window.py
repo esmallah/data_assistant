@@ -19,7 +19,7 @@ class AppWindow(Ui_MainWindow,QMainWindow):
         self.setupUi(self)
         self.signals_control()
         self.show()
-        self.deepLearning()
+#        self.deepLearning()
         
     def switch(self):
         self.switch_window.emit(self.line_edit.text())
@@ -323,7 +323,8 @@ class AppWindow(Ui_MainWindow,QMainWindow):
     #___________________________analysis section_____________________________#
     def deepLearning(self):
         from leader import Ai_thinking
-        
+        from analysis.collect import Select
+        Select.deepLearning(self)
         
         if self.checkBox_Leader_adjust_input_data.isChecked():
             data_path.show_data()

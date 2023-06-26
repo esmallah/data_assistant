@@ -24,9 +24,10 @@ class Thinking():
         self.folder=folder
         self.output=output
     def show_data(self,schema,table_name,*args,word=True,sentince=True):
-        from ..analysis import Select,Data_db
+        from analysis import Select,Data_db
+        #from ..analysis import Select,Data_db
         #self.show_data.__init__(self, list(args))
-        os.chdir(self.folder)
+        #os.chdir(self.folder)
         
         connection_type=Data_db()
         reader_item=connection_type.table_data(schema,table_name,*args)

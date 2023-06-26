@@ -1,7 +1,7 @@
 import sys, sqlite3
 from sqlite3 import Error
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QTableWidgetItem
 from  Ui_Login import *
 from Ui_Register import *
 from Ui_Manage import *

@@ -1,9 +1,9 @@
 import pandas as pd
 from itertools import permutations
 from itertools import product
-from server.config.database_postgrs import cursor,conn
+#from server.config.database_postgrs import cursor,conn
 
-#from db import cursor,conn	#for pyqt
+from db import cursor,conn	#for pyqt
 #t22records_reports
 SQL_quality_records="""
 				year,
@@ -77,7 +77,7 @@ SQL_quality_records="""
 				shift1_width_mm,
 				shift2_width_mm,
 				shift1_deepth_mm,
-				shift2_deepth_mm,
+				
 				shift2_deepth_mm,
 				shift1_denisty,
 				shift2_denisty,
@@ -2129,8 +2129,8 @@ class Block():
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
 							on t127.means_id=p.f127means_id
-							left join insutech.t121risk t121
-							on t121.risk_id=t22.f121risk_id
+							left join t53information t121
+							on t121.id=t22.f121risk_id
 							left join insutech.t71workflow t71
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
@@ -2163,8 +2163,8 @@ class Block():
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
 							on t127.means_id=p.f127means_id
-							left join insutech.t121risk t121
-							on t121.risk_id=t22.f121risk_id
+							left join t53information t121
+							on t121.id=t22.f121risk_id
 							left join insutech.t71workflow t71
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
@@ -2197,8 +2197,8 @@ class Block():
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
 							on t127.means_id=q.f127means_id
-							left join insutech.t121risk t121
-							on t121.risk_id=t22.f121risk_id
+							left join t53information t121
+							on t121.id=t22.f121risk_id
 							left join insutech.t71workflow t71
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
@@ -2240,8 +2240,8 @@ class Block():
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
 							on t127.means_id=q.f127means_id
-							left join insutech.t121risk t121
-							on t121.risk_id=t22.f121risk_id
+							left join t53information t121
+							on t121.id=t22.f121risk_id
 							left join insutech.t71workflow t71
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
@@ -2268,8 +2268,8 @@ class Block():
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
 							on t127.means_id=q.f127means_id
-							left join insutech.t121risk t121
-							on t121.risk_id=t22.f121risk_id
+							left join t53information t121
+							on t121.id=t22.f121risk_id
 							left join insutech.t71workflow t71
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112
@@ -2297,8 +2297,8 @@ class Block():
 							on q.f22record_id = t22.record_id 
 							left join t127means t127
 							on t127.means_id=q.f127means_id
-							left join insutech.t121risk t121
-							on t121.risk_id=t22.f121risk_id
+							left join t53information t121
+							on t121.id=t22.f121risk_id
 							left join insutech.t71workflow t71
 							on t71.id_workflow=t22.f71workflow_id
 							left join insutech.t112partners t112

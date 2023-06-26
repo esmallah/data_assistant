@@ -349,8 +349,8 @@ class Select():
         self.writefile=writefile
         self.writesheet=writesheet
     def load_data(self,sql_query):
-        from server.config.database_postgrs import cursor
-        #from db import cursor #from pyqt
+        #from server.config.database_postgrs import cursor
+        from db import cursor #from pyqt
         sql_query
         get_data2=cursor.fetchall()
         #__________________________________________________________________        
@@ -1088,14 +1088,14 @@ class Select():
                 
             #to select index of columns to light weights 
             if weight_nonconfomity_count>=1:  # for ignor impty index error        
-                list_item_size=weight_nonconfomity_low.shape[0]
+                list_item_size=weight_nonconfomity.shape[0]
                 #rows = weight_nonconfomity.index
                 r = 25  # start at 10th row
                 c = 3 # column 'c'
                 
                 #for row in rows:       
                 for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                    rows = weight_nonconfomity_low.iloc[row]
+                    rows = weight_nonconfomity.iloc[row][:2]
                     for item in rows:
                         ws.cell(row=r, column=c).value = item
                         c += 1 # Column 'd'
@@ -1104,13 +1104,13 @@ class Select():
             
             #to select index of columns to hight weights 
             if weight_nonconfomity_count>=1:
-                list_item_size=weight_nonconfomity_high.shape[0]
+                list_item_size=weight_nonconfomity.shape[0]
             
                 #create  the index sheet:
                 r = 4  # start at 4th row
                 c = 35 # column 'a'
                 for row in range(0,list_item_size):       #you must start by 0 to catch all data , if you start by 1 you ignore first row in data source
-                    rows = weight_nonconfomity_high.iloc[row]
+                    rows = weight_nonconfomity.iloc[row][:2]
                     for item in rows:
                         ws.cell(row=r, column=c).value = item
                         c += 1 # Column 'd'
@@ -1483,3 +1483,27 @@ class Select():
         #to outbut list send by email
         output=scrap_nonconfomity.index
         return output
+    def deepLearning(self,*args):
+        from leader import Thinking
+        from analysis import Select
+        
+        from db.database_postgrs import BASE_DIR,format_path
+        input = format_path
+#        output=os.path.join(BASE_DIR.parent, os.path.normpath(r"..\andalosy_files\insutech"))
+        output=os.path.join(BASE_DIR, os.path.normpath(r"..\andalosy_files\insutech"))
+        data_bath=Thinking(input,output)
+        
+        #columns_name='''attachment_name,id,code_file,url,partfile,f39mother_id,f127means_id '''
+        columns_name='''aya,suraname,numaya'''
+#        data_bath.show_data('insutech','t160attachments',columns_name)
+        data_bath.show_data('public','t1queran',columns_name,word=False,sentince=True)
+                    #import data
+        #_______developer stage________________________________current_________====================
+        #Select.data_db()
+  
+        #==================================================================================================================================
+        #           
+        # ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄
+        # ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
+        #
+        #==================================================================================================================================

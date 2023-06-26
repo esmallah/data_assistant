@@ -1,17 +1,17 @@
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-import PyQt5
+import PyQt6
 
-from PyQt5.QtCore  import pyqtSlot,QSize
+from PyQt6.QtCore  import pyqtSlot,QSize
 import sys
 import time
 
-from PyQt5 import QtGui, QtCore,QtWidgets
-from PyQt5.QtCore  import pyqtSlot,QSize,Qt
+from PyQt6 import QtGui, QtCore,QtWidgets
+from PyQt6.QtCore  import pyqtSlot,QSize,Qt
 
 #from main import Ui_MainWindow,Login
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QFileDialog,
     QFrame,
     QTabWidget,
