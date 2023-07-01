@@ -18,8 +18,8 @@ pip3 install PyQt5-tools
 for convert xml to ptyhon 
 
 cd config_pyqt
-pyuic5 interface2.ui > interface2.py
-pyrcc5 maps.qrc -o maps_rc.py
+pyuic6 interface2.ui > interface2.py
+pyrcc6 maps.qrc -o maps_rc.py
 
 for activate virusal environment
 source ../env/Scripts/activate

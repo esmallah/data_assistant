@@ -81,7 +81,8 @@ class Login(QtWidgets.QWidget):
             QtWidgets.QApplication.instance().removeTranslator(self.trans)
 
     def changeEvent(self, event):
-        if event.type() == QtCore.QEvent.LanguageChange:
+        #if event.type() == QtCore.QEvent.LanguageChange:
+        if event.type() == QtCore.QEvent:
             self.retranslateUi()
         super(Login, self).changeEvent(event)
 
